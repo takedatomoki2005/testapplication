@@ -83,25 +83,86 @@ npm run build
 npm start
 ```
 
-## Deployment on Vercel
+## Deployment
 
-1. Push your code to a Git repository (GitHub, GitLab, or Bitbucket)
+### Step 1: Push to GitHub
 
-2. Import your repository to Vercel:
-   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
-   - Click "Add New Project"
-   - Import your Git repository
+Your repository is already connected to GitHub at: `https://github.com/takedatomoki2005/testapplication.git`
 
-3. Configure Environment Variables:
-   - In your Vercel project settings, go to "Environment Variables"
-   - Add the following variables:
-     - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
-   - Make sure to add them for all environments (Production, Preview, Development)
+To push your code:
 
-4. Deploy:
-   - Vercel will automatically detect Next.js and deploy your application
-   - Your app will be available at `https://your-project.vercel.app`
+1. **If you haven't already, authenticate with GitHub:**
+   ```bash
+   # Option 1: Use GitHub CLI (recommended)
+   gh auth login
+   
+   # Option 2: Use SSH (if you have SSH keys set up)
+   # Change remote to SSH: git remote set-url origin git@github.com:takedatomoki2005/testapplication.git
+   
+   # Option 3: Use Personal Access Token
+   # When prompted for password, use a GitHub Personal Access Token
+   ```
+
+2. **Check for any uncommitted changes:**
+   ```bash
+   git status
+   ```
+
+3. **Add and commit any changes (if needed):**
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   ```
+
+4. **Push to GitHub:**
+   ```bash
+   git push origin main
+   ```
+
+### Step 2: Deploy on Vercel
+
+1. **Go to Vercel Dashboard:**
+   - Visit [https://vercel.com/dashboard](https://vercel.com/dashboard)
+   - Sign in with your GitHub account (recommended for easy integration)
+
+2. **Import Your Repository:**
+   - Click "Add New Project" or "Import Project"
+   - Select your GitHub repository: `takedatomoki2005/testapplication`
+   - Click "Import"
+
+3. **Configure Project Settings:**
+   - Vercel will auto-detect Next.js (no changes needed)
+   - Framework Preset: Next.js
+   - Build Command: `npm run build` (auto-detected)
+   - Output Directory: `.next` (auto-detected)
+   - Install Command: `npm install` (auto-detected)
+
+4. **Add Environment Variables:**
+   - Before deploying, click "Environment Variables"
+   - Add these two variables:
+     ```
+     NEXT_PUBLIC_SUPABASE_URL = your-supabase-project-url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY = your-supabase-anon-key
+     ```
+   - Select all environments: Production, Preview, Development
+   - Click "Save"
+
+5. **Deploy:**
+   - Click "Deploy"
+   - Wait for the build to complete (usually 1-2 minutes)
+   - Your app will be live at `https://your-project-name.vercel.app`
+
+6. **Verify Deployment:**
+   - Visit your Vercel URL
+   - Test authentication (sign up/sign in)
+   - Test adding countries
+
+### Important Notes:
+
+- ✅ Your `.env.local` file is already in `.gitignore` (won't be uploaded to GitHub)
+- ✅ Environment variables must be added in Vercel dashboard (they're not pulled from `.env.local`)
+- ✅ Every push to `main` branch will trigger a new deployment automatically
+- ✅ Preview deployments are created for pull requests
 
 ## Project Structure
 
