@@ -24,7 +24,7 @@ export default function AuthButton({ userEmail }: AuthButtonProps) {
       <button
         onClick={handleSignOut}
         disabled={isPending}
-        className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-[5px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPending ? 'Signing out...' : 'Sign Out'}
       </button>

@@ -22,7 +22,7 @@ export default function SignInForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-[5px] shadow-md">
       <h2 className="text-2xl font-bold mb-4">Sign In</h2>
       
       {error && (
@@ -42,7 +42,7 @@ export default function SignInForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
             required
             autoComplete="email"
@@ -59,7 +59,7 @@ export default function SignInForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
             required
             autoComplete="current-password"
@@ -69,7 +69,7 @@ export default function SignInForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-[#336B87] text-white py-2 px-4 rounded-[5px] hover:bg-[#2a5a70] focus:outline-none focus:ring-2 focus:ring-[#336B87] focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           {isPending ? 'Signing in...' : 'Sign In'}
         </button>

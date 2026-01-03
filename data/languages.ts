@@ -1,0 +1,23 @@
+export const languages = [
+  'English',
+  'Spanish',
+  'French',
+  'German',
+  'Italian',
+  'Portuguese',
+  'Japanese',
+  'Chinese',
+  'Korean',
+  'Arabic',
+  'Russian',
+  'Hindi',
+  'Dutch',
+  'Swedish',
+  'Norwegian',
+  'Danish',
+  'Finnish',
+  'Polish',
+  'Turkish',
+  'Greek',
+]
+

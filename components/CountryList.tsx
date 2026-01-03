@@ -28,14 +28,14 @@ export default function CountryList({ countries }: CountryListProps) {
 
   if (countries.length === 0) {
     return (
-      <div className="bg-white p-8 rounded-lg shadow-md text-center">
+      <div className="bg-white p-8 rounded-[5px] shadow-md text-center">
         <p className="text-gray-500">No countries visited yet. Add your first country above!</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-[5px] shadow-md overflow-hidden">
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
         <h2 className="text-2xl font-bold">Visited Countries ({countries.length})</h2>
       </div>
@@ -53,7 +53,7 @@ export default function CountryList({ countries }: CountryListProps) {
                   )}
                   <h3 className="text-xl font-semibold text-gray-900">{country.country_name}</h3>
                   {country.country_code && (
-                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
+                    <span className="px-2 py-1 text-xs font-medium bg-[#336B87] bg-opacity-20 text-[#336B87] rounded-[5px]">
                       {country.country_code}
                     </span>
                   )}
@@ -64,7 +64,7 @@ export default function CountryList({ countries }: CountryListProps) {
               <button
                 onClick={() => handleDelete(country.id)}
                 disabled={isPending}
-                className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-[5px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Delete
               </button>

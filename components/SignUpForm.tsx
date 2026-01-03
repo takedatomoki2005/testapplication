@@ -38,7 +38,7 @@ export default function SignUpForm() {
 
   if (success) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-white p-6 rounded-[5px] shadow-md">
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
           <p className="font-semibold">Account created successfully!</p>
           <p className="text-sm mt-1">Please check your email to verify your account before signing in.</p>
@@ -48,7 +48,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-[5px] shadow-md">
       <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
       
       {error && (
@@ -68,7 +68,7 @@ export default function SignUpForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
             required
             autoComplete="email"
@@ -85,7 +85,7 @@ export default function SignUpForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="At least 6 characters"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
             required
             minLength={6}
@@ -104,7 +104,7 @@ export default function SignUpForm() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm your password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
             required
             minLength={6}
@@ -115,7 +115,7 @@ export default function SignUpForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-green-600 text-white py-2 px-4 rounded-[5px] hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           {isPending ? 'Creating account...' : 'Sign Up'}
         </button>

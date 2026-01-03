@@ -25,7 +25,7 @@ export default function WorldMap({ visitedCountryCodes }: WorldMapProps) {
   const getCountryColor = (isoCode: string | null | undefined) => {
     if (!isoCode) return '#D1D5DB'
     const code = isoCode.toUpperCase().trim()
-    return normalizedCodes.has(code) ? '#3B82F6' : '#D1D5DB'
+    return normalizedCodes.has(code) ? '#336B87' : '#D1D5DB'
   }
 
   // Track global mouse position
@@ -85,7 +85,7 @@ export default function WorldMap({ visitedCountryCodes }: WorldMapProps) {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-[5px] shadow-md">
       <h2 className="text-2xl font-bold mb-4">Visited Countries Map</h2>
       {normalizedCodes.size === 0 && (
         <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
@@ -94,7 +94,7 @@ export default function WorldMap({ visitedCountryCodes }: WorldMapProps) {
       )}
       <div 
         ref={mapContainerRef}
-        className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 relative"
+        className="border border-gray-200 rounded-[5px] overflow-hidden bg-gray-50 relative"
       >
         <ComposableMap
           projectionConfig={{
@@ -130,7 +130,7 @@ export default function WorldMap({ visitedCountryCodes }: WorldMapProps) {
                       default: { outline: 'none' },
                       hover: { 
                         outline: 'none',
-                        fill: isVisited ? '#2563EB' : '#9CA3AF',
+                        fill: isVisited ? '#336B87' : '#9CA3AF',
                         cursor: 'pointer'
                       },
                       pressed: { outline: 'none' },
@@ -156,7 +156,7 @@ export default function WorldMap({ visitedCountryCodes }: WorldMapProps) {
       </div>
       <div className="mt-4 flex items-center justify-center gap-6 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
+          <div className="w-4 h-4 bg-[#336B87] rounded-[5px]"></div>
           <span className="text-gray-700">Visited ({normalizedCodes.size})</span>
         </div>
         <div className="flex items-center gap-2">

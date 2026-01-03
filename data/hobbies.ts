@@ -1,0 +1,23 @@
+export const hobbies = [
+  'Reading',
+  'Traveling',
+  'Photography',
+  'Cooking',
+  'Gaming',
+  'Music',
+  'Sports',
+  'Drawing',
+  'Writing',
+  'Dancing',
+  'Hiking',
+  'Swimming',
+  'Cycling',
+  'Yoga',
+  'Gardening',
+  'Movies',
+  'Fishing',
+  'Painting',
+  'Singing',
+  'Running',
+]
+

@@ -65,7 +65,7 @@ export default function CountryForm({ existingCountries }: CountryFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-[5px] shadow-md mb-8">
       <h2 className="text-2xl font-bold mb-4">Add Visited Country</h2>
       
       {error && (
@@ -83,7 +83,7 @@ export default function CountryForm({ existingCountries }: CountryFormProps) {
             id="countryName"
             value={selectedCountry}
             onChange={handleCountryChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87] bg-white"
             disabled={isPending}
             required
           >
@@ -120,7 +120,7 @@ export default function CountryForm({ existingCountries }: CountryFormProps) {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Add any notes about your visit..."
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-[5px] focus:ring-2 focus:ring-[#336B87] focus:border-[#336B87]"
             disabled={isPending}
           />
         </div>
@@ -128,7 +128,7 @@ export default function CountryForm({ existingCountries }: CountryFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-[#336B87] text-white py-2 px-4 rounded-[5px] hover:bg-[#2a5a70] focus:outline-none focus:ring-2 focus:ring-[#336B87] focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           {isPending ? 'Adding...' : 'Add Country'}
         </button>
