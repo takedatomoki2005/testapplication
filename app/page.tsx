@@ -4,8 +4,18 @@ import CountryForm from '@/components/CountryForm'
 import CountryList from '@/components/CountryList'
 import AuthTabs from '@/components/AuthTabs'
 import AuthButton from '@/components/AuthButton'
+import { redirect } from 'next/navigation'
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { code?: string }
+}) {
+  // If there's a verification code, redirect to auth callback
+  if (searchParams?.code) {
+    redirect(`/auth/callback?code=${searchParams.code}`)
+  }
+
   const supabase = createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   const countries = user ? await getVisitedCountries() : []
