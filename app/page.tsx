@@ -3,6 +3,8 @@ import { createServerClient } from '@/utils/supabase/server'
 import CountryForm from '@/components/CountryForm'
 import CountryList from '@/components/CountryList'
 import AuthTabs from '@/components/AuthTabs'
+import TravelLevelCard from '@/components/TravelLevelCard'
+import { calculateTravelLevel } from '@/utils/travelLevel'
 import { redirect } from 'next/navigation'
 
 export default async function Home({
@@ -32,7 +34,8 @@ export default async function Home({
         </div>
 
         {user ? (
-          <div className="mt-8">
+          <div className="mt-8 space-y-6">
+            <TravelLevelCard travelLevel={calculateTravelLevel(countries.length)} />
             <CountryForm existingCountries={countries} />
             <CountryList countries={countries} />
           </div>

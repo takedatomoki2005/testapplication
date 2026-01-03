@@ -1,10 +1,14 @@
 import { createServerClient } from '@/utils/supabase/server'
+import { getVisitedCountries } from '@/app/actions/countries'
 import Link from 'next/link'
 import HeaderUserInfo from './HeaderUserInfo'
 
 export default async function Header() {
   const supabase = createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
+  
+  const countries = user ? await getVisitedCountries() : []
+  const countriesCount = countries.length
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
@@ -32,7 +36,7 @@ export default async function Header() {
           </Link>
 
           {/* Right side: User Email and Profile Icon */}
-          <HeaderUserInfo user={user} />
+          <HeaderUserInfo user={user} countriesCount={countriesCount} />
         </div>
       </div>
     </header>

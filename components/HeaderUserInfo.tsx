@@ -4,12 +4,15 @@ import { useTransition } from 'react'
 import { signOut } from '@/app/actions/auth'
 import Link from 'next/link'
 import { User } from '@supabase/supabase-js'
+import TravelLevelBadge from './TravelLevelBadge'
+import { calculateTravelLevel } from '@/utils/travelLevel'
 
 interface HeaderUserInfoProps {
   user: User | null
+  countriesCount?: number
 }
 
-export default function HeaderUserInfo({ user }: HeaderUserInfoProps) {
+export default function HeaderUserInfo({ user, countriesCount = 0 }: HeaderUserInfoProps) {
   const [isPending, startTransition] = useTransition()
 
   const handleSignOut = () => {
@@ -17,6 +20,8 @@ export default function HeaderUserInfo({ user }: HeaderUserInfoProps) {
       await signOut()
     })
   }
+
+  const travelLevel = user ? calculateTravelLevel(countriesCount) : null
 
   if (!user) {
     return (
@@ -32,9 +37,16 @@ export default function HeaderUserInfo({ user }: HeaderUserInfoProps) {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
+      {/* Travel Level Badge */}
+      {travelLevel && (
+        <div className="hidden md:block">
+          <TravelLevelBadge travelLevel={travelLevel} showProgress={false} size="sm" />
+        </div>
+      )}
+
       {/* User Email */}
-      <div className="hidden sm:flex items-center gap-2">
+      <div className="hidden lg:flex items-center gap-2">
         <span className="text-sm text-gray-600">
           <span className="font-medium text-gray-900">{user.email}</span>
         </span>
