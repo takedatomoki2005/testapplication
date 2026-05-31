@@ -1,0 +1,30 @@
+.section {
+  margin-bottom: 12px;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 10px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-sub);
+}
+
+.metaValue {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+

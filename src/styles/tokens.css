@@ -1,0 +1,29 @@
+:root {
+  --color-primary: #f0276b;
+  --color-primary-dark: #e0156b;
+  --color-primary-light: #ff6baa;
+  --color-primary-tint: rgba(240, 39, 107, 0.15);
+  --color-accent: #ffd600;
+  --color-surface: #ffffff;
+  --color-bg: #f5f5f7;
+  --color-text: #1a1a1a;
+  --color-text-sub: #888888;
+  --color-border: #f0f0f0;
+  --font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --font-size-logo: 17px;
+  --font-weight-logo: 800;
+  --font-size-tab: 10px;
+  --spacing-header-v: 14px;
+  --spacing-header-h: 20px;
+  --spacing-footer-top: 12px;
+  --spacing-footer-bot: 20px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --app-max-width: 480px;
+  --footer-height: 76px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body { font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+button { font: inherit; border: none; background: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }

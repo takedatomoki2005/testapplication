@@ -1,0 +1,49 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 16px rgba(240, 39, 107, 0.15);
+  border: 1px solid rgba(240, 39, 107, 0.12);
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.sub {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+}
+
+.text {
+  flex: 1;
+}
+
+.chip {
+  flex-shrink: 0;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 28px;
+  text-align: center;
+}
+
+.arrow {
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--color-primary);
+  line-height: 1;
+}

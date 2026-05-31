@@ -1,0 +1,103 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.count {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.allDone {
+  font-size: 11px;
+  font-weight: 800;
+  color: #2e7d32;
+}
+
+.overallTrack {
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.overallFill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.row:last-child {
+  margin-bottom: 0;
+}
+
+.rowDone {
+  opacity: 0.7;
+}
+
+.rowHead {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.rowLabel {
+  color: var(--color-text-sub);
+}
+
+.rowCount {
+  color: var(--color-primary);
+}
+
+.track {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.fill_jounai-shimei {
+  background: #7cb342;
+}
+
+.fill_hot-non-nomination {
+  background: #3949ab;
+}
+
+.fill_standard {
+  background: var(--color-primary-light);
+}
+
+.fillDone {
+  background: #66bb6a !important;
+}

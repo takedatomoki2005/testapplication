@@ -1,0 +1,36 @@
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+}
+
+.word {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #5c4a38;
+}
+
+.light .word {
+  color: #fff;
+}
+
+.light .oWrap {
+  color: #b8f5c8;
+}
+
+.oWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0 1px;
+  color: #2e9b52;
+}
+
+.oIcon {
+  width: 22px;
+  height: 22px;
+}

@@ -1,0 +1,28 @@
+.page {
+  padding: 16px 16px 24px;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+
+.date {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-text-sub);
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.sub {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-sub);
+}

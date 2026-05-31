@@ -1,0 +1,87 @@
+.modalBody {
+  max-height: min(92vh, 720px);
+  overflow-y: auto;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.customerBlock {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-card);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.alias {
+  font-size: 12px;
+  color: var(--color-text-sub);
+  margin-top: 4px;
+}
+
+.time {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  margin-top: 6px;
+}
+
+.notesCard {
+  margin-top: 8px;
+}
+
+.notesCard > div {
+  margin-top: 0;
+  max-width: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.saveBtn,
+.doneBtn,
+.backBtn {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.saveBtn {
+  background: #fff;
+  color: var(--color-primary);
+}
+
+.saveBtn:disabled,
+.doneBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.doneBtn {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.backBtn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}

@@ -1,0 +1,70 @@
+.form {
+  width: 100%;
+  max-width: 340px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  touch-action: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-sub);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 2px var(--color-primary-tint);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 52px;
+  line-height: 1.45;
+}
+
+.readOnlyValue {
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.45;
+  padding: 2px 0;
+}
+
+.emptyValue {
+  font-size: 12px;
+  color: var(--color-text-sub);
+}
+
+.formEmbedded {
+  margin-top: 16px;
+  max-width: none;
+  padding: 14px 0 4px;
+  background: transparent;
+  border-top: 1px solid var(--color-border);
+  touch-action: auto;
+}

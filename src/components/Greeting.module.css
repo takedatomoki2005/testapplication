@@ -1,0 +1,27 @@
+.greeting {
+  margin-bottom: 16px;
+}
+
+.greetingMain {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.greetingSub {
+  font-size: 13px;
+  color: var(--color-text-sub);
+  line-height: 1.5;
+}
+
+.centered {
+  text-align: center;
+}
+
+.centered .greetingMain {
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
