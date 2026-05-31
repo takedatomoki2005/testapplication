@@ -200,6 +200,8 @@ export interface DiscoverAdvancedFilters {
 export interface FollowUpRecordOverride {
   lastMemo?: string;
   lineName?: string;
+  /** おすすめフォローアップを送信済みにした日時 */
+  followUpSentAt?: string;
 }
 
 export interface FollowUpContact {

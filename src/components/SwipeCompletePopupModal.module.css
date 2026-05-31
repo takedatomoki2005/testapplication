@@ -107,6 +107,73 @@
   margin-bottom: 16px;
 }
 
+.titleAccent {
+  color: var(--color-primary);
+}
+
+.tabRow {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 14px;
+  background: var(--color-bg);
+  border-radius: var(--radius-pill);
+}
+
+.tab {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tabActive {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(240, 39, 107, 0.12);
+}
+
+.tabPanel {
+  margin-bottom: 4px;
+}
+
+.discoverCount {
+  margin-bottom: 14px;
+  padding: 14px 12px 12px;
+  background: var(--color-primary-tint);
+  border-radius: 14px;
+}
+
+.discoverCountLead,
+.discoverCountTail {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  line-height: 1.4;
+}
+
+.discoverCountHighlight {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin: 4px 0 2px;
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.discoverCountUnit {
+  font-size: 22px;
+  font-weight: 800;
+}
+
 .actions {
   display: flex;
   flex-direction: column;
@@ -126,6 +193,20 @@
 
 .primaryBtn:active {
   background: var(--color-primary-dark);
+}
+
+.secondaryBtn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-sub);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.secondaryBtn:active {
+  color: var(--color-text);
 }
 
 @keyframes dialogIn {

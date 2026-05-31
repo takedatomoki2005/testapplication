@@ -8,9 +8,11 @@ import {
   resolveCustomerRank,
 } from "@/lib/customerDisplay";
 import { formatDateOfBirth } from "@/data/customerProfileOptions";
+import { getMatchFlamesForEntry } from "@/lib/matchRate";
 import { CustomerProfileSection } from "./CustomerProfileSection";
 import { CustomerSpendingSection } from "./CustomerSpendingSection";
 import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
+import { MatchRateFlames } from "./MatchRateFlames";
 import { TableServiceInfo } from "./TableServiceInfo";
 import styles from "./CustomerSwipeCardContent.module.css";
 
@@ -51,6 +53,7 @@ export function CustomerSwipeCardContent({
   const displayPhoto = tablePhotoUrl;
   const hint = getPersonalizedHint(entry);
   const memberRank = resolveCustomerRank(customer, hot);
+  const flames = getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const birthLabel = customer.dateOfBirth
     ? formatDateOfBirth(customer.dateOfBirth)
@@ -59,20 +62,29 @@ export function CustomerSwipeCardContent({
   const basicPage = (
     <>
       <div className={styles.head}>
-        <div className={styles.tagRow}>
-          <span className={styles.tag}>{getVisitCategoryLabel(entry)}</span>
-          {memberRank && (
-            <span className={`${styles.tag} ${styles.memberTag}`}>{getRankLabel(memberRank)}</span>
+        <div className={styles.headBody}>
+          <div className={styles.tagRow}>
+            <span className={styles.tag}>{getVisitCategoryLabel(entry)}</span>
+            {memberRank && (
+              <span className={`${styles.tag} ${styles.memberTag}`}>{getRankLabel(memberRank)}</span>
+            )}
+          </div>
+          <div className={styles.nameRow}>
+            <div className={styles.nameBlock}>
+              <h2 className={styles.name}>{primary}</h2>
+              {alias && <p className={styles.alias}>{alias}</p>}
+            </div>
+          </div>
+          {(birthLabel || customer.prefecture) && (
+            <p className={styles.meta}>
+              {birthLabel && `🎂 ${birthLabel}`}
+              {customer.prefecture && ` · ${customer.prefecture}`}
+            </p>
           )}
         </div>
-        <h2 className={styles.name}>{primary}</h2>
-        {alias && <p className={styles.alias}>{alias}</p>}
-        {(birthLabel || customer.prefecture) && (
-          <p className={styles.meta}>
-            {birthLabel && `🎂 ${birthLabel}`}
-            {customer.prefecture && ` · ${customer.prefecture}`}
-          </p>
-        )}
+        <span className={styles.headFlames}>
+          <MatchRateFlames count={flames} size="md" />
+        </span>
       </div>
 
       <TableServiceInfo
@@ -99,7 +111,7 @@ export function CustomerSwipeCardContent({
     customer.prefecture;
 
   const hobbyPage = hasHobbyProfile ? (
-    <CustomerProfileSection customer={customer} compact />
+    <CustomerProfileSection customer={customer} compact flameCount={flames} />
   ) : (
     <div className={styles.emptyPage}>
       <span className={styles.emptyIcon} aria-hidden>
@@ -126,7 +138,14 @@ export function CustomerSwipeCardContent({
           onMemoChange={onMemoChange}
           memoRows={4}
         />
-      ) : null}
+      ) : (
+        <CustomerEntryNotesForm
+          readOnly
+          variant="embedded"
+          lineName={lineName}
+          memo={memo}
+        />
+      )}
     </>
   );
 
@@ -150,7 +169,7 @@ export function CustomerSwipeCardContent({
         <span>{hint}</span>
       </div>
       {moneyPage}
-      <CustomerProfileSection customer={customer} />
+      <CustomerProfileSection customer={customer} flameCount={flames} />
     </div>
   );
 }

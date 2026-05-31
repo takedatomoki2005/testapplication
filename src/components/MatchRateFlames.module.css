@@ -1,0 +1,22 @@
+.row {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+.md .flame {
+  width: 28px;
+  height: 33px;
+}
+
+.sm .flame {
+  width: 18px;
+  height: 21px;
+}
+
+.flame {
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}

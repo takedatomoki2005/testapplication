@@ -59,7 +59,11 @@ export function TablePhotoField({
 
       {displayUrl ? (
         <div className={styles.preview}>
-          <img src={displayUrl} alt={tableNumber ? `卓${tableNumber}の写真` : "卓の写真"} />
+          <img
+            src={displayUrl}
+            alt={tableNumber ? `卓${tableNumber}の写真` : "卓の写真"}
+            draggable={false}
+          />
           {!readOnly && onPhotoChange && (
             <button type="button" className={styles.changeBtn} onClick={openPicker}>
               写真を変更

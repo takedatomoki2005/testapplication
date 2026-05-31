@@ -83,15 +83,6 @@ const castBSlots: Slot[] = [
     serviceEndTime: "19:55",
   },
   {
-    id: "sr-b-2",
-    customerId: "cust-suzuki",
-    castId: "cast-b",
-    visitDate: d,
-    tableNumber: "3",
-    serviceStartTime: "20:00",
-    serviceEndTime: "20:50",
-  },
-  {
     id: "sr-b-3",
     customerId: "cust-watanabe",
     castId: "cast-b",

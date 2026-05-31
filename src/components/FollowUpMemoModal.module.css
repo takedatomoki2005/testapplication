@@ -1,3 +1,8 @@
+.modalContent {
+  width: 100%;
+  max-width: 340px;
+}
+
 .actions {
   display: flex;
   gap: 8px;

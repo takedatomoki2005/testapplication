@@ -18,7 +18,7 @@ const castTabs = [
   },
   {
     to: "/thank-you",
-    label: "振り返り",
+    label: "お礼LINE",
     end: false,
     icon: (a: boolean) => (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden>

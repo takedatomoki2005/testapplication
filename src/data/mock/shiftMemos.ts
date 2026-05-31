@@ -19,7 +19,7 @@ export const shiftMemos: ShiftMemo[] = [
     serviceRecordId: "sr-a-2",
     castId: "cast-a",
     businessDate: d,
-    body: "LINE交換済み。お礼メッセージ送信後、1週間以内にフォロー",
+    body: "LINE交換済み。お礼メッセージ送信後、1週間以内にフォローアップ",
     status: "done",
     createdAt: `${base}20:45:00.000Z`,
     completedAt: `${base}20:50:00.000Z`,

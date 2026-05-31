@@ -82,7 +82,10 @@ export function ShiftMemoEditModal({
             type="button"
             className={styles.saveBtn}
             disabled={!canSave}
-            onClick={() => onSave(entry.serviceRecordId, payload())}
+            onClick={() => {
+              onSave(entry.serviceRecordId, payload());
+              onClose();
+            }}
           >
             保存
           </button>

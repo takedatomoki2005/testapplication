@@ -71,7 +71,7 @@ export function ThankYouListPage() {
 
       {hasAnyTarget && <AchievementReminder summary={achievement} />}
 
-      <h2 className={styles.listTitle}>振り返り</h2>
+      <h2 className={styles.listTitle}>お礼LINE</h2>
       <p className={styles.listHint}>お客様をタップ → フリックで対応</p>
 
       {!hasAnyTarget ? (

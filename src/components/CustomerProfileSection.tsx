@@ -6,6 +6,8 @@ import {
   getOccupationLabel,
 } from "@/data/customerProfileOptions";
 import { formatBirthday } from "@/lib/customerDisplay";
+import type { FlameCount } from "@/lib/matchRate";
+import { MatchRateFlames } from "./MatchRateFlames";
 import styles from "./CustomerProfileSection.module.css";
 
 function resolveBirthDisplay(customer: Customer): string | null {
@@ -25,9 +27,11 @@ type Props = {
   customer: Customer;
   /** Tighter layout inside swipe card pages */
   compact?: boolean;
+  /** Show match rate flames on the right side of the header */
+  flameCount?: FlameCount;
 };
 
-export function CustomerProfileSection({ customer, compact = false }: Props) {
+export function CustomerProfileSection({ customer, compact = false, flameCount }: Props) {
   const birthDisplay = resolveBirthDisplay(customer);
   const fields: ProfileField[] = [];
 
@@ -65,10 +69,15 @@ export function CustomerProfileSection({ customer, compact = false }: Props) {
         <span className={styles.headerIcon} aria-hidden>
           👤
         </span>
-        <div>
+        <div className={styles.headerInfo}>
           <h2 className={styles.title}>お客様プロフィール</h2>
           <p className={styles.subtitle}>接客の参考情報</p>
         </div>
+        {flameCount && (
+          <span className={styles.headerFlames}>
+            <MatchRateFlames count={flameCount} />
+          </span>
+        )}
       </header>
 
       {fields.length > 0 && (

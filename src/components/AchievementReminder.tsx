@@ -16,7 +16,7 @@ export function AchievementReminder({ summary }: { summary: VisitCategorySummary
             : `${summary.totalResolved}/${summary.totalCount}`}
         </span>
       </div>
-      <CategoryAchievementBadges categories={summary.categories} variant="list" />
+      <CategoryAchievementBadges categories={summary.badgeCategories} variant="list" />
       <AchievementRaceTrack
         percent={summary.overallPercent}
         allComplete={summary.allComplete}

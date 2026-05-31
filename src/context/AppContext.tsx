@@ -119,6 +119,7 @@ interface AppContextValue {
   reopenShiftMemo: (serviceRecordId: string) => void;
   followUpOverrides: Record<string, FollowUpRecordOverride>;
   updateFollowUpMemo: (recordId: string, payload: FollowUpRecordOverride) => void;
+  markDiscoverFollowUpSent: (recordId: string) => void;
   canManage: boolean;
   isAdmin: boolean;
 }
@@ -430,8 +431,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const next = {
           ...prev,
           [recordId]: {
+            ...prev[recordId],
             lineName: payload.lineName?.trim(),
             lastMemo: payload.lastMemo?.trim(),
+          },
+        };
+        persist({ followUpOverrides: next });
+        return next;
+      });
+    },
+    [persist],
+  );
+
+  const markDiscoverFollowUpSent = useCallback(
+    (recordId: string) => {
+      setFollowUpOverrides((prev) => {
+        const next = {
+          ...prev,
+          [recordId]: {
+            ...prev[recordId],
+            followUpSentAt: new Date().toISOString(),
           },
         };
         persist({ followUpOverrides: next });
@@ -487,6 +506,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         reopenShiftMemo,
         followUpOverrides,
         updateFollowUpMemo,
+        markDiscoverFollowUpSent,
         canManage: session.role === "manager" || session.role === "admin",
         isAdmin: session.role === "admin",
       }}

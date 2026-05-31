@@ -14,6 +14,8 @@ export const VISIT_CATEGORY_ORDER: VisitCategory[] = [
   "free",
 ];
 
+export const BADGE_CATEGORY_ORDER: VisitCategory[] = ["jounai-shimei", "free"];
+
 function todayVisitType(entry: ThankYouEntry): VisitType | null {
   return entry.customer.visitHistory?.find((v) => v.date === entry.visitDate)?.type ?? null;
 }
@@ -48,6 +50,7 @@ export interface VisitCategoryProgress {
 
 export interface VisitCategorySummary {
   categories: VisitCategoryProgress[];
+  badgeCategories: VisitCategoryProgress[];
   overallPercent: number;
   allComplete: boolean;
   hasAnyTarget: boolean;
@@ -97,6 +100,7 @@ export function computeVisitCategoryProgress(entries: ThankYouEntry[]): VisitCat
   const totalUnsent = entries.filter((e) => e.sendStatus === "unsent").length;
   return {
     categories,
+    badgeCategories: categories.filter((c) => BADGE_CATEGORY_ORDER.includes(c.id)),
     overallPercent: totalCount === 0 ? 0 : Math.round((totalResolved / totalCount) * 100),
     allComplete: totalCount > 0 && totalUnsent === 0,
     hasAnyTarget: totalCount > 0,

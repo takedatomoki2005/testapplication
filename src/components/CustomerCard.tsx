@@ -8,6 +8,8 @@ import { getVisitCategoryLabel } from "@/lib/personalizedHint";
 import { formatServiceTimeRange } from "@/lib/serviceDisplay";
 import { isPendingSendStatus, listStatusLabel } from "@/lib/sendStatusDisplay";
 import { getVisitCategory, type VisitCategory } from "@/lib/visitCategory";
+import { getMatchFlamesForEntry } from "@/lib/matchRate";
+import { MatchRateFlames } from "./MatchRateFlames";
 import styles from "./CustomerCard.module.css";
 
 interface CustomerCardProps {
@@ -48,6 +50,7 @@ export function CustomerCard({ entry, onOpen }: CustomerCardProps) {
   const isPending = isPendingSendStatus(sendStatus);
   const visitCategory = getVisitCategory(entry);
   const memberRank = resolveCustomerRank(customer, hot);
+  const flames = getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const serviceTime = formatServiceTimeRange(
     entry.serviceStartTime,
@@ -60,29 +63,35 @@ export function CustomerCard({ entry, onOpen }: CustomerCardProps) {
       className={`${styles.card}${!isPending ? ` ${styles.done}` : ""}`}
       onClick={() => onOpen(entry)}
     >
-      <div className={styles.tagRow}>
-        <span className={`${styles.categoryTag} ${visitCategoryClass(visitCategory)}`}>
-          {getVisitCategoryLabel(entry)}
-        </span>
-        {memberRank && (
-          <span className={`${styles.memberTag} ${memberRankClass(memberRank)}`}>
-            {getRankLabel(memberRank)}
+      <div className={styles.cardBody}>
+        <div className={styles.tagRow}>
+          <span className={`${styles.categoryTag} ${visitCategoryClass(visitCategory)}`}>
+            {getVisitCategoryLabel(entry)}
           </span>
-        )}
-        {serviceTime && (
-          <span className={styles.serviceTime}>{serviceTime}</span>
-        )}
-      </div>
+          {memberRank && (
+            <span className={`${styles.memberTag} ${memberRankClass(memberRank)}`}>
+              {getRankLabel(memberRank)}
+            </span>
+          )}
+          {serviceTime && (
+            <span className={styles.serviceTime}>{serviceTime}</span>
+          )}
+        </div>
 
-      <div className={styles.mainRow}>
-        <span className={`${styles.statusBadge} ${statusClass(isPending)}`}>
-          {listStatusLabel(sendStatus)}
-        </span>
-        <div className={styles.nameBlock}>
-          <span className={styles.name}>{primary}</span>
-          {alias && <span className={styles.alias}>{alias}</span>}
+        <div className={styles.mainRow}>
+          <span className={`${styles.statusBadge} ${statusClass(isPending)}`}>
+            {listStatusLabel(sendStatus)}
+          </span>
+          <div className={styles.nameBlock}>
+            <span className={styles.name}>{primary}</span>
+            {alias && <span className={styles.alias}>{alias}</span>}
+          </div>
         </div>
       </div>
+
+      <span className={styles.cardFlames}>
+        <MatchRateFlames count={flames} size="md" />
+      </span>
     </button>
   );
 }

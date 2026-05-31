@@ -4,7 +4,7 @@ import { buildDiscoverSeed } from "./discoverSeed";
 
 const discoverSeed = buildDiscoverSeed("cast-a", config.businessDate);
 
-/** cast-a 向け — お礼送信後のフォロー候補（営業日基準） */
+/** cast-a 向け — お礼送信後のフォローアップ候補（営業日基準） */
 const coreFollowUpRecords: FollowUpRecord[] = [
   {
     id: "fu-1",
@@ -23,15 +23,6 @@ const coreFollowUpRecords: FollowUpRecord[] = [
     thankYouSentAt: "2026-05-18",
     lineName: "やまちゃん",
     lastMemo: "同伴。記念日の前後は丁寧に",
-  },
-  {
-    id: "fu-3",
-    customerId: "cust-suzuki",
-    castId: "cast-a",
-    visitDate: "2026-05-10",
-    thankYouSentAt: "2026-05-10",
-    lineName: "ダイスケ社長",
-    lastMemo: "VIP同伴。次回は席の指定あり",
   },
   {
     id: "fu-4",

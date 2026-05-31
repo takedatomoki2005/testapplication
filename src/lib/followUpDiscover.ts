@@ -10,6 +10,7 @@ import type {
 import { evaluateHotCustomer } from "./hotCustomer";
 import { formatListCustomerName, resolveCustomerRank, getRankLabel } from "./customerDisplay";
 import { customerMatchesWeekdayFilter } from "./weeklyVisits";
+import { compareFollowUpByRecommendReason } from "./discoverRecommendReasons";
 
 function daysBetween(from: string, to: string): number {
   const a = new Date(`${from}T00:00:00`);
@@ -74,7 +75,7 @@ function rankScore(rank: ReturnType<typeof resolveCustomerRank>): number {
 function daysScore(days: number): { score: number; reason: string | null } {
   if (days >= 21) return { score: 36, reason: `${days}日経過 — 連絡優先` };
   if (days >= 14) return { score: 28, reason: `${days}日経過 — そろそろ声かけ` };
-  if (days >= 7) return { score: 18, reason: `${days}日後 — フォロー好タイミング` };
+  if (days >= 7) return { score: 18, reason: `${days}日後 — フォローアップ好タイミング` };
   if (days >= 3) return { score: 10, reason: `${days}日後 — 軽い近況メッセージ可` };
   return { score: 3, reason: days <= 1 ? "送信直後" : `${days}日後` };
 }
@@ -182,7 +183,7 @@ export function getFollowUpContacts(
       return buildFollowUpContact(record, customer, criteria, referenceDate);
     })
     .filter((c): c is FollowUpContact => c !== null)
-    .sort((a, b) => b.priorityScore - a.priorityScore || b.daysSinceSent - a.daysSinceSent);
+    .sort((a, b) => compareFollowUpByRecommendReason(a, b, referenceDate));
 }
 
 function applyPriorityFilter(list: FollowUpContact[], filter: FollowUpFilter): FollowUpContact[] {
@@ -197,7 +198,7 @@ function applyPriorityFilter(list: FollowUpContact[], filter: FollowUpFilter): F
     case "high_priority":
       return list.filter((c) => c.priority === "urgent" || c.priority === "high");
     case "window_3_7":
-      return list.filter((c) => c.daysSinceSent >= 2 && c.daysSinceSent <= 10);
+      return list.filter((c) => c.daysSinceSent >= 3 && c.daysSinceSent <= 7);
     default:
       return list;
   }

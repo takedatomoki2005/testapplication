@@ -132,9 +132,33 @@ export function buildDiscoverSeed(
     const nominationCount = isHighSpender ? 4 + (i % 6) : isMidSpender ? 1 + (i % 3) : i % 2;
     const accompanyCount = isHighSpender ? 2 + (i % 4) : i % 4 === 0 ? 1 : 0;
 
-    const birthdayMonth =
-      i % 9 === 0 ? refMonth : i % 9 === 1 ? nextMonth : ((i % 12) + 1);
-    const birthdayDay = (i % 27) + 1;
+    const birthdayTimingBucket = i % 12;
+    let birthdayMonth = ((i % 12) + 1);
+    let birthdayDay = (i % 27) + 1;
+    if (birthdayTimingBucket === 0) {
+      const today = new Date(`${referenceDate}T00:00:00`);
+      birthdayMonth = today.getMonth() + 1;
+      birthdayDay = today.getDate();
+    } else if (birthdayTimingBucket === 1) {
+      const eve = addDays(referenceDate, 1);
+      const d = new Date(`${eve}T00:00:00`);
+      birthdayMonth = d.getMonth() + 1;
+      birthdayDay = d.getDate();
+    } else if (birthdayTimingBucket === 2) {
+      const inWeek = addDays(referenceDate, 3 + (i % 4));
+      const d = new Date(`${inWeek}T00:00:00`);
+      birthdayMonth = d.getMonth() + 1;
+      birthdayDay = d.getDate();
+    } else if (birthdayTimingBucket === 3) {
+      const inMonth = addDays(referenceDate, 14 + (i % 10));
+      const d = new Date(`${inMonth}T00:00:00`);
+      birthdayMonth = d.getMonth() + 1;
+      birthdayDay = d.getDate();
+    } else if (i % 9 === 0) {
+      birthdayMonth = refMonth;
+    } else if (i % 9 === 1) {
+      birthdayMonth = nextMonth;
+    }
 
     customers.push({
       id,
@@ -154,15 +178,30 @@ export function buildDiscoverSeed(
       accompanyCount,
       weeklyVisits,
       lineUrl: `https://line.me/R/ti/p/@mock-disc-${i + 1}`,
-      visitHistory: [
-        {
-          id: `vh-${id}`,
-          date: visitDate,
-          type: nominationCount > 0 ? "nomination" : "in-store",
-          partySize: 1 + (i % 3),
-          subtotal: Math.min(averageSpending ?? 20_000, 80_000),
-        },
-      ],
+      visitHistory: (() => {
+        const latestType = nominationCount > 0 ? "nomination" : "in-store";
+        const inStoreDaysAgo = 3 + (i % 28);
+        const inStoreDate = addDays(referenceDate, -inStoreDaysAgo);
+        const history = [
+          {
+            id: `vh-${id}`,
+            date: visitDate,
+            type: latestType as "nomination" | "in-store",
+            partySize: 1 + (i % 3),
+            subtotal: Math.min(averageSpending ?? 20_000, 80_000),
+          },
+        ];
+        if (i % 3 !== 0) {
+          history.push({
+            id: `vh-${id}-instore`,
+            date: inStoreDate,
+            type: "in-store" as const,
+            partySize: 1 + (i % 2),
+            subtotal: Math.min((averageSpending ?? 20_000) * 0.7, 60_000),
+          });
+        }
+        return history.sort((a, b) => b.date.localeCompare(a.date));
+      })(),
     });
 
     followUpRecords.push({

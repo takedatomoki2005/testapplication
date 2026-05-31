@@ -36,7 +36,7 @@ export const SPENDING_RANK_TIERS: SpendingRankTier[] = [
     id: "c",
     label: "C",
     minAmount: 100_000,
-    description: "累計10万円以上 — 育成・フォロー向き",
+    description: "累計10万円以上 — 育成・フォローアップ向き",
   },
   {
     id: "d",

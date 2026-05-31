@@ -94,8 +94,9 @@ export function FollowUpMemoModal({ contact, onClose, onSave }: Props) {
         ✕
       </button>
 
-      <div className={swipeStyles.modalBody} onClick={(e) => e.stopPropagation()}>
-        <div className={`${swipeStyles.cardWrap} ${processedStyles.cardWrapStatic}`}>
+      <div className={swipeStyles.modalBody}>
+        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={`${swipeStyles.cardWrap} ${processedStyles.cardWrapStatic}`}>
           <div
             className={`${swipeStyles.card} ${processedStyles.cardStatic}`}
             onClick={(e) => {
@@ -158,6 +159,7 @@ export function FollowUpMemoModal({ contact, onClose, onSave }: Props) {
         </div>
 
         <p className={swipeStyles.hint}>左右をタップで画面切替 · メモは「メモ」タブで編集</p>
+        </div>
       </div>
     </div>,
     document.body,

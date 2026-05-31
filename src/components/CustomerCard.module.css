@@ -1,5 +1,7 @@
 .card {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
   margin-bottom: 10px;
   text-align: left;
@@ -9,6 +11,16 @@
   padding: 12px 14px 10px;
   color: inherit;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardFlames {
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .card:disabled {

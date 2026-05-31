@@ -1,6 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ThankYouEntry } from "@/data/types";
+import { initialAppData } from "@/data";
 import { useApp } from "@/context/AppContext";
+import { getRecommendReasonScore } from "@/lib/discoverRecommendReasons";
+import {
+  getFollowUpContacts,
+  mergeFollowUpRecords,
+} from "@/lib/followUpDiscover";
 import {
   CARD_PAGE_LABELS,
   CustomerSwipeCardContent,
@@ -19,9 +26,17 @@ const MAX_ROTATION = 12;
 const DRAG_LOCK_PX = 10;
 const PAGE_COUNT = CARD_PAGE_LABELS.length;
 
-function isSwipeBlockedTarget(target: EventTarget | null): boolean {
+const INTERACTIVE_SELECTOR = "input, textarea, select, button, label, a";
+
+function isInteractiveTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
-  return !!target.closest("input, textarea, select, button, label, a, img");
+  return !!target.closest(INTERACTIVE_SELECTOR);
+}
+
+/** Blocks tap-to-flip-page only (images still allow horizontal swipe). */
+function isTapNavigationBlockedTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  return isInteractiveTarget(target) || !!target.closest("img");
 }
 
 interface SwipeCustomerModalProps {
@@ -33,9 +48,27 @@ interface SwipeCustomerModalProps {
 type SwipeDir = "left" | "right" | "center" | null;
 
 export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustomerModalProps) {
-  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session, myEntries } =
+  const navigate = useNavigate();
+  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session, myEntries, followUpOverrides, businessDate } =
     useApp();
   const categorySummary = computeVisitCategoryProgress(myEntries);
+
+  const discoverCount = useMemo(() => {
+    const castId = session.castId ?? "cast-a";
+    const records = mergeFollowUpRecords(initialAppData.followUpRecords, followUpOverrides);
+    const contacts = getFollowUpContacts(
+      records,
+      initialAppData.customers,
+      castId,
+      hotCriteria,
+      businessDate,
+    );
+    return contacts.filter(
+      (c) =>
+        getRecommendReasonScore(c, businessDate) > 0 &&
+        !followUpOverrides[c.id]?.followUpSentAt,
+    ).length;
+  }, [session.castId, hotCriteria, businessDate, followUpOverrides]);
   const [index, setIndex] = useState(startIndex);
   const [pageIndex, setPageIndex] = useState<CardPageIndex>(0);
   const [completePopup, setCompletePopup] = useState<SwipeCompleteVariant | null>(null);
@@ -94,7 +127,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
 
   const handleCardTap = useCallback(
     (clientX: number, cardLeft: number, cardWidth: number, target: EventTarget | null) => {
-      if (isSwipeBlockedTarget(target)) return;
+      if (isTapNavigationBlockedTarget(target)) return;
       const isRightHalf = clientX - cardLeft > cardWidth / 2;
       if (isRightHalf) goToNextPage();
       else goToPrevPage();
@@ -136,7 +169,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
   );
 
   const onPointerDown = (e: React.PointerEvent) => {
-    if (exiting || !entry || isSwipeBlockedTarget(e.target)) return;
+    if (exiting || !entry || isInteractiveTarget(e.target)) return;
     isDragging.current = false;
     dragStart.current = { x: e.clientX, y: e.clientY };
   };
@@ -207,13 +240,21 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     }
   };
 
+  const goDiscover = () => {
+    setCompletePopup(null);
+    onClose();
+    navigate("/discover");
+  };
+
   if (completePopup || queue.length === 0 || !entry) {
     return (
       <SwipeCompletePopupModal
         castName={session.name}
         variant={completePopup ?? "all"}
         categorySummary={categorySummary}
+        discoverCount={discoverCount}
         onClose={dismissComplete}
+        onDiscover={goDiscover}
       />
     );
   }
