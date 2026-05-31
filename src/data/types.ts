@@ -175,7 +175,7 @@ export type FollowUpPriority = "urgent" | "high" | "normal" | "low";
 
 export type FollowUpFilter = "all" | "needs_follow" | "high_priority" | "window_3_7";
 
-/** 探すページ — 詳細フィルター */
+/** LINE友達から探すページ — 詳細フィルター */
 export interface DiscoverAdvancedFilters {
   /** 接客から最短 ○ 日前 */
   daysSinceVisitMin?: number;

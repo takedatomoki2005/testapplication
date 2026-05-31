@@ -4,7 +4,7 @@ import { config } from "./config";
 const d = config.businessDate;
 const base = "2026-05-31T";
 
-/** 4人が昔（対応済み）、伊藤様のみが今（対応中） */
+/** 4人が昔（対応済み）、みーちゃんのみが今（対応中） */
 export const shiftMemos: ShiftMemo[] = [
   {
     serviceRecordId: "sr-a-3",

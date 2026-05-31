@@ -6,12 +6,11 @@ import styles from "./AppHeader.module.css";
 const PINK_HEADER_PATHS = ["/", "/thank-you", "/discover"];
 
 export function AppHeader() {
-  const { unsentCount, session, hasAnyTarget } = useApp();
+  const { session } = useApp();
   const { pathname } = useLocation();
   const isPink =
     session.role === "cast" &&
     PINK_HEADER_PATHS.some((p) => (p === "/" ? pathname === "/" : pathname.startsWith(p)));
-  const showBellBadge = session.role === "cast" && hasAnyTarget && unsentCount > 0;
 
   return (
     <header className={`${styles.header} ${isPink ? styles.headerPink : ""}`}>
@@ -28,7 +27,6 @@ export function AppHeader() {
                 strokeLinejoin="round"
               />
             </svg>
-            {showBellBadge && <span className={styles.bellBadge}>{unsentCount}</span>}
           </button>
         )}
       </div>

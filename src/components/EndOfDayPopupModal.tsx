@@ -6,6 +6,7 @@ type Props = {
   unsentCount: number;
   allSent: boolean;
   castName: string;
+  todayCustomerCount: number;
   onStartReflection: () => void;
   onDismiss: () => void;
 };
@@ -14,6 +15,7 @@ export function EndOfDayPopupModal({
   unsentCount,
   allSent,
   castName,
+  todayCustomerCount,
   onStartReflection,
   onDismiss,
 }: Props) {
@@ -50,6 +52,23 @@ export function EndOfDayPopupModal({
           {castName}さん、
           <br />
           今日もお疲れ様でした！
+        </p>
+
+        {todayCustomerCount > 0 && (
+          <div className={styles.customerCount}>
+            <p className={styles.customerCountLead}>今日は</p>
+            <p className={styles.customerCountHighlight} aria-label={`${todayCustomerCount}件`}>
+              {todayCustomerCount}
+              <span className={styles.customerCountUnit}>件</span>
+            </p>
+            <p className={styles.customerCountTail}>のお客さんと話せました</p>
+          </div>
+        )}
+
+        <p className={styles.retentionMessage}>
+          お客様の<span className={styles.retentionHighlight}>継続率</span>、
+          <br />
+          これからも高めていきましょう
         </p>
 
         <p className={styles.sub}>{statusText}</p>

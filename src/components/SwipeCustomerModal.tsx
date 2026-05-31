@@ -7,6 +7,11 @@ import {
   type CardPageIndex,
 } from "./CustomerSwipeCardContent";
 import { SwipeCompletePopupModal } from "./SwipeCompletePopupModal";
+import {
+  computeVisitCategoryProgress,
+  resolveSwipeCompletionPopup,
+  type SwipeCompleteVariant,
+} from "@/lib/visitCategory";
 import styles from "./SwipeCustomerModal.module.css";
 
 const SWIPE_THRESHOLD = 90;
@@ -28,10 +33,12 @@ interface SwipeCustomerModalProps {
 type SwipeDir = "left" | "right" | "center" | null;
 
 export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustomerModalProps) {
-  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session } = useApp();
+  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session, myEntries } =
+    useApp();
+  const categorySummary = computeVisitCategoryProgress(myEntries);
   const [index, setIndex] = useState(startIndex);
   const [pageIndex, setPageIndex] = useState<CardPageIndex>(0);
-  const [showCompletePopup, setShowCompletePopup] = useState(false);
+  const [completePopup, setCompletePopup] = useState<SwipeCompleteVariant | null>(null);
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const [exiting, setExiting] = useState<SwipeDir>(null);
@@ -102,15 +109,14 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
       const flyX = dir === "right" ? 420 : dir === "left" ? -420 : 0;
       setOffsetX(flyX);
 
-      const isLastInQueue = queue.length === 1;
-
       window.setTimeout(() => {
         if (dir === "right") markSent(entry.id, notes);
         else if (dir === "left") markNoLineExchange(entry.id, notes);
         else markNoContact(entry.id, notes);
 
-        if (isLastInQueue) {
-          setShowCompletePopup(true);
+        const popup = resolveSwipeCompletionPopup(entry, queue);
+        if (popup) {
+          setCompletePopup(popup);
         } else {
           advanceOrClose();
         }
@@ -192,14 +198,21 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
   const leftOpacity = Math.min(Math.max(-offsetX / SWIPE_THRESHOLD, 0), 1);
 
   const dismissComplete = () => {
-    setShowCompletePopup(false);
-    onClose();
+    const wasAllDone = completePopup === "all";
+    setCompletePopup(null);
+    if (wasAllDone) {
+      onClose();
+    } else {
+      advanceOrClose();
+    }
   };
 
-  if (showCompletePopup || queue.length === 0 || !entry) {
+  if (completePopup || queue.length === 0 || !entry) {
     return (
       <SwipeCompletePopupModal
         castName={session.name}
+        variant={completePopup ?? "all"}
+        categorySummary={categorySummary}
         onClose={dismissComplete}
       />
     );

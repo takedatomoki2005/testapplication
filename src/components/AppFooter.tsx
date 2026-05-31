@@ -60,7 +60,7 @@ const castTabs = [
   },
   {
     to: "/discover",
-    label: "探す",
+    label: "LINE友達から探す",
     end: false,
     icon: (a: boolean) => (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden>

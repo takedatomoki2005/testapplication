@@ -6,16 +6,21 @@ type Props = {
   unsent?: number;
   centered?: boolean;
   messageOnly?: boolean;
+  monthlyCount?: number;
 };
 
-export function Greeting({ name, allSent, unsent, centered, messageOnly }: Props) {
+export function Greeting({ name, allSent, unsent, centered, messageOnly, monthlyCount }: Props) {
   const showStatus = !messageOnly && (allSent !== undefined || unsent !== undefined);
+
+  const mainMessage = messageOnly
+    ? monthlyCount != null && monthlyCount > 0
+      ? "今月もお客様と出会えています"
+      : "今日もお疲れ様でした！"
+    : `${name}さん、今日もお疲れ様でした！`;
 
   return (
     <div className={`${styles.greeting} ${centered ? styles.centered : ""}`}>
-      <p className={styles.greetingMain}>
-        {messageOnly ? "今日もお疲れ様でした！" : `${name}さん、今日もお疲れ様でした！`}
-      </p>
+      <p className={styles.greetingMain}>{mainMessage}</p>
       {showStatus && (
         <p className={styles.greetingSub}>
           {allSent

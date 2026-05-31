@@ -26,8 +26,10 @@
 
 .badges {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 4px 6px;
 }
 
 .priorityBadge {
@@ -157,6 +159,11 @@
 
 .memoHint {
   font-size: 10px;
-  font-weight: 700;
-  color: var(--color-primary);
+  font-weight: 600;
+  color: var(--color-text-sub);
+}
+
+.memoHintAction {
+  font-weight: 500;
+  color: #c4c4c4;
 }

@@ -1,10 +1,15 @@
 import type { Customer } from "../types";
+import { config } from "./config";
+import { buildDiscoverSeed } from "./discoverSeed";
 
-export const customers: Customer[] = [
+const discoverSeed = buildDiscoverSeed("cast-a", config.businessDate);
+
+const coreCustomers: Customer[] = [
   {
     id: "cust-tanaka",
-    displayName: "田中様",
+    displayName: "ゆうこちゃん様",
     fullName: "田中裕子",
+    nickname: "ゆうこちゃん",
     rank: "gold",
     dateOfBirth: { year: 1990, month: 12, day: 31 },
     prefecture: "東京都",
@@ -23,8 +28,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-watanabe",
-    displayName: "渡辺様",
+    displayName: "わたべ様",
     fullName: "渡辺康介",
+    nickname: "わたべ",
     rank: "platinum",
     titleTag: "シャンパン男爵",
     dateOfBirth: { year: 1985, month: 6, day: 12 },
@@ -44,8 +50,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-matsumoto",
-    displayName: "松本様",
+    displayName: "あやちゃん様",
     fullName: "松本彩花",
+    nickname: "あやちゃん",
     rank: "platinum",
     titleTag: "夜の帝王",
     dateOfBirth: { year: 1983, month: 2, day: 8 },
@@ -65,8 +72,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-itou",
-    displayName: "伊藤様",
+    displayName: "みーちゃん様",
     fullName: "伊藤美咲",
+    nickname: "みーちゃん",
     rank: "gold",
     dateOfBirth: { year: 1993, month: 9, day: 3 },
     prefecture: "千葉県",
@@ -85,8 +93,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-hayashi",
-    displayName: "林様",
+    displayName: "けいけい様",
     fullName: "林恵子",
+    nickname: "けいけい",
     rank: "silver",
     dateOfBirth: { year: 1991, month: 4, day: 19 },
     prefecture: "埼玉県",
@@ -104,8 +113,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-sato",
-    displayName: "佐藤様",
+    displayName: "けんくん様",
     fullName: "佐藤健",
+    nickname: "けんくん",
     rank: "silver",
     dateOfBirth: { year: 1995, month: 7, day: 8 },
     prefecture: "神奈川県",
@@ -125,8 +135,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-nakamura",
-    displayName: "中村様",
+    displayName: "しゅんくん様",
     fullName: "中村翔太",
+    nickname: "しゅんくん",
     dateOfBirth: { year: 1997, month: 1, day: 25 },
     prefecture: "東京都",
     occupation: "employee",
@@ -143,8 +154,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-takahashi",
-    displayName: "高橋様",
+    displayName: "マッキー様",
     fullName: "高橋誠",
+    nickname: "マッキー",
     dateOfBirth: { year: 1992, month: 11, day: 22 },
     prefecture: "埼玉県",
     occupation: "employee",
@@ -162,8 +174,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-inoue",
-    displayName: "井上様",
+    displayName: "ゴウさん様",
     fullName: "井上剛",
+    nickname: "ゴウさん",
     dateOfBirth: { year: 1989, month: 8, day: 14 },
     prefecture: "東京都",
     occupation: "employee",
@@ -180,8 +193,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-kobayashi",
-    displayName: "小林様",
+    displayName: "なおちゃん様",
     fullName: "小林直樹",
+    nickname: "なおちゃん",
     dateOfBirth: { year: 1998, month: 3, day: 7 },
     prefecture: "東京都",
     occupation: "employee",
@@ -198,7 +212,7 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-yamada",
-    displayName: "山田様",
+    displayName: "やまちゃん様",
     fullName: "山田太郎",
     nickname: "やまちゃん",
     rank: "diamond",
@@ -226,7 +240,7 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-kato",
-    displayName: "加藤様",
+    displayName: "かとりん様",
     fullName: "加藤リナ",
     nickname: "かとりん",
     rank: "gold",
@@ -247,8 +261,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-yoshida",
-    displayName: "吉田様",
+    displayName: "ヨッシー様",
     fullName: "吉田浩二",
+    nickname: "ヨッシー",
     titleTag: "伝説の常連",
     rank: "platinum",
     dateOfBirth: { year: 1980, month: 10, day: 1 },
@@ -268,8 +283,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-kimura",
-    displayName: "木村様",
+    displayName: "たっくん様",
     fullName: "木村拓也",
+    nickname: "たっくん",
     dateOfBirth: { year: 1996, month: 12, day: 5 },
     prefecture: "埼玉県",
     occupation: "employee",
@@ -286,8 +302,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-suzuki",
-    displayName: "鈴木様",
+    displayName: "ダイスケ様",
     fullName: "鈴木大輔",
+    nickname: "ダイスケ",
     rank: "diamond",
     titleTag: "VIPのお客様",
     dateOfBirth: { year: 1981, month: 4, day: 2 },
@@ -308,8 +325,9 @@ export const customers: Customer[] = [
   },
   {
     id: "cust-fujita",
-    displayName: "藤田様",
+    displayName: "リョウちゃん様",
     fullName: "藤田亮",
+    nickname: "リョウちゃん",
     titleTag: "ボトルキング",
     rank: "gold",
     dateOfBirth: { year: 1987, month: 7, day: 30 },
@@ -328,3 +346,5 @@ export const customers: Customer[] = [
     ],
   },
 ];
+
+export const customers: Customer[] = [...coreCustomers, ...discoverSeed.customers];

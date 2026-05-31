@@ -23,7 +23,7 @@ const QUICK_FILTERS: { id: FollowUpFilter; label: string }[] = [
 export function DiscoverPage() {
   const { session, businessDate, hotCriteria, followUpOverrides, updateFollowUpMemo } = useApp();
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<FollowUpFilter>("needs_follow");
+  const [filter, setFilter] = useState<FollowUpFilter>("all");
   const [advancedFilters, setAdvancedFilters] = useState<DiscoverAdvancedFilters>({
     ...EMPTY_DISCOVER_FILTERS,
   });
@@ -62,9 +62,9 @@ export function DiscoverPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <h1 className={styles.title}>探す</h1>
+        <h1 className={styles.title}>LINE友達から探す</h1>
         <p className={styles.subtitle}>
-          接客したお客様を絞り込んで、フォロー先を見つける
+          LINE友達から接客したお客様を絞り込んで、フォロー先を見つける
           {urgentCount > 0 && (
             <span className={styles.urgentHint}> — 優先 {urgentCount}件</span>
           )}
@@ -79,7 +79,7 @@ export function DiscoverPage() {
         <input
           type="search"
           className={styles.searchInput}
-          placeholder="名前・LINE名・メモで探す"
+          placeholder="LINE友達の名前・メモで探す"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           aria-label="フォロー候補を検索"

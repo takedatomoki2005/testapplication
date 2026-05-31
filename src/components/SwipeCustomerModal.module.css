@@ -51,7 +51,7 @@
   width: 100%;
   max-width: 340px;
   flex: 0 0 auto;
-  height: min(62vh, 520px);
+  height: min(78vh, 680px);
   display: flex;
   align-items: stretch;
   justify-content: center;

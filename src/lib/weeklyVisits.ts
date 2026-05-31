@@ -70,3 +70,22 @@ export function resolveWeeklyVisits(customer: Customer): number[] {
 export function hasWeeklyVisitActivity(pattern: number[]): boolean {
   return pattern.some((n) => n > 0);
 }
+
+/** Weekdays (0=日 … 6=土) this customer visits, busiest first */
+export function getCustomerVisitWeekdays(customer: Customer): number[] {
+  const pattern = resolveWeeklyVisits(customer);
+  return pattern
+    .map((count, day) => ({ day, count }))
+    .filter(({ count }) => count > 0)
+    .sort((a, b) => b.count - a.count || a.day - b.day)
+    .map(({ day }) => day);
+}
+
+export function customerMatchesWeekdayFilter(
+  customer: Customer,
+  selectedWeekdays: number[],
+): boolean {
+  if (selectedWeekdays.length === 0) return true;
+  const active = getCustomerVisitWeekdays(customer);
+  return selectedWeekdays.some((day) => active.includes(day));
+}

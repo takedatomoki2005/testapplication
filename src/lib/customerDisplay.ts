@@ -30,28 +30,33 @@ export function rankSortKey(customer: Customer, hot?: HotEvaluation): number {
 }
 
 export function formatCustomerName(customer: Customer): string {
+  if (customer.nickname) {
+    return `${customer.nickname} 様`;
+  }
   if (customer.fullName) {
-    const nick = customer.nickname ? `（${customer.nickname}）` : "";
-    return `${customer.fullName}${nick} 様`;
+    return `${customer.fullName} 様`;
   }
   return customer.displayName;
 }
 
-/** Compact name for list cards — full name + optional title/nickname alias */
+/** Compact name for list cards — nickname (or full name) + optional title/real-name alias */
 export function formatListCustomerName(customer: Customer): {
   primary: string;
   alias: string | null;
 } {
-  const primary = customer.fullName
-    ? `${customer.fullName} 様`
-    : customer.displayName;
+  const primary = customer.nickname
+    ? `${customer.nickname} 様`
+    : customer.fullName
+      ? `${customer.fullName} 様`
+      : customer.displayName;
   const alias =
-    customer.titleTag ?? (customer.nickname ? `（${customer.nickname}）` : null);
+    customer.titleTag ??
+    (customer.nickname && customer.fullName ? `（${customer.fullName}）` : null);
   return { primary, alias };
 }
 
 export function customerSortKey(customer: Customer): string {
-  return customer.fullName ?? customer.displayName;
+  return customer.nickname ?? customer.fullName ?? customer.displayName;
 }
 
 export function formatBirthday(birthday?: string): string | null {

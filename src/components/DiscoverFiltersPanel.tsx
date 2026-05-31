@@ -320,6 +320,7 @@ export function DiscoverFiltersPanel({
 
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>接客曜日</h3>
+            <p className={styles.sectionHint}>よく来る曜日 — 複数選択できます</p>
             <div className={styles.weekdayRow}>
               {WEEKDAY_LABELS.map((label, day) => (
                 <button

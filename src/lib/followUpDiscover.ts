@@ -9,6 +9,7 @@ import type {
 } from "@/data/types";
 import { evaluateHotCustomer } from "./hotCustomer";
 import { formatListCustomerName, resolveCustomerRank, getRankLabel } from "./customerDisplay";
+import { customerMatchesWeekdayFilter } from "./weeklyVisits";
 
 function daysBetween(from: string, to: string): number {
   const a = new Date(`${from}T00:00:00`);
@@ -58,24 +59,24 @@ function matchesBirthday(customer: Customer, month?: number, day?: number): bool
 function rankScore(rank: ReturnType<typeof resolveCustomerRank>): number {
   switch (rank) {
     case "diamond":
-      return 40;
+      return 32;
     case "platinum":
-      return 30;
+      return 24;
     case "gold":
-      return 20;
+      return 14;
     case "silver":
-      return 10;
+      return 6;
     default:
       return 0;
   }
 }
 
 function daysScore(days: number): { score: number; reason: string | null } {
-  if (days >= 21) return { score: 45, reason: `${days}日経過 — 連絡優先` };
-  if (days >= 14) return { score: 35, reason: `${days}日経過 — そろそろ声かけ` };
-  if (days >= 7) return { score: 25, reason: `${days}日後 — フォロー好タイミング` };
-  if (days >= 3) return { score: 15, reason: `${days}日後 — 軽い近況メッセージ可` };
-  return { score: 5, reason: days <= 1 ? "送信直後" : `${days}日後` };
+  if (days >= 21) return { score: 36, reason: `${days}日経過 — 連絡優先` };
+  if (days >= 14) return { score: 28, reason: `${days}日経過 — そろそろ声かけ` };
+  if (days >= 7) return { score: 18, reason: `${days}日後 — フォロー好タイミング` };
+  if (days >= 3) return { score: 10, reason: `${days}日後 — 軽い近況メッセージ可` };
+  return { score: 3, reason: days <= 1 ? "送信直後" : `${days}日後` };
 }
 
 function suggestedAction(days: number, rank: ReturnType<typeof resolveCustomerRank>): string {
@@ -102,9 +103,9 @@ export function buildFollowUpContact(
   const daysSinceVisit = daysBetween(record.visitDate, referenceDate);
   const visitWeekday = visitWeekdayFromDate(record.visitDate);
   const daysPart = daysScore(daysSinceSent);
-  const nominationBonus = Math.min(customer.nominationCount * 2, 12);
+  const nominationBonus = Math.min(customer.nominationCount * 2, 8);
   const spendingBonus =
-    customer.totalSpending >= 300_000 ? 15 : customer.totalSpending >= 100_000 ? 8 : 0;
+    customer.totalSpending >= 300_000 ? 10 : customer.totalSpending >= 100_000 ? 5 : 0;
 
   const reasons: string[] = [];
   if (rank) reasons.push(getRankLabel(rank));
@@ -113,10 +114,20 @@ export function buildFollowUpContact(
   if (customer.totalSpending >= 300_000) reasons.push("高単価");
 
   const priorityScore = rankScore(rank) + daysPart.score + nominationBonus + spendingBonus;
+  const isTopRank = rank === "diamond" || rank === "platinum";
   let priority: FollowUpPriority = "low";
-  if (priorityScore >= 70) priority = "urgent";
-  else if (priorityScore >= 45) priority = "high";
-  else if (priorityScore >= 25) priority = "normal";
+  if (
+    priorityScore >= 88 &&
+    daysSinceSent >= 21 &&
+    isTopRank &&
+    customer.totalSpending >= 300_000
+  ) {
+    priority = "urgent";
+  } else if (priorityScore >= 58 || (daysSinceSent >= 14 && priorityScore >= 48)) {
+    priority = "high";
+  } else if (priorityScore >= 30) {
+    priority = "normal";
+  }
 
   return {
     id: record.id,
@@ -178,12 +189,15 @@ function applyPriorityFilter(list: FollowUpContact[], filter: FollowUpFilter): F
   switch (filter) {
     case "needs_follow":
       return list.filter(
-        (c) => c.daysSinceSent >= 7 || c.priority === "urgent" || c.priority === "high",
+        (c) =>
+          c.daysSinceSent >= 3 ||
+          c.priority === "urgent" ||
+          c.priority === "high",
       );
     case "high_priority":
       return list.filter((c) => c.priority === "urgent" || c.priority === "high");
     case "window_3_7":
-      return list.filter((c) => c.daysSinceSent >= 3 && c.daysSinceSent <= 7);
+      return list.filter((c) => c.daysSinceSent >= 2 && c.daysSinceSent <= 10);
     default:
       return list;
   }
@@ -223,10 +237,7 @@ function applyAdvancedFilters(
     if (advanced.avgSpendingMin != null && avg < advanced.avgSpendingMin) return false;
     if (advanced.avgSpendingMax != null && avg > advanced.avgSpendingMax) return false;
 
-    if (
-      advanced.weekdays.length > 0 &&
-      !advanced.weekdays.includes(c.visitWeekday)
-    ) {
+    if (!customerMatchesWeekdayFilter(c.customer, advanced.weekdays)) {
       return false;
     }
 

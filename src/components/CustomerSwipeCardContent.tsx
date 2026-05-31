@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { ThankYouEntry } from "@/data/types";
 import { getPersonalizedHint, getVisitCategoryLabel } from "@/lib/personalizedHint";
 import {
@@ -41,7 +42,12 @@ export function CustomerSwipeCardContent({
   onLineNameChange,
   onMemoChange,
 }: CustomerSwipeCardContentProps) {
+  const pageScrollRef = useRef<HTMLDivElement>(null);
   const { customer, hot, tableNumber, serviceStartTime, serviceEndTime } = entry;
+
+  useEffect(() => {
+    pageScrollRef.current?.scrollTo(0, 0);
+  }, [page, entry.id]);
   const displayPhoto = tablePhotoUrl;
   const hint = getPersonalizedHint(entry);
   const memberRank = resolveCustomerRank(customer, hot);
@@ -129,7 +135,9 @@ export function CustomerSwipeCardContent({
   if (page !== undefined) {
     return (
       <div className={`${styles.content} ${styles.contentPaged}`}>
-        <div className={styles.pageScroll}>{pages[page]}</div>
+        <div ref={pageScrollRef} className={styles.pageScroll}>
+          {pages[page]}
+        </div>
       </div>
     );
   }

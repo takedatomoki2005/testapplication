@@ -7,6 +7,7 @@ import {
   priorityLabel,
   WEEKDAY_LABELS,
 } from "@/lib/followUpDiscover";
+import { getCustomerVisitWeekdays } from "@/lib/weeklyVisits";
 import { formatYen } from "@/lib/thankYou";
 import styles from "./FollowUpCard.module.css";
 
@@ -34,6 +35,9 @@ export function FollowUpCard({ contact, onSelect }: FollowUpCardProps) {
   const { primary, alias } = formatListCustomerName(customer);
   const rank = resolveCustomerRank(customer);
   const avg = getCustomerAverageSpending(customer);
+  const visitWeekdays = getCustomerVisitWeekdays(customer);
+  const weekdayBadges =
+    visitWeekdays.length > 0 ? visitWeekdays : [visitWeekday];
 
   return (
     <button type="button" className={styles.card} onClick={() => onSelect(contact)}>
@@ -43,7 +47,11 @@ export function FollowUpCard({ contact, onSelect }: FollowUpCardProps) {
         </span>
         <div className={styles.badges}>
           <span className={styles.daysBadge}>{formatDaysSinceVisit(daysSinceVisit)}</span>
-          <span className={styles.weekdayBadge}>{WEEKDAY_LABELS[visitWeekday]}</span>
+          {weekdayBadges.map((day) => (
+            <span key={day} className={styles.weekdayBadge}>
+              {WEEKDAY_LABELS[day]}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -69,7 +77,15 @@ export function FollowUpCard({ contact, onSelect }: FollowUpCardProps) {
       <div className={styles.footer}>
         <span className={styles.sentHint}>お礼 {formatDaysSinceSent(daysSinceSent)}</span>
         <span className={styles.memoHint}>
-          {lastMemo ? "メモあり — タップで編集" : "タップしてメモを残す"}
+          {lastMemo ? (
+            <>
+              メモあり — <span className={styles.memoHintAction}>タップで編集</span>
+            </>
+          ) : (
+            <>
+              <span className={styles.memoHintAction}>タップして</span>メモを残す
+            </>
+          )}
         </span>
       </div>
     </button>

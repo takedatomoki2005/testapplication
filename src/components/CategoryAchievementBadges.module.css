@@ -1,0 +1,173 @@
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.rowList {
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rowList .badge {
+  flex: 0 1 auto;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  max-width: none;
+  gap: 6px;
+  padding: 5px 11px 5px 6px;
+  border-radius: var(--radius-pill);
+  border-width: 2px;
+}
+
+.rowList .iconWrap {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.rowList .emoji {
+  font-size: 14px;
+}
+
+.rowList .check {
+  right: -3px;
+  bottom: -3px;
+  width: 13px;
+  height: 13px;
+  font-size: 8px;
+}
+
+.rowList .label {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.rowList .status {
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.rowList .badge.done {
+  box-shadow: none;
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 76px;
+  padding: 10px 8px 8px;
+  border-radius: 14px;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.badge.pending {
+  opacity: 0.55;
+}
+
+.badge.done {
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.badge_hon-shimei.done {
+  background: linear-gradient(160deg, #fff8e1 0%, #ffe082 100%);
+  border-color: #ffc107;
+}
+
+.badge_jounai-shimei.done {
+  background: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 100%);
+  border-color: var(--color-primary-light);
+}
+
+.badge_free.done {
+  background: linear-gradient(160deg, #e8eaf6 0%, #c5cae9 100%);
+  border-color: #7986cb;
+}
+
+.badge.highlight {
+  transform: scale(1.06);
+  animation: badgePop 0.55s ease-out;
+}
+
+.badge.highlight.done {
+  box-shadow:
+    0 6px 20px rgba(240, 39, 107, 0.28),
+    0 0 0 3px var(--color-accent);
+}
+
+.iconWrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.emoji {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.check {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+.status {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.done .status {
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0.82);
+  }
+  55% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}

@@ -8,7 +8,7 @@ import { SwipeCustomerModal } from "@/components/SwipeCustomerModal";
 import { ProcessedCustomerModal } from "@/components/ProcessedCustomerModal";
 import { UndoStatusModal } from "@/components/UndoStatusModal";
 import { RoleSwitcher } from "@/components/RoleSwitcher";
-import { computeAchievementProgress } from "@/lib/achievementProgress";
+import { computeVisitCategoryProgress } from "@/lib/visitCategory";
 import type { ThankYouEntry } from "@/data/types";
 import styles from "./ThankYouListPage.module.css";
 
@@ -32,7 +32,7 @@ export function ThankYouListPage() {
       setSwipeOpen(true);
     }
   }, [location.state, unsentEntries.length]);
-  const achievement = computeAchievementProgress(myEntries);
+  const achievement = computeVisitCategoryProgress(myEntries);
 
   const openEntry = (entry: ThankYouEntry) => {
     if (entry.sendStatus === "unsent") {

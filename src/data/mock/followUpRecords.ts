@@ -1,7 +1,11 @@
 import type { FollowUpRecord } from "../types";
+import { config } from "./config";
+import { buildDiscoverSeed } from "./discoverSeed";
 
-/** cast-a 向け — お礼送信後のフォロー候補（営業日 2026-05-31 基準） */
-export const followUpRecords: FollowUpRecord[] = [
+const discoverSeed = buildDiscoverSeed("cast-a", config.businessDate);
+
+/** cast-a 向け — お礼送信後のフォロー候補（営業日基準） */
+const coreFollowUpRecords: FollowUpRecord[] = [
   {
     id: "fu-1",
     customerId: "cust-watanabe",
@@ -26,7 +30,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-10",
     thankYouSentAt: "2026-05-10",
-    lineName: "スズキ社長",
+    lineName: "ダイスケ社長",
     lastMemo: "VIP同伴。次回は席の指定あり",
   },
   {
@@ -35,7 +39,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-03",
     thankYouSentAt: "2026-05-04",
-    lineName: "フジタ",
+    lineName: "リョウちゃん",
     lastMemo: "指名5回目。ゴルフの話が盛り上がった",
   },
   {
@@ -44,7 +48,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-28",
     thankYouSentAt: "2026-05-28",
-    lineName: "まつもと🍾",
+    lineName: "あやちゃん🍾",
     lastMemo: "同伴4回目。モデル系が好み",
   },
   {
@@ -53,7 +57,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-29",
     thankYouSentAt: "2026-05-29",
-    lineName: "たなか🌸",
+    lineName: "ゆうこ🌸",
     lastMemo: "初指名。医療系。落ち着いた接客が好き",
   },
   {
@@ -62,7 +66,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-14",
     thankYouSentAt: "2026-05-15",
-    lineName: "ヨシダ",
+    lineName: "ヨッシー",
     lastMemo: "同伴常連。ボトルキープ確認済み",
   },
   {
@@ -71,7 +75,7 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-21",
     thankYouSentAt: "2026-05-22",
-    lineName: "いとう",
+    lineName: "みーちゃん",
     lastMemo: "指名3回。可愛い系キャスト希望",
   },
   {
@@ -89,7 +93,12 @@ export const followUpRecords: FollowUpRecord[] = [
     castId: "cast-a",
     visitDate: "2026-05-26",
     thankYouSentAt: "2026-05-27",
-    lineName: "さとう",
+    lineName: "けんくん",
     lastMemo: "場内2回目。新規感あり",
   },
+];
+
+export const followUpRecords: FollowUpRecord[] = [
+  ...coreFollowUpRecords,
+  ...discoverSeed.followUpRecords,
 ];

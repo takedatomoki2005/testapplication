@@ -8,7 +8,7 @@ const d = config.businessDate;
 export const sendStatuses: Record<string, SendStatusRecord> = {
   [entryId("cust-matsumoto", "cast-a", d)]: {
     status: "unsent",
-    lineName: "まつもと🍾",
+    lineName: "あやちゃん🍾",
   },
   [entryId("cust-watanabe", "cast-a", d)]: {
     status: "unsent",
@@ -16,14 +16,14 @@ export const sendStatuses: Record<string, SendStatusRecord> = {
   },
   [entryId("cust-sato", "cast-a", d)]: {
     status: "unsent",
-    lineName: "さとう",
+    lineName: "けんくん",
   },
   [entryId("cust-tanaka", "cast-a", d)]: {
     status: "unsent",
-    lineName: "たなか🌸",
+    lineName: "ゆうこ🌸",
   },
   [entryId("cust-itou", "cast-a", d)]: {
     status: "unsent",
-    lineName: "いとう",
+    lineName: "みーちゃん",
   },
 };

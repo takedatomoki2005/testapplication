@@ -12,15 +12,19 @@
   --font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
   --font-size-logo: 17px;
   --font-weight-logo: 800;
-  --font-size-tab: 10px;
+  --font-size-tab: 9px;
   --spacing-header-v: 14px;
   --spacing-header-h: 20px;
-  --spacing-footer-top: 12px;
-  --spacing-footer-bot: 20px;
+  --spacing-footer-top: 4px;
+  --spacing-footer-bot: 4px;
+  --footer-tab-stack: 32px;
+  --footer-total-height: calc(
+    var(--spacing-footer-top) + var(--footer-tab-stack) +
+      var(--spacing-footer-bot) + env(safe-area-inset-bottom, 0px)
+  );
   --radius-card: 16px;
   --radius-pill: 999px;
   --app-max-width: 480px;
-  --footer-height: 76px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, #root { height: 100%; }

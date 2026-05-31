@@ -39,12 +39,15 @@ export function buildDiscoverFilterPresets(ctx: DiscoverPresetContext): Discover
     {
       id: "weekday_today",
       label: `${ctx.weekdayLabel}曜接客`,
-      isActive: (filters) =>
-        filters.weekdays.length === 1 && filters.weekdays[0] === ctx.weekday,
+      isActive: (filters) => filters.weekdays.includes(ctx.weekday),
       toggle: (filters) => {
-        const active =
-          filters.weekdays.length === 1 && filters.weekdays[0] === ctx.weekday;
-        return { ...filters, weekdays: active ? [] : [ctx.weekday] };
+        const active = filters.weekdays.includes(ctx.weekday);
+        return {
+          ...filters,
+          weekdays: active
+            ? filters.weekdays.filter((d) => d !== ctx.weekday)
+            : [...filters.weekdays, ctx.weekday].sort((a, b) => a - b),
+        };
       },
     },
     {

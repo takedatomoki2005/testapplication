@@ -1,31 +1,10 @@
-import type { AchievementSummary, SegmentProgress } from "@/lib/achievementProgress";
+import type { VisitCategorySummary } from "@/lib/visitCategory";
+import { AchievementRaceTrack } from "./AchievementRaceTrack";
+import { CategoryAchievementBadges } from "./CategoryAchievementBadges";
 import styles from "./AchievementReminder.module.css";
 
-function SegmentBar({ segment }: { segment: SegmentProgress }) {
-  if (segment.empty) return null;
-  return (
-    <div className={`${styles.row}${segment.complete ? ` ${styles.rowDone}` : ""}`}>
-      <div className={styles.rowHead}>
-        <span className={styles.rowLabel}>
-          {segment.emoji} {segment.label}
-        </span>
-        <span className={styles.rowCount}>
-          {segment.complete ? "達成 🎉" : `${segment.resolved}/${segment.total}`}
-        </span>
-      </div>
-      <div className={styles.track}>
-        <div
-          className={`${styles.fill} ${styles[`fill_${segment.id}`]}${segment.complete ? ` ${styles.fillDone}` : ""}`}
-          style={{ width: `${segment.percent}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-export function AchievementReminder({ summary }: { summary: AchievementSummary }) {
+export function AchievementReminder({ summary }: { summary: VisitCategorySummary }) {
   if (!summary.hasAnyTarget) return null;
-  const active = summary.segments.filter((s) => !s.empty);
 
   return (
     <section className={styles.card}>
@@ -37,15 +16,11 @@ export function AchievementReminder({ summary }: { summary: AchievementSummary }
             : `${summary.totalResolved}/${summary.totalCount}`}
         </span>
       </div>
-      <div className={styles.overallTrack}>
-        <div
-          className={`${styles.overallFill}${summary.allComplete ? ` ${styles.fillDone}` : ""}`}
-          style={{ width: `${summary.overallPercent}%` }}
-        />
-      </div>
-      {active.map((s) => (
-        <SegmentBar key={s.id} segment={s} />
-      ))}
+      <CategoryAchievementBadges categories={summary.categories} variant="list" />
+      <AchievementRaceTrack
+        percent={summary.overallPercent}
+        allComplete={summary.allComplete}
+      />
     </section>
   );
 }
