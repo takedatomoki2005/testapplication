@@ -70,7 +70,10 @@ export function computeAchievementProgress(entries: ThankYouEntry[]): Achievemen
     const total = items.length;
     const sent = items.filter((e) => e.sendStatus === "sent").length;
     const resolved = items.filter(
-      (e) => e.sendStatus === "sent" || e.sendStatus === "no_line_exchange",
+      (e) =>
+        e.sendStatus === "sent" ||
+        e.sendStatus === "no_line_exchange" ||
+        e.sendStatus === "no_contact",
     ).length;
     const unsent = items.filter((e) => e.sendStatus === "unsent").length;
     const segment: SegmentProgress = {
@@ -93,7 +96,10 @@ export function computeAchievementProgress(entries: ThankYouEntry[]): Achievemen
   const totalCount = entries.length;
   const totalSent = entries.filter((e) => e.sendStatus === "sent").length;
   const totalResolved = entries.filter(
-    (e) => e.sendStatus === "sent" || e.sendStatus === "no_line_exchange",
+    (e) =>
+      e.sendStatus === "sent" ||
+      e.sendStatus === "no_line_exchange" ||
+      e.sendStatus === "no_contact",
   ).length;
   const totalUnsent = entries.filter((e) => e.sendStatus === "unsent").length;
   return {

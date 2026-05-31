@@ -59,70 +59,25 @@ const castTabs = [
     ),
   },
   {
-    to: "/ranking",
-    label: "ランキング",
-    end: false,
-    icon: (a: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path
-          d="M5 16l3-5 2.5 3.5L12 8l4.5 6.5L19 11l3 5H5zM7 6h2l1-2h4l1 2h2l-1 3H8L7 6z"
-          fill={a ? active : inactive}
-        />
-      </svg>
-    ),
-  },
-  {
-    to: "/graph",
-    label: "グラフ",
-    end: false,
-    icon: (a: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-        <rect x="3" y="12" width="4" height="9" rx="1" fill={a ? active : inactive} />
-        <rect x="10" y="7" width="4" height="14" rx="1" fill={a ? active : inactive} />
-        <rect x="17" y="3" width="4" height="18" rx="1" fill={a ? active : inactive} />
-      </svg>
-    ),
-  },
-  {
-    to: "/calendar",
-    label: "カレンダー",
-    end: false,
-    icon: (a: boolean) => (
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-        <rect
-          x="3"
-          y="4"
-          width="18"
-          height="18"
-          rx="2"
-          stroke={a ? active : inactive}
-          strokeWidth="1.8"
-          fill="none"
-        />
-        <path
-          d="M16 2v4M8 2v4M3 10h18"
-          stroke={a ? active : inactive}
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    to: "/gacha",
-    label: "ガチャ",
+    to: "/discover",
+    label: "探す",
     end: false,
     icon: (a: boolean) => (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden>
         <circle
-          cx="12"
-          cy="12"
-          r="9"
+          cx="11"
+          cy="11"
+          r="7"
           stroke={a ? active : inactive}
           strokeWidth="1.8"
           fill="none"
         />
-        <circle cx="12" cy="12" r="3" fill={a ? active : inactive} />
+        <path
+          d="M16 16l5 5"
+          stroke={a ? active : inactive}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
       </svg>
     ),
   },

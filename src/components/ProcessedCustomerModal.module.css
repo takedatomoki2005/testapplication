@@ -21,6 +21,10 @@
   background: #78909c;
 }
 
+.statusNoContact {
+  background: #8d6e63;
+}
+
 .undoBtn {
   width: 100%;
   margin-top: 14px;

@@ -2,6 +2,41 @@
   padding: 4px 0 8px;
 }
 
+.contentPaged {
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 0 8px;
+}
+
+.emptyPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  text-align: center;
+  padding: 32px 16px;
+  min-height: 160px;
+}
+
+.emptyIcon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
 .head {
   margin-bottom: 10px;
 }
@@ -58,112 +93,27 @@
   margin-bottom: 12px;
 }
 
-.stats {
-  background: #fafafa;
-  border-radius: 12px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #eee;
-}
-
-.weekRow {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  margin-bottom: 10px;
-}
-
-.weekCell {
+.commentBar {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--color-text-sub);
-}
-
-.weekCell span:last-child {
-  margin-top: 2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f0f0f0;
-}
-
-.weekActive {
-  background: var(--color-primary) !important;
-  color: #fff !important;
-}
-
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--color-primary-tint);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
-.metrics div {
-  text-align: center;
-  font-size: 11px;
+.commentIcon {
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.metrics dt {
-  color: var(--color-text-sub);
-  margin-bottom: 2px;
-}
-
-.metrics dd {
-  font-weight: 800;
+.commentText {
   font-size: 12px;
-}
-
-.historyRow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  padding: 6px 0;
-  border-top: 1px solid #eee;
-  flex-wrap: wrap;
-}
-
-.subtotal {
-  margin-left: auto;
   font-weight: 700;
-}
-
-.reasons {
-  font-size: 11px;
-  line-height: 1.6;
-  margin-bottom: 8px;
-  list-style: none;
-  color: var(--color-text-sub);
-}
-
-.motivation {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-primary);
   line-height: 1.5;
+  color: var(--color-text);
 }
 
-.table {
-  font-size: 11px;
-  color: var(--color-text-sub);
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* Compact profile section inside swipe card */
-.content :global(.section) {
-  margin-bottom: 10px;
-  padding: 12px;
-}
-
-.content :global(.title) {
-  font-size: 11px;
-  margin-bottom: 10px;
-}

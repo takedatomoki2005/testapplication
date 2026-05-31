@@ -1,20 +1,20 @@
 import type { ThankYouEntry } from "@/data/types";
 import { getPersonalizedHint, getVisitCategoryLabel } from "@/lib/personalizedHint";
-import { getCustomerMotivation, hotReasonLabel } from "@/lib/motivationMessages";
-import { formatAmountYen } from "@/lib/thankYou";
 import {
   formatBirthday,
   formatListCustomerName,
-  formatVisitDate,
   getRankLabel,
   resolveCustomerRank,
-  WEEKDAY_LABELS,
 } from "@/lib/customerDisplay";
 import { formatDateOfBirth } from "@/data/customerProfileOptions";
 import { CustomerProfileSection } from "./CustomerProfileSection";
+import { CustomerSpendingSection } from "./CustomerSpendingSection";
+import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
 import { TableServiceInfo } from "./TableServiceInfo";
-import { VisitTypeBadge } from "./VisitTypeBadge";
 import styles from "./CustomerSwipeCardContent.module.css";
+
+export const CARD_PAGE_LABELS = ["基本情報", "お金情報", "趣味情報", "メモ"] as const;
+export type CardPageIndex = 0 | 1 | 2 | 3;
 
 interface CustomerSwipeCardContentProps {
   entry: ThankYouEntry;
@@ -22,6 +22,11 @@ interface CustomerSwipeCardContentProps {
   tablePhotoUrl?: string;
   onPhotoChange?: (dataUrl: string | undefined) => void;
   photoReadOnly?: boolean;
+  page?: CardPageIndex;
+  lineName?: string;
+  memo?: string;
+  onLineNameChange?: (value: string) => void;
+  onMemoChange?: (value: string) => void;
 }
 
 export function CustomerSwipeCardContent({
@@ -30,21 +35,23 @@ export function CustomerSwipeCardContent({
   tablePhotoUrl,
   onPhotoChange,
   photoReadOnly,
+  page,
+  lineName,
+  memo,
+  onLineNameChange,
+  onMemoChange,
 }: CustomerSwipeCardContentProps) {
   const { customer, hot, tableNumber, serviceStartTime, serviceEndTime } = entry;
   const displayPhoto = tablePhotoUrl;
   const hint = getPersonalizedHint(entry);
   const memberRank = resolveCustomerRank(customer, hot);
   const { primary, alias } = formatListCustomerName(customer);
-  const motivation = getCustomerMotivation(customer, hot);
-  const visitHistory = customer.visitHistory ?? [];
-  const weeklyVisits = customer.weeklyVisits ?? Array(7).fill(0);
   const birthLabel = customer.dateOfBirth
     ? formatDateOfBirth(customer.dateOfBirth)
     : formatBirthday(customer.birthday);
 
-  return (
-    <div className={styles.content}>
+  const basicPage = (
+    <>
       <div className={styles.head}>
         <div className={styles.tagRow}>
           <span className={styles.tag}>{getVisitCategoryLabel(entry)}</span>
@@ -70,48 +77,72 @@ export function CustomerSwipeCardContent({
         onPhotoChange={onPhotoChange}
         readOnly={photoReadOnly}
       />
+    </>
+  );
 
+  const moneyPage = (
+    <CustomerSpendingSection customer={customer} hot={hot} hotCriteria={hotCriteria} />
+  );
+
+  const hasHobbyProfile =
+    customer.occupation ||
+    (customer.castPreferences?.length ?? 0) > 0 ||
+    customer.hobbySpending ||
+    customer.dateOfBirth ||
+    customer.birthday ||
+    customer.prefecture;
+
+  const hobbyPage = hasHobbyProfile ? (
+    <CustomerProfileSection customer={customer} compact />
+  ) : (
+    <div className={styles.emptyPage}>
+      <span className={styles.emptyIcon} aria-hidden>
+        👤
+      </span>
+      <p>趣味・プロフィール情報はありません</p>
+    </div>
+  );
+
+  const memoPage = (
+    <>
+      <div className={styles.commentBar}>
+        <span className={styles.commentIcon} aria-hidden>
+          ‼️
+        </span>
+        <p className={styles.commentText}>{hint}</p>
+      </div>
+      {onLineNameChange && onMemoChange ? (
+        <CustomerEntryNotesForm
+          variant="embedded"
+          lineName={lineName ?? ""}
+          memo={memo ?? ""}
+          onLineNameChange={onLineNameChange}
+          onMemoChange={onMemoChange}
+          memoRows={4}
+        />
+      ) : null}
+    </>
+  );
+
+  const pages = [basicPage, moneyPage, hobbyPage, memoPage];
+
+  if (page !== undefined) {
+    return (
+      <div className={`${styles.content} ${styles.contentPaged}`}>
+        <div className={styles.pageScroll}>{pages[page]}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.content}>
+      {basicPage}
       <div className={styles.hintBar}>
         <span>‼️</span>
         <span>{hint}</span>
       </div>
-
+      {moneyPage}
       <CustomerProfileSection customer={customer} />
-
-      <div className={styles.stats}>
-        <div className={styles.weekRow}>
-          {WEEKDAY_LABELS.map((label, i) => (
-            <div key={label} className={styles.weekCell}>
-              <span>{label}</span>
-              <span className={(weeklyVisits[i] ?? 0) > 0 ? styles.weekActive : ""}>
-                {weeklyVisits[i] ?? 0}
-              </span>
-            </div>
-          ))}
-        </div>
-        <dl className={styles.metrics}>
-          <div><dt>累計金額</dt><dd>{formatAmountYen(customer.totalSpending)}</dd></div>
-          <div><dt>指名</dt><dd>{customer.nominationCount}回</dd></div>
-          <div><dt>来店</dt><dd>{customer.visitCount}回</dd></div>
-        </dl>
-        {visitHistory.slice(0, 3).map((v) => (
-          <div key={v.id} className={styles.historyRow}>
-            <span>{formatVisitDate(v.date)}</span>
-            <VisitTypeBadge type={v.type} solid />
-            <span className={styles.subtotal}>{formatAmountYen(v.subtotal)}</span>
-          </div>
-        ))}
-      </div>
-
-      {hot.isHot && (
-        <ul className={styles.reasons}>
-          {hot.reasons.map((r) => (
-            <li key={r}>・{hotReasonLabel(r, hotCriteria)}</li>
-          ))}
-        </ul>
-      )}
-
-      <p className={styles.motivation}>{motivation.returnMessage}</p>
     </div>
   );
 }

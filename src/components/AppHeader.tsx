@@ -3,7 +3,7 @@ import { useApp } from "@/context/AppContext";
 import { BarcelonaLogo } from "./BarcelonaLogo";
 import styles from "./AppHeader.module.css";
 
-const PINK_HEADER_PATHS = ["/", "/thank-you", "/ranking", "/graph", "/calendar", "/gacha"];
+const PINK_HEADER_PATHS = ["/", "/thank-you", "/discover"];
 
 export function AppHeader() {
   const { unsentCount, session, hasAnyTarget } = useApp();

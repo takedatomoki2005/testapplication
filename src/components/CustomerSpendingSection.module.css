@@ -1,0 +1,231 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.heroPanel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 14px 14px 12px;
+}
+
+.heroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.heroLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-sub);
+}
+
+.helpBtn {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text-sub);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.helpBtn:active {
+  background: var(--color-border);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.statValue {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.2;
+  text-align: center;
+  word-break: break-all;
+}
+
+.statLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  letter-spacing: 0.04em;
+}
+
+.statCardRank {
+  gap: 6px;
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 14px 14px 12px;
+}
+
+.panelTitle {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-sub);
+  margin-bottom: 12px;
+}
+
+.weekChart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  align-items: flex-end;
+  height: 88px;
+}
+
+.weekCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.weekBarTrack {
+  flex: 1;
+  width: 100%;
+  max-width: 28px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.weekBar {
+  width: 100%;
+  max-width: 22px;
+  border-radius: 6px 6px 4px 4px;
+  background: #ececec;
+  transition: height 0.2s ease;
+}
+
+.weekBarActive {
+  background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+}
+
+.weekDay {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-sub);
+}
+
+.weekCount {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ccc;
+  line-height: 1;
+}
+
+.weekCountActive {
+  color: var(--color-primary);
+}
+
+.historyList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.historyItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.historyItem:first-child {
+  padding-top: 0;
+}
+
+.historyMain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.historyDate {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.reasons {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--color-primary-tint);
+  border-radius: 12px;
+}
+
+.reasons li {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--color-primary-dark);
+  padding-left: 14px;
+  position: relative;
+}
+
+.reasons li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  font-weight: 800;
+}
+
+.motivation {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--color-text);
+  padding: 10px 12px;
+  background: var(--color-bg);
+  border-radius: 12px;
+  border-left: 3px solid var(--color-primary);
+}

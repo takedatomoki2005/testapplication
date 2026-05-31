@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ThankYouEntry } from "@/data/types";
 import { useApp } from "@/context/AppContext";
-import { CustomerSwipeCardContent } from "./CustomerSwipeCardContent";
-import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
+import {
+  CARD_PAGE_LABELS,
+  CustomerSwipeCardContent,
+  type CardPageIndex,
+} from "./CustomerSwipeCardContent";
 import { SwipeCompletePopupModal } from "./SwipeCompletePopupModal";
 import styles from "./SwipeCustomerModal.module.css";
 
 const SWIPE_THRESHOLD = 90;
 const MAX_ROTATION = 12;
 const DRAG_LOCK_PX = 10;
+const PAGE_COUNT = CARD_PAGE_LABELS.length;
 
 function isSwipeBlockedTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -21,11 +25,12 @@ interface SwipeCustomerModalProps {
   onClose: () => void;
 }
 
-type SwipeDir = "left" | "right" | null;
+type SwipeDir = "left" | "right" | "center" | null;
 
 export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustomerModalProps) {
-  const { hotCriteria, markSent, markNoLineExchange, session } = useApp();
+  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session } = useApp();
   const [index, setIndex] = useState(startIndex);
+  const [pageIndex, setPageIndex] = useState<CardPageIndex>(0);
   const [showCompletePopup, setShowCompletePopup] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
@@ -49,6 +54,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     setLineName(entry?.lineName ?? "");
     setMemo(entry?.memo ?? "");
     setTablePhotoUrl(undefined);
+    setPageIndex(0);
   }, [entry?.id, entry?.lineName, entry?.memo]);
 
   useEffect(() => {
@@ -65,21 +71,43 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     setOffsetY(0);
     setExiting(null);
     offsetXRef.current = 0;
+    setPageIndex(0);
     setIndex(0);
   }, []);
+
+  const goToPrevPage = useCallback(() => {
+    setPageIndex((current) => (current > 0 ? ((current - 1) as CardPageIndex) : current));
+  }, []);
+
+  const goToNextPage = useCallback(() => {
+    setPageIndex((current) =>
+      current < PAGE_COUNT - 1 ? ((current + 1) as CardPageIndex) : current,
+    );
+  }, []);
+
+  const handleCardTap = useCallback(
+    (clientX: number, cardLeft: number, cardWidth: number, target: EventTarget | null) => {
+      if (isSwipeBlockedTarget(target)) return;
+      const isRightHalf = clientX - cardLeft > cardWidth / 2;
+      if (isRightHalf) goToNextPage();
+      else goToPrevPage();
+    },
+    [goToNextPage, goToPrevPage],
+  );
 
   const commitSwipe = useCallback(
     (dir: SwipeDir) => {
       if (!entry || !dir) return;
       setExiting(dir);
-      const flyX = dir === "right" ? 420 : -420;
+      const flyX = dir === "right" ? 420 : dir === "left" ? -420 : 0;
       setOffsetX(flyX);
 
       const isLastInQueue = queue.length === 1;
 
       window.setTimeout(() => {
         if (dir === "right") markSent(entry.id, notes);
-        else markNoLineExchange(entry.id, notes);
+        else if (dir === "left") markNoLineExchange(entry.id, notes);
+        else markNoContact(entry.id, notes);
 
         if (isLastInQueue) {
           setShowCompletePopup(true);
@@ -88,7 +116,17 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
         }
       }, 280);
     },
-    [entry, lineName, memo, tablePhotoUrl, markSent, markNoLineExchange, advanceOrClose, queue.length],
+    [
+      entry,
+      lineName,
+      memo,
+      tablePhotoUrl,
+      markSent,
+      markNoLineExchange,
+      markNoContact,
+      advanceOrClose,
+      queue.length,
+    ],
   );
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -123,6 +161,8 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     if (!dragStart.current) return;
 
     if (!isDragging.current) {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      handleCardTap(e.clientX, rect.left, rect.width, e.target);
       dragStart.current = null;
       return;
     }
@@ -142,7 +182,12 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     }
   };
 
-  const rotation = exiting ? (exiting === "right" ? MAX_ROTATION : -MAX_ROTATION) : (offsetX / 20) * (MAX_ROTATION / 10);
+  const rotation =
+    exiting && exiting !== "center"
+      ? exiting === "right"
+        ? MAX_ROTATION
+        : -MAX_ROTATION
+      : (offsetX / 20) * (MAX_ROTATION / 10);
   const rightOpacity = Math.min(Math.max(offsetX / SWIPE_THRESHOLD, 0), 1);
   const leftOpacity = Math.min(Math.max(-offsetX / SWIPE_THRESHOLD, 0), 1);
 
@@ -203,25 +248,46 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
           </div>
 
           <div
-            className={`${styles.card}${exiting ? ` ${styles.cardExiting}` : ""}`}
+            className={`${styles.card}${exiting ? ` ${styles.cardExiting}` : ""}${
+              exiting === "center" ? ` ${styles.cardExitingCenter}` : ""
+            }`}
             style={{
-              transform: `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`,
+              transform:
+                exiting === "center"
+                  ? undefined
+                  : `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`,
+              opacity: exiting === "center" ? 0 : 1,
             }}
           >
-            <div className={styles.cardScroll}>
+            <div className={styles.pageHeader}>
+              <span className={styles.pageTitle}>{CARD_PAGE_LABELS[pageIndex]}</span>
+              <div className={styles.pageDots} aria-hidden>
+                {CARD_PAGE_LABELS.map((label, i) => (
+                  <span
+                    key={label}
+                    className={`${styles.pageDot}${i === pageIndex ? ` ${styles.pageDotActive}` : ""}`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className={styles.cardBody}>
               <CustomerSwipeCardContent
                 entry={entry}
                 hotCriteria={hotCriteria}
                 tablePhotoUrl={tablePhotoUrl}
                 onPhotoChange={setTablePhotoUrl}
-              />
-              <CustomerEntryNotesForm
-                variant="embedded"
+                page={pageIndex}
                 lineName={lineName}
                 memo={memo}
                 onLineNameChange={setLineName}
                 onMemoChange={setMemo}
               />
+            </div>
+            <div className={styles.pageNavHint} aria-hidden>
+              <span className={pageIndex > 0 ? styles.pageNavActive : ""}>← 戻る</span>
+              <span className={pageIndex < PAGE_COUNT - 1 ? styles.pageNavActive : ""}>
+                次へ →
+              </span>
             </div>
           </div>
         </div>
@@ -236,6 +302,13 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
           </button>
           <button
             type="button"
+            className={styles.actionCenter}
+            onClick={() => commitSwipe("center")}
+          >
+            連絡しない
+          </button>
+          <button
+            type="button"
             className={styles.actionRight}
             onClick={() => commitSwipe("right")}
           >
@@ -243,7 +316,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
           </button>
         </div>
 
-        <p className={styles.hint}>左右にフリック、またはボタンで処理</p>
+        <p className={styles.hint}>左右をタップで画面切替 · フリックまたはボタンで対応</p>
       </div>
     </div>
   );

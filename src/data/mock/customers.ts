@@ -15,6 +15,7 @@ export const customers: Customer[] = [
     totalSpending: 130_000,
     nominationCount: 1,
     accompanyCount: 0,
+    weeklyVisits: [0, 0, 0, 1, 2, 4, 3],
     lineUrl: "https://line.me/R/ti/p/@mock-tanaka",
     visitHistory: [
       { id: "vh-tn-1", date: "2026-05-31", type: "nomination", partySize: 2, subtotal: 18_000 },
@@ -35,6 +36,7 @@ export const customers: Customer[] = [
     totalSpending: 420_000,
     nominationCount: 14,
     accompanyCount: 2,
+    weeklyVisits: [0, 1, 2, 2, 5, 10, 8],
     lineUrl: "https://line.me/R/ti/p/@mock-watanabe",
     visitHistory: [
       { id: "vh-w-1", date: "2026-05-31", type: "nomination", partySize: 3, subtotal: 95_000 },
@@ -55,6 +57,7 @@ export const customers: Customer[] = [
     totalSpending: 380_000,
     nominationCount: 9,
     accompanyCount: 4,
+    weeklyVisits: [0, 0, 1, 2, 4, 8, 7],
     lineUrl: "https://line.me/R/ti/p/@mock-matsumoto",
     visitHistory: [
       { id: "vh-m-1", date: "2026-05-31", type: "nomination", partySize: 2, subtotal: 72_000 },
@@ -74,6 +77,7 @@ export const customers: Customer[] = [
     totalSpending: 120_000,
     nominationCount: 3,
     accompanyCount: 0,
+    weeklyVisits: [0, 0, 0, 1, 1, 3, 3],
     lineUrl: "https://line.me/R/ti/p/@mock-itou",
     visitHistory: [
       { id: "vh-i-1", date: "2026-05-31", type: "nomination", partySize: 1, subtotal: 22_000 },
@@ -93,6 +97,7 @@ export const customers: Customer[] = [
     totalSpending: 68_000,
     nominationCount: 2,
     accompanyCount: 0,
+    weeklyVisits: [0, 0, 1, 0, 1, 2, 1],
     visitHistory: [
       { id: "vh-h-1", date: "2026-05-31", type: "nomination", partySize: 2, subtotal: 15_000 },
     ],
@@ -131,6 +136,7 @@ export const customers: Customer[] = [
     totalSpending: 52_000,
     nominationCount: 0,
     accompanyCount: 0,
+    weeklyVisits: [0, 0, 0, 0, 1, 1, 1],
     visitHistory: [
       { id: "vh-n-1", date: "2026-05-31", type: "in-store", partySize: 2, subtotal: 28_000 },
     ],
@@ -167,6 +173,7 @@ export const customers: Customer[] = [
     totalSpending: 41_000,
     nominationCount: 0,
     accompanyCount: 0,
+    weeklyVisits: [0, 0, 0, 0, 0, 1, 1],
     visitHistory: [
       { id: "vh-in-1", date: "2026-05-31", type: "in-store", partySize: 3, subtotal: 32_000 },
     ],
@@ -184,6 +191,7 @@ export const customers: Customer[] = [
     totalSpending: 18_000,
     nominationCount: 0,
     accompanyCount: 0,
+    weeklyVisits: [1, 0, 0, 0, 0, 0, 0],
     visitHistory: [
       { id: "vh-kb-1", date: "2026-05-31", type: "in-store", partySize: 1, subtotal: 18_000 },
     ],
@@ -207,7 +215,7 @@ export const customers: Customer[] = [
     averageSpending: 56_667,
     nominationCount: 6,
     accompanyCount: 3,
-    weeklyVisits: [0, 21, 0, 0, 28, 0, 0],
+    weeklyVisits: [0, 1, 0, 0, 2, 5, 4],
     notes: "ウィスキーが好き。記念日の前後は特に丁寧に。",
     lineUrl: "https://line.me/R/ti/p/@mock-yamada",
     visitHistory: [
@@ -231,6 +239,7 @@ export const customers: Customer[] = [
     totalSpending: 110_000,
     nominationCount: 0,
     accompanyCount: 2,
+    weeklyVisits: [0, 0, 0, 1, 1, 2, 2],
     lineUrl: "https://line.me/R/ti/p/@mock-kato",
     visitHistory: [
       { id: "vh-ka-1", date: "2026-05-31", type: "accompany", partySize: 2, subtotal: 38_000 },
@@ -251,6 +260,7 @@ export const customers: Customer[] = [
     totalSpending: 510_000,
     nominationCount: 0,
     accompanyCount: 8,
+    weeklyVisits: [0, 2, 3, 3, 6, 12, 9],
     lineUrl: "https://line.me/R/ti/p/@mock-yoshida",
     visitHistory: [
       { id: "vh-yo-1", date: "2026-05-31", type: "accompany", partySize: 4, subtotal: 120_000 },
@@ -269,6 +279,7 @@ export const customers: Customer[] = [
     totalSpending: 24_000,
     nominationCount: 0,
     accompanyCount: 1,
+    weeklyVisits: [1, 0, 0, 0, 0, 0, 0],
     visitHistory: [
       { id: "vh-ki-1", date: "2026-05-31", type: "accompany", partySize: 2, subtotal: 24_000 },
     ],
@@ -289,6 +300,7 @@ export const customers: Customer[] = [
     averageSpending: 173_333,
     nominationCount: 0,
     accompanyCount: 1,
+    weeklyVisits: [0, 0, 0, 0, 1, 1, 1],
     lineUrl: "https://line.me/R/ti/p/@mock-suzuki",
     visitHistory: [
       { id: "vh-z-1", date: "2026-05-31", type: "accompany", partySize: 4, subtotal: 180_000 },
@@ -309,6 +321,7 @@ export const customers: Customer[] = [
     totalSpending: 195_000,
     nominationCount: 5,
     accompanyCount: 1,
+    weeklyVisits: [0, 1, 2, 2, 3, 4, 3],
     lineUrl: "https://line.me/R/ti/p/@mock-fujita",
     visitHistory: [
       { id: "vh-f-1", date: "2026-05-31", type: "nomination", partySize: 2, subtotal: 28_000 },

@@ -7,7 +7,6 @@ import { formatMemoEntryHeading } from "@/lib/memoDisplay";
 import { formatServiceTimeRange } from "@/lib/serviceDisplay";
 import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
 import styles from "./ShiftMemoEditModal.module.css";
-import overlayStyles from "./SwipeCustomerModal.module.css";
 
 type Props = {
   entry: ThankYouEntry;
@@ -50,21 +49,9 @@ export function ShiftMemoEditModal({
   }, []);
 
   return createPortal(
-    <div className={overlayStyles.overlay} onClick={onClose} role="presentation">
-      <button
-        type="button"
-        className={overlayStyles.closeIcon}
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        aria-label="閉じる"
-      >
-        ✕
-      </button>
-
+    <div className={styles.overlay} onClick={onClose} role="presentation">
       <div
-        className={`${overlayStyles.modalBody} ${styles.modalBody}`}
+        className={styles.dialog}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-labelledby="shift-memo-title"
@@ -81,6 +68,7 @@ export function ShiftMemoEditModal({
 
         <div className={styles.notesCard}>
           <CustomerEntryNotesForm
+            variant="embedded"
             lineName={lineName}
             memo={body}
             memoRows={4}
@@ -89,44 +77,44 @@ export function ShiftMemoEditModal({
           />
         </div>
 
-        <div className={styles.actions}>
+        <div className={styles.primaryActions}>
           <button
             type="button"
             className={styles.saveBtn}
             disabled={!canSave}
-            onClick={() => {
-              onSave(entry.serviceRecordId, payload());
-              onClose();
-            }}
+            onClick={() => onSave(entry.serviceRecordId, payload())}
           >
             保存
           </button>
-
-          {!isDone ? (
-            <button
-              type="button"
-              className={styles.doneBtn}
-              disabled={!canSave}
-              onClick={() => {
-                onMarkDone(entry.serviceRecordId, payload());
-                onClose();
-              }}
-            >
-              対応済みにする
-            </button>
-          ) : (
-            <button
-              type="button"
-              className={styles.backBtn}
-              onClick={() => {
-                onMarkPending(entry.serviceRecordId);
-                onClose();
-              }}
-            >
-              現在対応中に戻す
-            </button>
-          )}
+          <button type="button" className={styles.closeBtn} onClick={onClose}>
+            閉じる
+          </button>
         </div>
+
+        {!isDone ? (
+          <button
+            type="button"
+            className={styles.doneBtn}
+            disabled={!canSave}
+            onClick={() => {
+              onMarkDone(entry.serviceRecordId, payload());
+              onClose();
+            }}
+          >
+            対応済みにする
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => {
+              onMarkPending(entry.serviceRecordId);
+              onClose();
+            }}
+          >
+            現在対応中に戻す
+          </button>
+        )}
       </div>
     </div>,
     document.body,

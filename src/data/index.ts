@@ -7,6 +7,7 @@ import { sendStatuses } from "./mock/sendStatuses";
 import { hotCriteria } from "./mock/hotCriteria";
 import { session } from "./mock/session";
 import { shiftMemos } from "./mock/shiftMemos";
+import { followUpRecords } from "./mock/followUpRecords";
 
 export const initialAppData: AppData = {
   config,
@@ -17,6 +18,7 @@ export const initialAppData: AppData = {
   hotCriteria,
   session,
   shiftMemos,
+  followUpRecords,
 };
 
 export * from "./types";

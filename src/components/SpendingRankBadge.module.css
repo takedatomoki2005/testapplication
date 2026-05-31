@@ -1,0 +1,67 @@
+.row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rank {
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.amount {
+  font-weight: 500;
+  color: var(--color-text-sub);
+  white-space: nowrap;
+}
+
+.hero .rank {
+  font-size: 22px;
+}
+
+.hero .amount {
+  font-size: 11px;
+}
+
+.stat .rank {
+  font-size: 15px;
+}
+
+.stat .amount {
+  font-size: 9px;
+}
+
+.history .rank {
+  font-size: 12px;
+}
+
+.history .amount {
+  font-size: 10px;
+}
+
+/* Rank letter colors only — no background */
+.rankS {
+  color: #6a1b9a;
+}
+
+.rankA {
+  color: #e65100;
+}
+
+.rankB {
+  color: var(--color-primary);
+}
+
+.rankC {
+  color: #00838f;
+}
+
+.rankD {
+  color: #5c6bc0;
+}
+
+.rankE {
+  color: var(--color-text-sub);
+}

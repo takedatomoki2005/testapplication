@@ -18,10 +18,11 @@ export function UndoStatusModal({ entry, onConfirm, onClose }: Props) {
         aria-labelledby="undo-status-title"
       >
         <p id="undo-status-title" className={styles.title}>
-          判定前に戻しますか？
+          対応前に戻しますか？
         </p>
         <p className={styles.sub}>
-          {formatListCustomerName(entry.customer).primary.replace(" 様", "")}さんのステータスを判定前に戻します。
+          {formatListCustomerName(entry.customer).primary.replace(" 様", "")}
+          さんのステータスを対応前に戻します。
         </p>
         <div className={styles.actions}>
           <button type="button" className={styles.cancelBtn} onClick={onClose}>

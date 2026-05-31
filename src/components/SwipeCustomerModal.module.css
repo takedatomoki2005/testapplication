@@ -9,8 +9,7 @@
   align-items: center;
   justify-content: center;
   padding: max(56px, env(safe-area-inset-top) + 40px) 16px max(16px, env(safe-area-inset-bottom));
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 
 .modalBody {
@@ -51,13 +50,12 @@
   position: relative;
   width: 100%;
   max-width: 340px;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   height: min(62vh, 520px);
-  max-height: min(62vh, 520px);
   display: flex;
   align-items: stretch;
   justify-content: center;
-  touch-action: pan-y;
+  touch-action: none;
   user-select: none;
 }
 
@@ -73,22 +71,77 @@
   overflow: hidden;
   transition: transform 0.08s ease-out;
   will-change: transform;
-  touch-action: pan-y;
+  touch-action: none;
 }
 
 .cardExiting {
   transition: transform 0.28s ease-in;
 }
 
+.cardExitingCenter {
+  transition: opacity 0.28s ease-in;
+}
+
+.pageHeader {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pageTitle {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+}
+
+.pageDots {
+  display: flex;
+  gap: 5px;
+}
+
+.pageDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.pageDotActive {
+  background: var(--color-primary);
+}
+
+.cardBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  padding: 16px 18px 8px;
+  user-select: text;
+}
+
+.pageNavHint {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 18px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #ccc;
+  border-top: 1px solid var(--color-border);
+}
+
+.pageNavActive {
+  color: var(--color-text-sub);
+}
+
 .cardScroll {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   padding: 20px 18px 24px;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
   user-select: text;
 }
 
@@ -119,9 +172,18 @@
   transform: rotate(12deg);
 }
 
+.stampCenter {
+  left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  color: #8d6e63;
+  border-color: #8d6e63;
+  font-size: 18px;
+}
+
 .actions {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   max-width: 340px;
   margin-top: 14px;
@@ -130,11 +192,26 @@
 .actionLeft,
 .actionRight {
   flex: 1;
-  padding: 14px 10px;
+  padding: 14px 8px;
   border-radius: 14px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   color: #fff;
+}
+
+.actionCenter {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.actionCenter:active {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .actionLeft {

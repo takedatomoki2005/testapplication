@@ -72,7 +72,7 @@ export function ThankYouListPage() {
       {hasAnyTarget && <AchievementReminder summary={achievement} />}
 
       <h2 className={styles.listTitle}>振り返り</h2>
-      <p className={styles.listHint}>お客様をタップ → フリックで処理</p>
+      <p className={styles.listHint}>お客様をタップ → フリックで対応</p>
 
       {!hasAnyTarget ? (
         <p className={styles.empty}>本日の接客履歴はありません</p>

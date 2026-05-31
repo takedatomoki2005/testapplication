@@ -17,6 +17,7 @@ import {
   type ShiftMemo,
   type ShiftMemoStatus,
   type ThankYouEntry,
+  type FollowUpRecordOverride,
 } from "@/data";
 import {
   entryId,
@@ -25,13 +26,14 @@ import {
   getMemoEntriesForCast,
 } from "@/lib/thankYou";
 
-const STORAGE_KEY = "cast-app-thank-you-state-v3";
+const STORAGE_KEY = "cast-app-thank-you-state-v4";
 
 interface PersistedState {
   sendStatuses: AppData["sendStatuses"];
   hotCriteria: HotCriteria;
   session: SessionUser;
   shiftMemos: ShiftMemo[];
+  followUpOverrides: Record<string, FollowUpRecordOverride>;
 }
 
 type LegacyShiftMemo = ShiftMemo & { entryId?: string };
@@ -56,6 +58,7 @@ function loadPersistedState(): Partial<PersistedState> {
     return {
       ...parsed,
       shiftMemos: normalizeShiftMemos(parsed.shiftMemos),
+      followUpOverrides: parsed.followUpOverrides ?? {},
     };
   } catch {
     return {};
@@ -80,7 +83,7 @@ function trimNotes(notes?: EntryNotes): EntryNotes | undefined {
 }
 
 function buildStatusRecord(
-  status: "sent" | "no_line_exchange",
+  status: "sent" | "no_line_exchange" | "no_contact",
   castId: string,
   notes?: EntryNotes,
 ) {
@@ -106,6 +109,7 @@ interface AppContextValue {
   pendingMemoCount: number;
   markSent: (entryId: string, notes?: EntryNotes) => void;
   markNoLineExchange: (entryId: string, notes?: EntryNotes) => void;
+  markNoContact: (entryId: string, notes?: EntryNotes) => void;
   undoSent: (entryId: string) => void;
   updateHotCriteria: (criteria: HotCriteria) => void;
   switchSession: (session: SessionUser) => void;
@@ -113,6 +117,8 @@ interface AppContextValue {
   upsertShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
   completeShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
   reopenShiftMemo: (serviceRecordId: string) => void;
+  followUpOverrides: Record<string, FollowUpRecordOverride>;
+  updateFollowUpMemo: (recordId: string, payload: FollowUpRecordOverride) => void;
   canManage: boolean;
   isAdmin: boolean;
 }
@@ -154,6 +160,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [shiftMemos, setShiftMemos] = useState<ShiftMemo[]>(
     () => persisted.shiftMemos ?? initialAppData.shiftMemos,
   );
+  const [followUpOverrides, setFollowUpOverrides] = useState<
+    Record<string, FollowUpRecordOverride>
+  >(() => persisted.followUpOverrides ?? {});
 
   const businessDate = initialAppData.config.businessDate;
 
@@ -164,9 +173,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         hotCriteria: next.hotCriteria ?? hotCriteria,
         session: next.session ?? session,
         shiftMemos: next.shiftMemos ?? shiftMemos,
+        followUpOverrides: next.followUpOverrides ?? followUpOverrides,
       });
     },
-    [sendStatuses, hotCriteria, session, shiftMemos],
+    [sendStatuses, hotCriteria, session, shiftMemos, followUpOverrides],
   );
 
   const myEntries = useMemo(() => {
@@ -204,7 +214,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const allSent =
     myEntries.length > 0 &&
     myEntries.every(
-      (e) => e.sendStatus === "sent" || e.sendStatus === "no_line_exchange",
+      (e) =>
+        e.sendStatus === "sent" ||
+        e.sendStatus === "no_line_exchange" ||
+        e.sendStatus === "no_contact",
     );
   const hasAnyTarget = myEntries.length > 0;
 
@@ -246,6 +259,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const next = {
           ...prev,
           [entryId]: buildStatusRecord("no_line_exchange", session.castId!, notes),
+        };
+        persist({ sendStatuses: next });
+        return next;
+      });
+    },
+    [session.castId, persist],
+  );
+
+  const markNoContact = useCallback(
+    (entryId: string, notes?: EntryNotes) => {
+      if (!session.castId) return;
+      setSendStatuses((prev) => {
+        const next = {
+          ...prev,
+          [entryId]: buildStatusRecord("no_contact", session.castId!, notes),
         };
         persist({ sendStatuses: next });
         return next;
@@ -396,6 +424,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [persist],
   );
 
+  const updateFollowUpMemo = useCallback(
+    (recordId: string, payload: FollowUpRecordOverride) => {
+      setFollowUpOverrides((prev) => {
+        const next = {
+          ...prev,
+          [recordId]: {
+            lineName: payload.lineName?.trim(),
+            lastMemo: payload.lastMemo?.trim(),
+          },
+        };
+        persist({ followUpOverrides: next });
+        return next;
+      });
+    },
+    [persist],
+  );
+
   const getEntryById = useCallback(
     (entryId: string) => {
       if (session.role === "cast" && session.castId) {
@@ -432,6 +477,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         pendingMemoCount,
         markSent,
         markNoLineExchange,
+        markNoContact,
         undoSent,
         updateHotCriteria,
         switchSession,
@@ -439,6 +485,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         upsertShiftMemo,
         completeShiftMemo,
         reopenShiftMemo,
+        followUpOverrides,
+        updateFollowUpMemo,
         canManage: session.role === "manager" || session.role === "admin",
         isAdmin: session.role === "admin",
       }}

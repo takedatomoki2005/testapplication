@@ -2,6 +2,7 @@ import type {
   AppData,
   CastSendSummary,
   Customer,
+  FollowUpContact,
   HotCriteria,
   SendStatusRecord,
   ServiceRecord,
@@ -57,6 +58,36 @@ export function buildThankYouEntry(
     markedByCastId: statusRecord?.markedByCastId,
     lineName: statusRecord?.lineName,
     memo: statusRecord?.memo,
+  };
+}
+
+export function buildThankYouEntryFromFollowUpContact(
+  contact: FollowUpContact,
+  serviceRecords: ServiceRecord[],
+  criteria: HotCriteria,
+): ThankYouEntry {
+  const record = serviceRecords.find(
+    (r) =>
+      r.customerId === contact.customer.id &&
+      r.castId === contact.castId &&
+      r.visitDate === contact.visitDate,
+  );
+  const id = entryId(contact.customer.id, contact.castId, contact.visitDate);
+  return {
+    id,
+    serviceRecordId: record?.id ?? contact.id,
+    customer: contact.customer,
+    castId: contact.castId,
+    visitDate: contact.visitDate,
+    tableNumber: record?.tableNumber,
+    serviceStartTime: record?.serviceStartTime,
+    serviceEndTime: record?.serviceEndTime,
+    tablePhotoUrl: record?.tablePhotoUrl,
+    hot: evaluateHotCustomer(contact.customer, criteria),
+    sendStatus: "sent",
+    markedAt: contact.thankYouSentAt,
+    lineName: contact.lineName,
+    memo: contact.lastMemo,
   };
 }
 

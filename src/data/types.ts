@@ -1,5 +1,5 @@
 export type UserRole = "cast" | "manager" | "admin";
-export type SendStatus = "unsent" | "sent" | "no_line_exchange";
+export type SendStatus = "unsent" | "sent" | "no_line_exchange" | "no_contact";
 export type HotReasonType = "spending" | "visits" | "nominations";
 export type CustomerRank = "diamond" | "platinum" | "gold" | "silver";
 export type VisitType = "nomination" | "accompany" | "in-store";
@@ -157,4 +157,64 @@ export interface AppData {
   hotCriteria: HotCriteria;
   session: SessionUser;
   shiftMemos: ShiftMemo[];
+  followUpRecords: FollowUpRecord[];
+}
+
+/** お礼送信済み — フォローアップ探索用 */
+export interface FollowUpRecord {
+  id: string;
+  customerId: string;
+  castId: string;
+  visitDate: string;
+  thankYouSentAt: string;
+  lineName?: string;
+  lastMemo?: string;
+}
+
+export type FollowUpPriority = "urgent" | "high" | "normal" | "low";
+
+export type FollowUpFilter = "all" | "needs_follow" | "high_priority" | "window_3_7";
+
+/** 探すページ — 詳細フィルター */
+export interface DiscoverAdvancedFilters {
+  /** 接客から最短 ○ 日前 */
+  daysSinceVisitMin?: number;
+  /** 接客から最長 ○ 日前 */
+  daysSinceVisitMax?: number;
+  /** 累計金額（円）下限 */
+  totalSpendingMin?: number;
+  /** 累計金額（円）上限 */
+  totalSpendingMax?: number;
+  /** 平均利用金額（円）下限 */
+  avgSpendingMin?: number;
+  /** 平均利用金額（円）上限 */
+  avgSpendingMax?: number;
+  /** 接客曜日（0=日 … 6=土）— 空なら全曜日 */
+  weekdays: number[];
+  /** 誕生月（1–12）— 未指定なら全月 */
+  birthdayMonth?: number;
+  /** 誕生日（1–31）— 未指定なら全日 */
+  birthdayDay?: number;
+}
+
+export interface FollowUpRecordOverride {
+  lastMemo?: string;
+  lineName?: string;
+}
+
+export interface FollowUpContact {
+  id: string;
+  customer: Customer;
+  castId: string;
+  visitDate: string;
+  thankYouSentAt: string;
+  daysSinceSent: number;
+  daysSinceVisit: number;
+  visitWeekday: number;
+  lineName?: string;
+  lastMemo?: string;
+  priority: FollowUpPriority;
+  priorityScore: number;
+  priorityReasons: string[];
+  suggestedAction: string;
 }
