@@ -7,9 +7,18 @@ type Props = {
   centered?: boolean;
   messageOnly?: boolean;
   monthlyCount?: number;
+  onPrimary?: boolean;
 };
 
-export function Greeting({ name, allSent, unsent, centered, messageOnly, monthlyCount }: Props) {
+export function Greeting({
+  name,
+  allSent,
+  unsent,
+  centered,
+  messageOnly,
+  monthlyCount,
+  onPrimary,
+}: Props) {
   const showStatus = !messageOnly && (allSent !== undefined || unsent !== undefined);
 
   const mainMessage = messageOnly
@@ -19,12 +28,14 @@ export function Greeting({ name, allSent, unsent, centered, messageOnly, monthly
     : `${name}さん、今日もお疲れ様でした！`;
 
   return (
-    <div className={`${styles.greeting} ${centered ? styles.centered : ""}`}>
+    <div
+      className={`${styles.greeting} ${centered ? styles.centered : ""} ${onPrimary ? styles.onPrimary : ""}`}
+    >
       <p className={styles.greetingMain}>{mainMessage}</p>
       {showStatus && (
         <p className={styles.greetingSub}>
           {allSent
-            ? "本日のお礼LINE、全員に処理完了 ✨"
+            ? "本日のお礼LINE、処理完了 ✨"
             : unsent && unsent > 0
               ? `タップして確認 — あと${unsent}件`
               : "本日の接客おつかれさまです"}

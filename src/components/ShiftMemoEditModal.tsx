@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import type { ShiftMemo, ThankYouEntry } from "@/data/types";
+import type { ExpectationRank, ShiftMemo, ThankYouEntry } from "@/data/types";
 import type { ShiftMemoEntryPayload } from "@/context/AppContext";
 import { formatListCustomerName } from "@/lib/customerDisplay";
+import { EXPECTATION_RANK_LABEL } from "@/lib/expectationRank";
 import { formatMemoEntryHeading } from "@/lib/memoDisplay";
 import { formatServiceTimeRange } from "@/lib/serviceDisplay";
 import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
+import { ExpectationRankStars } from "./ExpectationRankStars";
 import styles from "./ShiftMemoEditModal.module.css";
 
 type Props = {
@@ -27,6 +29,9 @@ export function ShiftMemoEditModal({
 }: Props) {
   const [lineName, setLineName] = useState(entry.lineName ?? "");
   const [body, setBody] = useState(memo?.body ?? "");
+  const [expectationRank, setExpectationRank] = useState<ExpectationRank | undefined>(
+    memo?.expectationRank,
+  );
   const { alias } = formatListCustomerName(entry.customer);
   const heading = formatMemoEntryHeading(entry);
   const serviceTime = formatServiceTimeRange(
@@ -39,6 +44,7 @@ export function ShiftMemoEditModal({
   const payload = (): ShiftMemoEntryPayload => ({
     body: body.trim(),
     lineName: lineName.trim(),
+    expectationRank,
   });
 
   useEffect(() => {
@@ -47,6 +53,12 @@ export function ShiftMemoEditModal({
       document.body.style.overflow = "";
     };
   }, []);
+
+  useEffect(() => {
+    setLineName(entry.lineName ?? "");
+    setBody(memo?.body ?? "");
+    setExpectationRank(memo?.expectationRank);
+  }, [entry.serviceRecordId, entry.lineName, memo?.body, memo?.expectationRank]);
 
   return createPortal(
     <div className={styles.overlay} onClick={onClose} role="presentation">
@@ -67,6 +79,13 @@ export function ShiftMemoEditModal({
         </div>
 
         <div className={styles.notesCard}>
+          <div className={styles.rankField}>
+            <span className={styles.rankLabel}>{EXPECTATION_RANK_LABEL}</span>
+            <ExpectationRankStars
+              value={expectationRank}
+              onChange={setExpectationRank}
+            />
+          </div>
           <CustomerEntryNotesForm
             variant="embedded"
             lineName={lineName}

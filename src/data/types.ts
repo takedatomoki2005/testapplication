@@ -1,3 +1,5 @@
+import type { ExpectationRank } from "@/lib/expectationRank";
+
 export type UserRole = "cast";
 export type SendStatus = "unsent" | "sent" | "no_line_exchange" | "no_contact";
 export type HotReasonType = "spending" | "visits" | "nominations";
@@ -127,12 +129,15 @@ export interface AppConfig {
 
 export type ShiftMemoStatus = "pending" | "done";
 
-/** 退勤前の振り返りメモ（接客レコード＝卓ごとに紐づく） */
+export type { ExpectationRank };
+
 export interface ShiftMemo {
   serviceRecordId: string;
   castId: string;
   businessDate: string;
   body: string;
+  /** 再来店・リターンなどへの感覚期待（任意） */
+  expectationRank?: ExpectationRank;
   status: ShiftMemoStatus;
   createdAt: string;
   completedAt?: string;

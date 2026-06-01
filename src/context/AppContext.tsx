@@ -23,8 +23,13 @@ import {
   getEntriesForCast,
   getMemoEntriesForCast,
 } from "@/lib/thankYou";
+import {
+  filterThankYouEntriesByMode,
+  isThankYouCastMode,
+  type ThankYouCastMode,
+} from "@/lib/thankYouCastMode";
 
-const STORAGE_KEY = "cast-app-thank-you-state-v4";
+const STORAGE_KEY = "cast-app-thank-you-state-v5";
 
 interface PersistedState {
   sendStatuses: AppData["sendStatuses"];
@@ -32,6 +37,7 @@ interface PersistedState {
   session: SessionUser;
   shiftMemos: ShiftMemo[];
   followUpOverrides: Record<string, FollowUpRecordOverride>;
+  thankYouCastMode?: ThankYouCastMode;
 }
 
 type LegacyShiftMemo = ShiftMemo & { entryId?: string };
@@ -50,13 +56,18 @@ function normalizeShiftMemos(value: unknown): ShiftMemo[] | undefined {
 
 function loadPersistedState(): Partial<PersistedState> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw =
+      localStorage.getItem(STORAGE_KEY) ??
+      localStorage.getItem("cast-app-thank-you-state-v4");
     if (!raw) return {};
     const parsed = JSON.parse(raw) as Partial<PersistedState>;
     return {
       ...parsed,
       shiftMemos: normalizeShiftMemos(parsed.shiftMemos),
       followUpOverrides: parsed.followUpOverrides ?? {},
+      thankYouCastMode: isThankYouCastMode(parsed.thankYouCastMode)
+        ? parsed.thankYouCastMode
+        : "full",
     };
   } catch {
     return {};
@@ -97,6 +108,8 @@ interface AppContextValue {
   businessDate: string;
   session: SessionUser;
   hotCriteria: HotCriteria;
+  thankYouCastMode: ThankYouCastMode;
+  setThankYouCastMode: (mode: ThankYouCastMode) => void;
   myEntries: ThankYouEntry[];
   myMemoEntries: ThankYouEntry[];
   myShiftMemos: ShiftMemo[];
@@ -104,6 +117,7 @@ interface AppContextValue {
   allSent: boolean;
   hasAnyTarget: boolean;
   pendingMemoCount: number;
+  filterEntriesByCastMode: (entries: ThankYouEntry[]) => ThankYouEntry[];
   markSent: (entryId: string, notes?: EntryNotes) => void;
   markNoLineExchange: (entryId: string, notes?: EntryNotes) => void;
   markNoContact: (entryId: string, notes?: EntryNotes) => void;
@@ -123,6 +137,7 @@ const AppContext = createContext<AppContextValue | null>(null);
 export type ShiftMemoEntryPayload = {
   body: string;
   lineName: string;
+  expectationRank?: ShiftMemo["expectationRank"];
 };
 
 function resolveThankYouEntryId(serviceRecordId: string): string | null {
@@ -157,6 +172,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [followUpOverrides, setFollowUpOverrides] = useState<
     Record<string, FollowUpRecordOverride>
   >(() => persisted.followUpOverrides ?? {});
+  const [thankYouCastMode, setThankYouCastModeState] = useState<ThankYouCastMode>(
+    () =>
+      isThankYouCastMode(persisted.thankYouCastMode) ? persisted.thankYouCastMode : "full",
+  );
 
   const businessDate = initialAppData.config.businessDate;
 
@@ -168,9 +187,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
         session: next.session ?? session,
         shiftMemos: next.shiftMemos ?? shiftMemos,
         followUpOverrides: next.followUpOverrides ?? followUpOverrides,
+        thankYouCastMode: next.thankYouCastMode ?? thankYouCastMode,
       });
     },
-    [sendStatuses, hotCriteria, session, shiftMemos, followUpOverrides],
+    [sendStatuses, hotCriteria, session, shiftMemos, followUpOverrides, thankYouCastMode],
+  );
+
+  const setThankYouCastMode = useCallback(
+    (mode: ThankYouCastMode) => {
+      setThankYouCastModeState(mode);
+      persist({ thankYouCastMode: mode });
+    },
+    [persist],
+  );
+
+  const filterEntriesByCastMode = useCallback(
+    (entries: ThankYouEntry[]) => filterThankYouEntriesByMode(entries, thankYouCastMode),
+    [thankYouCastMode],
   );
 
   const castId = session.castId ?? "cast-a";
@@ -199,16 +232,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [castId, businessDate, sendStatuses, hotCriteria],
   );
 
-  const unsentCount = myEntries.filter((e) => e.sendStatus === "unsent").length;
+  const modeEntries = useMemo(
+    () => filterThankYouEntriesByMode(myEntries, thankYouCastMode),
+    [myEntries, thankYouCastMode],
+  );
+
+  const unsentCount = modeEntries.filter((e) => e.sendStatus === "unsent").length;
   const allSent =
-    myEntries.length > 0 &&
-    myEntries.every(
+    modeEntries.length > 0 &&
+    modeEntries.every(
       (e) =>
         e.sendStatus === "sent" ||
         e.sendStatus === "no_line_exchange" ||
         e.sendStatus === "no_contact",
     );
-  const hasAnyTarget = myEntries.length > 0;
+  const hasAnyTarget = modeEntries.length > 0;
 
   const myShiftMemos = useMemo(() => {
     if (session.role !== "cast" || !session.castId) return [];
@@ -322,7 +360,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const existing = prev.find((m) => m.serviceRecordId === serviceRecordId);
         const next = existing
           ? prev.map((m) =>
-              m.serviceRecordId === serviceRecordId ? { ...m, body: trimmed } : m,
+              m.serviceRecordId === serviceRecordId
+                ? { ...m, body: trimmed, expectationRank: payload.expectationRank }
+                : m,
             )
           : [
               ...prev,
@@ -331,6 +371,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 castId: session.castId!,
                 businessDate,
                 body: trimmed,
+                expectationRank: payload.expectationRank,
                 status: "pending" as ShiftMemoStatus,
                 createdAt: now,
               },
@@ -360,6 +401,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           ? {
               ...existing,
               body: trimmed,
+              expectationRank: payload.expectationRank,
               status: "done",
               completedAt: now,
             }
@@ -368,6 +410,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
               castId: session.castId!,
               businessDate,
               body: trimmed,
+              expectationRank: payload.expectationRank,
               status: "done",
               createdAt: now,
               completedAt: now,
@@ -449,6 +492,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         businessDate,
         session,
         hotCriteria,
+        thankYouCastMode,
+        setThankYouCastMode,
         myEntries,
         myMemoEntries,
         myShiftMemos,
@@ -456,6 +501,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         allSent,
         hasAnyTarget,
         pendingMemoCount,
+        filterEntriesByCastMode,
         markSent,
         markNoLineExchange,
         markNoContact,

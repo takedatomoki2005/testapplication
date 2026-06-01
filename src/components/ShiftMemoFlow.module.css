@@ -134,6 +134,10 @@
   margin-bottom: 8px;
 }
 
+.rankRow {
+  margin-bottom: 6px;
+}
+
 .nameBlock {
   min-width: 0;
 }

@@ -63,7 +63,21 @@
   margin-top: 0;
 }
 
-.notesCard > div {
+.rankField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+}
+
+.rankLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-sub);
+}
+
+.notesCard > div:last-child {
   margin-top: 0;
   max-width: none;
 }

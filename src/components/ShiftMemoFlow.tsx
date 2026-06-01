@@ -2,6 +2,7 @@ import { formatListCustomerName } from "@/lib/customerDisplay";
 import { formatMemoEntryHeading } from "@/lib/memoDisplay";
 import { formatServiceTimeRange } from "@/lib/serviceDisplay";
 import type { EntryMemoRow } from "@/lib/shiftMemo";
+import { ExpectationRankStars } from "./ExpectationRankStars";
 import styles from "./ShiftMemoFlow.module.css";
 
 type Props = {
@@ -61,6 +62,11 @@ function MemoRow({
           </div>
           {serviceTime && <span className={styles.time}>{serviceTime}</span>}
         </header>
+        {memo?.expectationRank && (
+          <div className={styles.rankRow}>
+            <ExpectationRankStars value={memo.expectationRank} size="sm" />
+          </div>
+        )}
         <p className={styles.preview}>{preview}</p>
       </button>
     </li>

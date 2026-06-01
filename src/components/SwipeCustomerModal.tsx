@@ -50,10 +50,23 @@ type SwipeDir = "left" | "right" | "center" | null;
 
 export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustomerModalProps) {
   const navigate = useNavigate();
-  const { hotCriteria, markSent, markNoLineExchange, markNoContact, session, myEntries, followUpOverrides, businessDate } =
-    useApp();
-  const categorySummary = computeVisitCategoryProgress(myEntries);
-  const flameMap = useMemo(() => buildThankYouFlameMap(myEntries), [myEntries]);
+  const {
+    hotCriteria,
+    markSent,
+    markNoLineExchange,
+    markNoContact,
+    session,
+    myEntries,
+    filterEntriesByCastMode,
+    followUpOverrides,
+    businessDate,
+  } = useApp();
+  const modeEntries = useMemo(
+    () => filterEntriesByCastMode(myEntries),
+    [filterEntriesByCastMode, myEntries],
+  );
+  const categorySummary = computeVisitCategoryProgress(modeEntries);
+  const flameMap = useMemo(() => buildThankYouFlameMap(modeEntries), [modeEntries]);
 
   const { discoverCount, discoverHighlights } = useMemo(() => {
     const castId = session.castId ?? "cast-a";

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useApp } from "@/context/AppContext";
 import { AchievementReminder } from "@/components/AchievementReminder";
+import { ThankYouCastModeSwitcher } from "@/components/ThankYouCastModeSwitcher";
 import { CustomerCard } from "@/components/CustomerCard";
 import { Greeting } from "@/components/Greeting";
 import { SwipeCustomerModal } from "@/components/SwipeCustomerModal";
@@ -17,7 +18,15 @@ const MAX_PAST_DAYS = 2;
 
 export function ThankYouListPage() {
   const location = useLocation();
-  const { session, businessDate, getEntriesForVisitDate, undoSent } = useApp();
+  const {
+    session,
+    businessDate,
+    getEntriesForVisitDate,
+    undoSent,
+    thankYouCastMode,
+    setThankYouCastMode,
+    filterEntriesByCastMode,
+  } = useApp();
   const [dateOffset, setDateOffset] = useState(0);
   const [swipeOpen, setSwipeOpen] = useState(false);
   const [swipeStartIndex, setSwipeStartIndex] = useState(0);
@@ -30,9 +39,14 @@ export function ThankYouListPage() {
   );
   const isToday = dateOffset === 0;
 
-  const displayEntries = useMemo(
+  const allEntries = useMemo(
     () => getEntriesForVisitDate(selectedDate),
     [getEntriesForVisitDate, selectedDate],
+  );
+
+  const displayEntries = useMemo(
+    () => filterEntriesByCastMode(allEntries),
+    [allEntries, filterEntriesByCastMode],
   );
 
   const unsentEntries = useMemo(
@@ -101,20 +115,36 @@ export function ThankYouListPage() {
   return (
     <div className={styles.page}>
       {isToday ? (
-        <Greeting name={session.name} allSent={allSent} unsent={unsentCount} />
+        <div className={styles.hero}>
+          <Greeting
+            name={session.name}
+            allSent={allSent}
+            unsent={unsentCount}
+            onPrimary
+          />
+          <ThankYouCastModeSwitcher
+            mode={thankYouCastMode}
+            onChange={setThankYouCastMode}
+            targetCount={displayEntries.length}
+            totalCount={allEntries.length}
+          />
+        </div>
       ) : (
-        <div className={styles.pastGreeting}>
-          <p className={styles.pastGreetingMain}>{formatBusinessDate(selectedDate)}</p>
-          <p className={styles.pastGreetingSub}>
-            {allSent
-              ? "この日のお礼LINE、全員に処理完了 ✨"
-              : unsentCount > 0
-                ? `未対応があと${unsentCount}件 — タップして確認`
-                : "この日のお礼LINE"}
-          </p>
+        <div className={styles.pastHero}>
+          <div className={styles.pastGreeting}>
+            <p className={styles.pastGreetingMain}>{formatBusinessDate(selectedDate)}</p>
+            <p className={styles.pastGreetingSub}>
+              {allSent
+                ? "この日のお礼LINE、処理完了 ✨"
+                : unsentCount > 0
+                  ? `未対応があと${unsentCount}件 — タップして確認`
+                  : "この日のお礼LINE"}
+            </p>
+          </div>
         </div>
       )}
 
+      <div className={styles.content}>
       {hasAnyTarget && <AchievementReminder summary={achievement} />}
 
       <div className={styles.listHeader}>
@@ -143,7 +173,11 @@ export function ThankYouListPage() {
 
       {!hasAnyTarget ? (
         <p className={styles.empty}>
-          {isToday ? "本日の接客履歴はありません" : "この日の接客履歴はありません"}
+          {allEntries.length > 0 && isToday
+            ? "このモードの対象となるお客様はいません"
+            : isToday
+              ? "本日の接客履歴はありません"
+              : "この日の接客履歴はありません"}
         </p>
       ) : (
         displayEntries.map((entry) => (
@@ -179,6 +213,7 @@ export function ThankYouListPage() {
           onConfirm={confirmUndo}
         />
       )}
+      </div>
     </div>
   );
 }

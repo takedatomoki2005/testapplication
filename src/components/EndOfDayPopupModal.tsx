@@ -27,7 +27,7 @@ export function EndOfDayPopupModal({
   }, []);
 
   const statusText = allSent
-    ? "本日のお礼LINE、全員に処理完了 ✨"
+    ? "本日のお礼LINE、処理完了 ✨"
     : unsentCount > 0
       ? `お礼LINEがあと${unsentCount}件 — タップして送りましょう`
       : "今日のお礼LINEを送りましょう";
