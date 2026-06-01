@@ -8,12 +8,13 @@ import { getVisitCategoryLabel } from "@/lib/personalizedHint";
 import { formatServiceTimeRange } from "@/lib/serviceDisplay";
 import { isPendingSendStatus, listStatusLabel } from "@/lib/sendStatusDisplay";
 import { getVisitCategory, type VisitCategory } from "@/lib/visitCategory";
-import { getMatchFlamesForEntry } from "@/lib/matchRate";
+import { getMatchFlamesForEntry, type FlameCount } from "@/lib/matchRate";
 import { MatchRateFlames } from "./MatchRateFlames";
 import styles from "./CustomerCard.module.css";
 
 interface CustomerCardProps {
   entry: ThankYouEntry;
+  flameCount?: FlameCount;
   onOpen: (entry: ThankYouEntry) => void;
 }
 
@@ -45,12 +46,12 @@ function memberRankClass(rank: CustomerRank): string {
   }
 }
 
-export function CustomerCard({ entry, onOpen }: CustomerCardProps) {
+export function CustomerCard({ entry, flameCount, onOpen }: CustomerCardProps) {
   const { customer, sendStatus, hot } = entry;
   const isPending = isPendingSendStatus(sendStatus);
   const visitCategory = getVisitCategory(entry);
   const memberRank = resolveCustomerRank(customer, hot);
-  const flames = getMatchFlamesForEntry(entry);
+  const flames = flameCount ?? getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const serviceTime = formatServiceTimeRange(
     entry.serviceStartTime,

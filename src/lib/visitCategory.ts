@@ -14,7 +14,10 @@ export const VISIT_CATEGORY_ORDER: VisitCategory[] = [
   "free",
 ];
 
-export const BADGE_CATEGORY_ORDER: VisitCategory[] = ["jounai-shimei", "free"];
+/** お礼LINE — 場内指名 → フリー（タブ・リスト共通） */
+export const THANK_YOU_CATEGORY_ORDER: VisitCategory[] = ["jounai-shimei", "free"];
+
+export const BADGE_CATEGORY_ORDER: VisitCategory[] = THANK_YOU_CATEGORY_ORDER;
 
 function todayVisitType(entry: ThankYouEntry): VisitType | null {
   return entry.customer.visitHistory?.find((v) => v.date === entry.visitDate)?.type ?? null;
@@ -38,6 +41,12 @@ export function getVisitCategoryLabel(entry: ThankYouEntry): string {
 
 export function visitCategorySortKey(entry: ThankYouEntry): number {
   return VISIT_CATEGORY_ORDER.indexOf(getVisitCategory(entry));
+}
+
+export function thankYouVisitCategorySortKey(entry: ThankYouEntry): number {
+  const category = getVisitCategory(entry);
+  const idx = THANK_YOU_CATEGORY_ORDER.indexOf(category);
+  return idx === -1 ? VISIT_CATEGORY_ORDER.indexOf(category) : idx;
 }
 
 export type SwipeCompleteVariant = "all" | VisitCategory;
@@ -105,7 +114,7 @@ export function computeVisitCategoryProgress(entries: ThankYouEntry[]): VisitCat
   const totalUnsent = entries.filter((e) => e.sendStatus === "unsent").length;
   return {
     categories,
-    badgeCategories: categories.filter((c) => BADGE_CATEGORY_ORDER.includes(c.id)),
+    badgeCategories: BADGE_CATEGORY_ORDER.map((id) => categories.find((c) => c.id === id)!),
     overallPercent: totalCount === 0 ? 0 : Math.round((totalResolved / totalCount) * 100),
     allComplete: totalCount > 0 && totalUnsent === 0,
     hasAnyTarget: totalCount > 0,

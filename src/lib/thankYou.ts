@@ -9,7 +9,8 @@ import type {
 } from "@/data/types";
 import { evaluateHotCustomer } from "./hotCustomer";
 import { customerSortKey, rankSortKey } from "./customerDisplay";
-import { isThankYouEligible, visitCategorySortKey } from "./visitCategory";
+import { isThankYouEligible, thankYouVisitCategorySortKey } from "./visitCategory";
+import { thankYouMatchScore } from "./matchRate";
 import { sortEntriesByServiceTime } from "./entryOrder";
 
 export function entryId(customerId: string, castId: string, visitDate: string): string {
@@ -146,12 +147,14 @@ export function sortThankYouEntries(entries: ThankYouEntry[]): ThankYouEntry[] {
     return 2;
   };
   return [...entries].sort((a, b) => {
-    const catDiff = visitCategorySortKey(a) - visitCategorySortKey(b);
+    const statusDiff = sendPriority(a) - sendPriority(b);
+    if (statusDiff !== 0) return statusDiff;
+    const catDiff = thankYouVisitCategorySortKey(a) - thankYouVisitCategorySortKey(b);
     if (catDiff !== 0) return catDiff;
+    const scoreDiff = thankYouMatchScore(b) - thankYouMatchScore(a);
+    if (scoreDiff !== 0) return scoreDiff;
     const rankDiff = rankSortKey(a.customer, a.hot) - rankSortKey(b.customer, b.hot);
     if (rankDiff !== 0) return rankDiff;
-    const diff = sendPriority(a) - sendPriority(b);
-    if (diff !== 0) return diff;
     return customerSortKey(a.customer).localeCompare(customerSortKey(b.customer), "ja");
   });
 }

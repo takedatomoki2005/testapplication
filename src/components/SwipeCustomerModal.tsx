@@ -14,6 +14,7 @@ import {
   type CardPageIndex,
 } from "./CustomerSwipeCardContent";
 import { SwipeCompletePopupModal } from "./SwipeCompletePopupModal";
+import { buildThankYouFlameMap } from "@/lib/matchRate";
 import {
   computeVisitCategoryProgress,
   resolveSwipeCompletionPopup,
@@ -52,6 +53,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
   const { hotCriteria, markSent, markNoLineExchange, markNoContact, session, myEntries, followUpOverrides, businessDate } =
     useApp();
   const categorySummary = computeVisitCategoryProgress(myEntries);
+  const flameMap = useMemo(() => buildThankYouFlameMap(myEntries), [myEntries]);
 
   const { discoverCount, discoverHighlights } = useMemo(() => {
     const castId = session.castId ?? "cast-a";
@@ -331,6 +333,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
             <div className={styles.cardBody}>
               <CustomerSwipeCardContent
                 entry={entry}
+                flameCount={flameMap.get(entry.id)}
                 hotCriteria={hotCriteria}
                 tablePhotoUrl={tablePhotoUrl}
                 onPhotoChange={setTablePhotoUrl}

@@ -8,7 +8,7 @@ import {
   resolveCustomerRank,
 } from "@/lib/customerDisplay";
 import { formatDateOfBirth } from "@/data/customerProfileOptions";
-import { getMatchFlamesForEntry } from "@/lib/matchRate";
+import { getMatchFlamesForEntry, type FlameCount } from "@/lib/matchRate";
 import { CustomerProfileSection } from "./CustomerProfileSection";
 import { CustomerSpendingSection } from "./CustomerSpendingSection";
 import { CustomerEntryNotesForm } from "./CustomerEntryNotesForm";
@@ -21,6 +21,7 @@ export type CardPageIndex = 0 | 1 | 2 | 3;
 
 interface CustomerSwipeCardContentProps {
   entry: ThankYouEntry;
+  flameCount?: FlameCount;
   hotCriteria: { minTotalSpending: number; minVisitCount: number; minNominationCount: number };
   tablePhotoUrl?: string;
   onPhotoChange?: (dataUrl: string | undefined) => void;
@@ -34,6 +35,7 @@ interface CustomerSwipeCardContentProps {
 
 export function CustomerSwipeCardContent({
   entry,
+  flameCount,
   hotCriteria,
   tablePhotoUrl,
   onPhotoChange,
@@ -53,7 +55,7 @@ export function CustomerSwipeCardContent({
   const displayPhoto = tablePhotoUrl;
   const hint = getPersonalizedHint(entry);
   const memberRank = resolveCustomerRank(customer, hot);
-  const flames = getMatchFlamesForEntry(entry);
+  const flames = flameCount ?? getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const birthLabel = customer.dateOfBirth
     ? formatDateOfBirth(customer.dateOfBirth)

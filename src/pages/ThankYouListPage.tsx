@@ -8,6 +8,7 @@ import { SwipeCustomerModal } from "@/components/SwipeCustomerModal";
 import { ProcessedCustomerModal } from "@/components/ProcessedCustomerModal";
 import { UndoStatusModal } from "@/components/UndoStatusModal";
 import { computeVisitCategoryProgress } from "@/lib/visitCategory";
+import { buildThankYouFlameMap } from "@/lib/matchRate";
 import { formatBusinessDate, offsetBusinessDate } from "@/lib/thankYou";
 import type { ThankYouEntry } from "@/data/types";
 import styles from "./ThankYouListPage.module.css";
@@ -59,6 +60,10 @@ export function ThankYouListPage() {
   }, [location.state, unsentEntries.length, isToday]);
 
   const achievement = computeVisitCategoryProgress(displayEntries);
+  const flameMap = useMemo(
+    () => buildThankYouFlameMap(displayEntries),
+    [displayEntries],
+  );
 
   const openEntry = (entry: ThankYouEntry) => {
     if (entry.sendStatus === "unsent") {
@@ -132,7 +137,9 @@ export function ThankYouListPage() {
           </div>
         )}
       </div>
-      <p className={styles.listHint}>お客様をタップ → フリックで対応</p>
+      <p className={styles.listHint}>
+        場内指名 → フリーの順。お客様をタップ → フリックで対応
+      </p>
 
       {!hasAnyTarget ? (
         <p className={styles.empty}>
@@ -140,7 +147,12 @@ export function ThankYouListPage() {
         </p>
       ) : (
         displayEntries.map((entry) => (
-          <CustomerCard key={entry.id} entry={entry} onOpen={openEntry} />
+          <CustomerCard
+            key={entry.id}
+            entry={entry}
+            flameCount={flameMap.get(entry.id)}
+            onOpen={openEntry}
+          />
         ))
       )}
 

@@ -67,7 +67,8 @@ export function EndOfDayPopupModal({
         <p className={styles.retentionMessage}>
           指名率を上げるために
           <br />
-          <span className={styles.retentionHighlight}>今日接客した人</span>を伝えよう
+          <span className={styles.retentionHighlight}>今日のお客様</span>にお礼を伝えよう
+          <span className={styles.retentionSub}>すぐお礼LINEを送ると指名率が大きくアップ!</span>
         </p>
 
         <p className={styles.sub}>{statusText}</p>
