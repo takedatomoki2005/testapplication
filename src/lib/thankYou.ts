@@ -8,7 +8,7 @@ import type {
   ThankYouEntry,
 } from "@/data/types";
 import { evaluateHotCustomer } from "./hotCustomer";
-import { customerSortKey, rankSortKey } from "./customerDisplay";
+import { customerSortKey, isLedgerOnlyCustomer, rankSortKey } from "./customerDisplay";
 import { isThankYouEligible, thankYouVisitCategorySortKey } from "./visitCategory";
 import { thankYouMatchScore } from "./matchRate";
 import { sortEntriesByServiceTime } from "./entryOrder";
@@ -66,7 +66,9 @@ export function buildThankYouEntry(
     markedAt: statusRecord?.markedAt,
     markedByCastId: statusRecord?.markedByCastId,
     lineName: statusRecord?.lineName,
-    memo: statusRecord?.memo,
+    memo:
+      statusRecord?.memo ??
+      (isLedgerOnlyCustomer(customer) && customer.notes ? customer.notes : undefined),
   };
 }
 

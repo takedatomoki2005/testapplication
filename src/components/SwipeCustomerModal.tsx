@@ -20,6 +20,7 @@ import {
   resolveSwipeCompletionPopup,
   type SwipeCompleteVariant,
 } from "@/lib/visitCategory";
+import { applyCastModeGoal } from "@/lib/thankYouCastMode";
 import styles from "./SwipeCustomerModal.module.css";
 
 const SWIPE_THRESHOLD = 90;
@@ -60,12 +61,16 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     filterEntriesByCastMode,
     followUpOverrides,
     businessDate,
+    thankYouCastMode,
   } = useApp();
   const modeEntries = useMemo(
     () => filterEntriesByCastMode(myEntries),
     [filterEntriesByCastMode, myEntries],
   );
-  const categorySummary = computeVisitCategoryProgress(modeEntries);
+  const categorySummary = useMemo(
+    () => applyCastModeGoal(computeVisitCategoryProgress(modeEntries), thankYouCastMode),
+    [modeEntries, thankYouCastMode],
+  );
   const flameMap = useMemo(() => buildThankYouFlameMap(modeEntries), [modeEntries]);
 
   const { discoverCount, discoverHighlights } = useMemo(() => {

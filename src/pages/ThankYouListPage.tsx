@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useApp } from "@/context/AppContext";
 import { AchievementReminder } from "@/components/AchievementReminder";
+import { CastModeSelectModal } from "@/components/CastModeSelectModal";
 import { ThankYouCastModeSwitcher } from "@/components/ThankYouCastModeSwitcher";
 import { CustomerCard } from "@/components/CustomerCard";
 import { Greeting } from "@/components/Greeting";
@@ -9,12 +10,22 @@ import { SwipeCustomerModal } from "@/components/SwipeCustomerModal";
 import { ProcessedCustomerModal } from "@/components/ProcessedCustomerModal";
 import { UndoStatusModal } from "@/components/UndoStatusModal";
 import { computeVisitCategoryProgress } from "@/lib/visitCategory";
+import {
+  applyCastModeGoal,
+} from "@/lib/thankYouCastMode";
 import { buildThankYouFlameMap } from "@/lib/matchRate";
 import { formatBusinessDate, offsetBusinessDate } from "@/lib/thankYou";
 import type { ThankYouEntry } from "@/data/types";
+import type { ThankYouCastMode } from "@/lib/thankYouCastMode";
 import styles from "./ThankYouListPage.module.css";
 
 const MAX_PAST_DAYS = 2;
+
+const PAGE_MODE_CLASS = {
+  full: styles.pageModeFull,
+  moderate: styles.pageModeModerate,
+  minimum: styles.pageModeMinimum,
+} as const;
 
 export function ThankYouListPage() {
   const location = useLocation();
@@ -32,6 +43,8 @@ export function ThankYouListPage() {
   const [swipeStartIndex, setSwipeStartIndex] = useState(0);
   const [detailEntry, setDetailEntry] = useState<ThankYouEntry | null>(null);
   const [undoTarget, setUndoTarget] = useState<ThankYouEntry | null>(null);
+  const [modePopupOpen, setModePopupOpen] = useState(true);
+  const [pendingOpenSwipe, setPendingOpenSwipe] = useState(false);
 
   const selectedDate = useMemo(
     () => offsetBusinessDate(businessDate, -dateOffset),
@@ -56,24 +69,38 @@ export function ThankYouListPage() {
 
   const unsentCount = unsentEntries.length;
   const hasAnyTarget = displayEntries.length > 0;
-  const allSent =
-    displayEntries.length > 0 &&
-    displayEntries.every(
-      (e) =>
-        e.sendStatus === "sent" ||
-        e.sendStatus === "no_line_exchange" ||
-        e.sendStatus === "no_contact",
-    );
+
+  const achievement = useMemo(
+    () => applyCastModeGoal(computeVisitCategoryProgress(displayEntries), thankYouCastMode),
+    [displayEntries, thankYouCastMode],
+  );
+  const allSent = achievement.allComplete;
 
   useEffect(() => {
     const state = location.state as { openSwipe?: boolean } | null;
-    if (isToday && state?.openSwipe && unsentEntries.length > 0) {
-      setSwipeStartIndex(0);
-      setSwipeOpen(true);
+    if (state?.openSwipe) {
+      setPendingOpenSwipe(true);
     }
-  }, [location.state, unsentEntries.length, isToday]);
+  }, [location.state]);
 
-  const achievement = computeVisitCategoryProgress(displayEntries);
+  useEffect(() => {
+    if (modePopupOpen || !pendingOpenSwipe || !isToday) return;
+    const filtered = filterEntriesByCastMode(allEntries);
+    const unsent = filtered.filter((e) => e.sendStatus === "unsent");
+    if (unsent.length === 0) {
+      setPendingOpenSwipe(false);
+      return;
+    }
+    setSwipeStartIndex(0);
+    setSwipeOpen(true);
+    setPendingOpenSwipe(false);
+  }, [modePopupOpen, pendingOpenSwipe, isToday, allEntries, filterEntriesByCastMode]);
+
+  const handleModeConfirm = (mode: ThankYouCastMode) => {
+    setThankYouCastMode(mode);
+    setModePopupOpen(false);
+  };
+
   const flameMap = useMemo(
     () => buildThankYouFlameMap(displayEntries),
     [displayEntries],
@@ -112,8 +139,18 @@ export function ThankYouListPage() {
   const canGoOlder = dateOffset < MAX_PAST_DAYS;
   const canGoNewer = dateOffset > 0;
 
+  const pageModeClass = isToday ? PAGE_MODE_CLASS[thankYouCastMode] : undefined;
+
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page}${pageModeClass ? ` ${pageModeClass}` : ""}`}>
+      {isToday && modePopupOpen && (
+        <CastModeSelectModal
+          entries={allEntries}
+          initialMode={thankYouCastMode}
+          onConfirm={handleModeConfirm}
+        />
+      )}
+
       {isToday ? (
         <div className={styles.hero}>
           <Greeting

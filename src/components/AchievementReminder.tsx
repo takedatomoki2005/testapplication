@@ -3,8 +3,15 @@ import { AchievementRaceTrack } from "./AchievementRaceTrack";
 import { CategoryAchievementBadges } from "./CategoryAchievementBadges";
 import styles from "./AchievementReminder.module.css";
 
-export function AchievementReminder({ summary }: { summary: VisitCategorySummary }) {
+type Summary = VisitCategorySummary & { goalPercent?: number; goalTargetCount?: number };
+
+export function AchievementReminder({ summary }: { summary: Summary }) {
   if (!summary.hasAnyTarget) return null;
+
+  const goalTargetCount = summary.goalTargetCount ?? summary.totalCount;
+  const resolvedDisplay = summary.allComplete
+    ? goalTargetCount
+    : Math.min(summary.totalResolved, goalTargetCount);
 
   return (
     <section className={styles.card}>
@@ -12,10 +19,11 @@ export function AchievementReminder({ summary }: { summary: VisitCategorySummary
         <span className={styles.title}>今日の達成度</span>
         <span className={summary.allComplete ? styles.allDone : styles.count}>
           {summary.allComplete
-            ? "ALL CLEAR ✨"
-            : `${summary.totalResolved}/${summary.totalCount}`}
+            ? "GOAL CLEAR ✨"
+            : `${resolvedDisplay}/${goalTargetCount}`}
         </span>
       </div>
+      <p className={styles.goalLabel}>目標 {goalTargetCount}件</p>
       <CategoryAchievementBadges categories={summary.badgeCategories} variant="list" />
       <AchievementRaceTrack
         percent={summary.overallPercent}

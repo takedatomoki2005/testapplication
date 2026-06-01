@@ -1,11 +1,16 @@
 import type { ThankYouEntry } from "@/data/types";
-import { resolveCustomerRank } from "./customerDisplay";
+import { isLedgerOnlyCustomer, resolveCustomerRank } from "./customerDisplay";
 import { categorizeEntry } from "./achievementProgress";
 import { getVisitCategory, getVisitCategoryLabel } from "./visitCategory";
 
 /** Short personalized hint for list cards — matches reference UI */
 export function getPersonalizedHint(entry: ThankYouEntry): string {
   const { customer, hot } = entry;
+  if (isLedgerOnlyCustomer(customer)) {
+    const note = customer.notes?.trim();
+    if (note) return note.length > 48 ? `${note.slice(0, 48)}…` : note;
+    return "会員登録なしのお客様。累計金額とメモを参考に礼を送りましょう";
+  }
   const rank = resolveCustomerRank(customer, hot);
   const category = getVisitCategory(entry);
   const segment = categorizeEntry(entry);

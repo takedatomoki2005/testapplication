@@ -29,6 +29,12 @@ export function rankSortKey(customer: Customer, hot?: HotEvaluation): number {
   return index === -1 ? RANK_ORDER.length : index;
 }
 
+export function isLedgerOnlyCustomer(customer: Customer): boolean {
+  return customer.profileRegistered === false;
+}
+
+export const LEDGER_ONLY_LABEL = "会員登録なし";
+
 export function formatCustomerName(customer: Customer): string {
   if (customer.nickname) {
     return `${customer.nickname} 様`;

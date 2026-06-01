@@ -25,6 +25,7 @@ import {
 } from "@/lib/thankYou";
 import {
   filterThankYouEntriesByMode,
+  isCastModeGoalReached,
   isThankYouCastMode,
   type ThankYouCastMode,
 } from "@/lib/thankYouCastMode";
@@ -238,14 +239,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const unsentCount = modeEntries.filter((e) => e.sendStatus === "unsent").length;
-  const allSent =
-    modeEntries.length > 0 &&
-    modeEntries.every(
-      (e) =>
-        e.sendStatus === "sent" ||
-        e.sendStatus === "no_line_exchange" ||
-        e.sendStatus === "no_contact",
-    );
+  const allSent = isCastModeGoalReached(modeEntries, thankYouCastMode);
   const hasAnyTarget = modeEntries.length > 0;
 
   const myShiftMemos = useMemo(() => {

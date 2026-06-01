@@ -1,0 +1,511 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  min-height: 100dvh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+  transition: background 0.35s ease;
+}
+
+.overlay_full {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.overlay_moderate {
+  background: rgba(40, 0, 20, 0.58);
+}
+
+.overlay_minimum {
+  background: rgba(0, 30, 10, 0.58);
+}
+
+.dialog {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 320px;
+  flex-shrink: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: box-shadow 0.35s ease;
+}
+
+.dialogFlare {
+  animation: dialogPop 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.dialog_full {
+  box-shadow:
+    0 0 40px rgba(255, 120, 40, 0.45),
+    0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.dialog_moderate {
+  box-shadow:
+    0 0 32px rgba(240, 39, 107, 0.4),
+    0 16px 48px rgba(240, 39, 107, 0.22);
+}
+
+.dialog_minimum {
+  box-shadow:
+    0 0 28px rgba(102, 187, 106, 0.35),
+    0 16px 48px rgba(46, 125, 50, 0.2);
+}
+
+.dialogInner {
+  position: relative;
+  z-index: 2;
+  background: var(--color-surface);
+  padding: 26px 20px 20px;
+  text-align: center;
+}
+
+.flameBurst {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation: flameBurstIn 0.85s ease-out forwards;
+}
+
+.flameBurst_full {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255, 140, 0, 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 30% 90%, rgba(255, 60, 80, 0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 70% 90%, rgba(255, 200, 50, 0.4) 0%, transparent 65%);
+  animation:
+    flameBurstIn 0.85s ease-out forwards,
+    flameFlicker 0.12s steps(2) infinite;
+}
+
+.flameBurst_moderate {
+  background:
+    radial-gradient(ellipse 75% 55% at 50% 100%, rgba(240, 39, 107, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 45% at 40% 85%, rgba(255, 107, 170, 0.35) 0%, transparent 60%);
+  animation:
+    flameBurstIn 0.75s ease-out forwards,
+    flameFlicker 0.14s steps(2) infinite;
+}
+
+.flameBurst_minimum {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(129, 199, 132, 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 50% 90%, rgba(255, 214, 0, 0.25) 0%, transparent 60%);
+  animation:
+    flameBurstIn 0.65s ease-out forwards,
+    flameFlicker 0.16s steps(2) infinite;
+}
+
+.flameEmbers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ember {
+  position: absolute;
+  bottom: 20%;
+  left: calc(12% + var(--i) * 10%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffd600;
+  opacity: 0;
+  animation: emberRise 0.9s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.04s);
+}
+
+.dialog_full .ember {
+  background: #ff9800;
+  box-shadow: 0 0 6px #ff5722;
+}
+
+.dialog_moderate .ember {
+  background: #ff6baa;
+  box-shadow: 0 0 5px var(--color-primary);
+}
+
+.dialog_minimum .ember {
+  background: #aed581;
+  box-shadow: 0 0 5px #66bb6a;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.flameRing {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: ringFlicker 0.18s steps(3) infinite;
+}
+
+.flameRing_full {
+  background: radial-gradient(circle, rgba(255, 160, 0, 0.5) 0%, rgba(255, 60, 80, 0.2) 45%, transparent 70%);
+  box-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
+}
+
+.flameRing_moderate {
+  background: radial-gradient(circle, rgba(240, 39, 107, 0.4) 0%, rgba(255, 107, 170, 0.15) 50%, transparent 70%);
+  box-shadow: 0 0 16px rgba(240, 39, 107, 0.45);
+}
+
+.flameRing_minimum {
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.45) 0%, rgba(255, 214, 0, 0.12) 50%, transparent 70%);
+  box-shadow: 0 0 14px rgba(102, 187, 106, 0.4);
+  animation-duration: 0.28s;
+}
+
+.emoji {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-primary-tint);
+  font-size: 26px;
+  animation: emojiPulse 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.dialog_full .emoji {
+  background: linear-gradient(135deg, #ff9800 0%, #f0276b 100%);
+  animation: emojiPulse 0.55s cubic-bezier(0.34, 1.4, 0.64, 1), emojiFlicker 0.15s steps(2) infinite;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.sub {
+  font-size: 12px;
+  color: var(--color-text-sub);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.option {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border-radius: 14px;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.option:active {
+  transform: scale(0.98);
+}
+
+.optionContent {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 12px 14px;
+}
+
+.optionFlame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.optionFlame_full {
+  background:
+    linear-gradient(180deg, rgba(255, 120, 0, 0.35) 0%, transparent 55%),
+    linear-gradient(135deg, rgba(255, 60, 80, 0.2) 0%, transparent 50%);
+  animation: optionFlameFlicker 0.1s steps(2) infinite;
+}
+
+.optionFlame_moderate {
+  background:
+    linear-gradient(180deg, rgba(240, 39, 107, 0.28) 0%, transparent 55%),
+    linear-gradient(225deg, rgba(255, 107, 170, 0.18) 0%, transparent 50%);
+  animation: optionFlameFlicker 0.13s steps(2) infinite;
+}
+
+.optionFlame_minimum {
+  background:
+    linear-gradient(180deg, rgba(102, 187, 106, 0.3) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(255, 214, 0, 0.12) 0%, transparent 40%);
+  animation: optionFlameFlicker 0.17s steps(2) infinite;
+}
+
+.optionActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  box-shadow: 0 2px 10px rgba(240, 39, 107, 0.15);
+  animation: optionGlow 0.12s steps(2) infinite;
+}
+
+.option_full.optionActive {
+  border-color: #ff9800;
+  background: linear-gradient(135deg, #3a2010 0%, #1a1a1a 100%);
+  box-shadow:
+    0 0 18px rgba(255, 120, 0, 0.45),
+    inset 0 0 20px rgba(255, 80, 0, 0.15);
+}
+
+.option_full.optionActive .optionLabel,
+.option_full.optionActive .optionHint,
+.option_full.optionActive .optionMeta {
+  color: #fff;
+}
+
+.option_full.optionActive .optionHint,
+.option_full.optionActive .optionMeta {
+  opacity: 0.88;
+}
+
+.option_moderate.optionActive {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 14px rgba(240, 39, 107, 0.35);
+}
+
+.option_minimum.optionActive {
+  border-color: #66bb6a;
+  background: rgba(46, 125, 50, 0.12);
+  box-shadow: 0 0 14px rgba(102, 187, 106, 0.35);
+}
+
+.option_minimum.optionActive .optionLabel {
+  color: #1b5e20;
+}
+
+.option_minimum.optionActive .optionHint,
+.option_minimum.optionActive .optionMeta {
+  color: #558b2f;
+}
+
+.optionLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.optionHint {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-sub);
+  line-height: 1.4;
+}
+
+.optionMeta {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.option_minimum.optionActive .optionMeta {
+  color: #2e7d32;
+}
+
+.primaryBtn {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(240, 39, 107, 0.35);
+  transition: background 0.25s, box-shadow 0.25s;
+}
+
+.primaryBtn_full {
+  background: linear-gradient(135deg, #ff9800 0%, #f0276b 100%);
+  box-shadow: 0 4px 18px rgba(255, 120, 0, 0.45);
+  animation: btnFlickerFull 0.12s steps(2) infinite;
+}
+
+.primaryBtn_moderate {
+  animation: btnFlicker 0.18s steps(2) infinite;
+}
+
+.primaryBtn_minimum {
+  background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+}
+
+.primaryBtn:active {
+  filter: brightness(0.92);
+}
+
+@keyframes dialogPop {
+  0% {
+    transform: scale(0.96);
+  }
+  45% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes flameBurstIn {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: scaleY(1.05);
+  }
+  100% {
+    opacity: 0.35;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes flameFlicker {
+  0%,
+  100% {
+    filter: brightness(1) saturate(1);
+    opacity: 0.85;
+  }
+  50% {
+    filter: brightness(1.35) saturate(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes emberRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.3);
+  }
+}
+
+@keyframes ringFlicker {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+@keyframes emojiPulse {
+  0% {
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes emojiFlicker {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.25);
+  }
+}
+
+@keyframes optionFlameFlicker {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes optionGlow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.06);
+  }
+}
+
+@keyframes btnFlicker {
+  0%,
+  100% {
+    filter: brightness(1);
+    box-shadow: 0 4px 14px rgba(240, 39, 107, 0.35);
+  }
+  50% {
+    filter: brightness(1.08);
+    box-shadow: 0 4px 20px rgba(240, 39, 107, 0.5);
+  }
+}
+
+@keyframes btnFlickerFull {
+  0%,
+  100% {
+    filter: brightness(1);
+    box-shadow: 0 4px 18px rgba(255, 120, 0, 0.45);
+  }
+  50% {
+    filter: brightness(1.15);
+    box-shadow: 0 4px 24px rgba(255, 80, 0, 0.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogFlare,
+  .flameBurst,
+  .flameRing,
+  .emoji,
+  .optionActive,
+  .optionFlame,
+  .primaryBtn_full,
+  .primaryBtn_moderate,
+  .ember {
+    animation: none !important;
+  }
+}

@@ -33,6 +33,11 @@ export interface ContactSchedule {
 export interface Customer {
   id: string;
   displayName: string;
+  /**
+   * false = 会員登録なし（名前・累計使用金額・メモのみの台帳データ）
+   * 未指定時は通常の会員プロフィールありとみなす
+   */
+  profileRegistered?: boolean;
   visitCount: number;
   totalSpending: number;
   nominationCount: number;

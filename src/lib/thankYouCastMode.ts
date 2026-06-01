@@ -3,7 +3,7 @@ import {
   buildThankYouFlameMap,
   getThankYouFlameCount,
 } from "./matchRate";
-import { getVisitCategory } from "./visitCategory";
+import { getVisitCategory, type VisitCategorySummary } from "./visitCategory";
 
 export type ThankYouCastMode = "full" | "moderate" | "minimum";
 
@@ -20,10 +20,90 @@ export const THANK_YOU_CAST_MODE_LABEL: Record<ThankYouCastMode, string> = {
 };
 
 export const THANK_YOU_CAST_MODE_HINT: Record<ThankYouCastMode, string> = {
-  full: "場内指名・フリーをすべて対象にします",
-  moderate: "場内指名＋相性の良いフリー客が対象です",
-  minimum: "場内指名＋最優先のフリー客だけが対象です",
+  full: "全員対象・目標は全件",
+  moderate: "優先客が対象・目標は半数",
+  minimum: "最優先のみ・目標は3割",
 };
+
+/** 達成ゴール（対象のうち何％処理すればクリアか） */
+export const THANK_YOU_CAST_MODE_GOAL: Record<ThankYouCastMode, number> = {
+  full: 100,
+  moderate: 50,
+  minimum: 30,
+};
+
+export const THANK_YOU_CAST_MODE_PAGE_CLASS: Record<ThankYouCastMode, string> = {
+  full: "pageModeFull",
+  moderate: "pageModeModerate",
+  minimum: "pageModeMinimum",
+};
+
+export function getCastModeGoalPercent(mode: ThankYouCastMode): number {
+  return THANK_YOU_CAST_MODE_GOAL[mode];
+}
+
+/** モードに応じた達成に必要な件数（全体数を間引く） */
+export function getCastModeGoalTargetCount(
+  totalCount: number,
+  mode: ThankYouCastMode,
+): number {
+  if (totalCount === 0) return 0;
+  const goalPercent = THANK_YOU_CAST_MODE_GOAL[mode];
+  if (goalPercent >= 100) return totalCount;
+  return Math.max(1, Math.ceil((totalCount * goalPercent) / 100));
+}
+
+function countResolved(entries: ThankYouEntry[]): number {
+  return entries.filter(
+    (e) =>
+      e.sendStatus === "sent" ||
+      e.sendStatus === "no_line_exchange" ||
+      e.sendStatus === "no_contact",
+  ).length;
+}
+
+export function getCastModeProgressPercent(
+  entries: ThankYouEntry[],
+  mode: ThankYouCastMode,
+): number {
+  const total = entries.length;
+  const target = getCastModeGoalTargetCount(total, mode);
+  if (target === 0) return 0;
+  const resolved = countResolved(entries);
+  return Math.min(100, Math.round((resolved / target) * 100));
+}
+
+export function isCastModeGoalReached(
+  entries: ThankYouEntry[],
+  mode: ThankYouCastMode,
+): boolean {
+  if (entries.length === 0) return false;
+  const target = getCastModeGoalTargetCount(entries.length, mode);
+  return countResolved(entries) >= target;
+}
+
+export function applyCastModeGoal(
+  summary: VisitCategorySummary,
+  mode: ThankYouCastMode,
+): VisitCategorySummary & { goalPercent: number; goalTargetCount: number } {
+  const goalPercent = THANK_YOU_CAST_MODE_GOAL[mode];
+  const goalTargetCount = getCastModeGoalTargetCount(summary.totalCount, mode);
+  const goalReached =
+    summary.hasAnyTarget && summary.totalResolved >= goalTargetCount;
+  const overallPercent =
+    goalTargetCount === 0
+      ? 0
+      : Math.min(100, Math.round((summary.totalResolved / goalTargetCount) * 100));
+
+  return {
+    ...summary,
+    goalPercent,
+    goalTargetCount,
+    totalCount: goalTargetCount,
+    overallPercent,
+    allComplete: goalReached,
+  };
+}
 
 export function isThankYouCastMode(value: unknown): value is ThankYouCastMode {
   return value === "full" || value === "moderate" || value === "minimum";

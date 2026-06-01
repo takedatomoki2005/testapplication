@@ -229,3 +229,13 @@
   border-radius: 12px;
   border-left: 3px solid var(--color-primary);
 }
+
+.ledgerNote {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--color-text-sub);
+  padding: 10px 12px;
+  background: var(--color-bg);
+  border-radius: 12px;
+}

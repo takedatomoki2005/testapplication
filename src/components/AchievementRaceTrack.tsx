@@ -33,7 +33,7 @@ type Props = {
 
 export function AchievementRaceTrack({ percent, allComplete }: Props) {
   const clamped = Math.min(Math.max(percent, 0), 100);
-  const runnerLeft = allComplete ? 100 : Math.max(6, clamped * 0.84);
+  const runnerLeft = allComplete ? 100 : Math.max(6, clamped * 0.92);
 
   return (
     <div

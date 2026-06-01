@@ -26,7 +26,7 @@ function slot(
   };
 }
 
-/** cast-a 本日 — 7卓（場内指名・同伴） */
+/** cast-a 本日 — 登録会員＋会員登録なし */
 const castASlots: Slot[] = [
   {
     id: "sr-a-3",
@@ -90,6 +90,69 @@ const castASlots: Slot[] = [
     tableNumber: "4",
     serviceStartTime: "00:15",
     serviceEndTime: "01:05",
+  },
+  {
+    id: "sr-a-8",
+    customerId: "cust-ledger-01",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "10",
+    serviceStartTime: "01:10",
+    serviceEndTime: "01:55",
+  },
+  {
+    id: "sr-a-9",
+    customerId: "cust-ledger-02",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "11",
+    serviceStartTime: "02:00",
+    serviceEndTime: "02:40",
+  },
+  {
+    id: "sr-a-10",
+    customerId: "cust-ledger-03",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "12",
+    serviceStartTime: "02:45",
+    serviceEndTime: "03:25",
+  },
+  {
+    id: "sr-a-11",
+    customerId: "cust-ledger-04",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "13",
+    serviceStartTime: "03:30",
+    serviceEndTime: "04:10",
+  },
+  {
+    id: "sr-a-12",
+    customerId: "cust-ledger-05",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "14",
+    serviceStartTime: "04:15",
+    serviceEndTime: "04:55",
+  },
+  {
+    id: "sr-a-13",
+    customerId: "cust-ledger-06",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "15",
+    serviceStartTime: "05:00",
+    serviceEndTime: "05:45",
+  },
+  {
+    id: "sr-a-14",
+    customerId: "cust-ledger-07",
+    castId: "cast-a",
+    visitDate: d,
+    tableNumber: "16",
+    serviceStartTime: "05:50",
+    serviceEndTime: "06:25",
   },
 ];
 
@@ -167,6 +230,33 @@ const castAD1Slots: Slot[] = [
     serviceStartTime: "21:00",
     serviceEndTime: "22:00",
   },
+  {
+    id: "sr-a-d1-9",
+    customerId: "cust-ledger-08",
+    castId: "cast-a",
+    visitDate: d1,
+    tableNumber: "10",
+    serviceStartTime: "22:05",
+    serviceEndTime: "22:50",
+  },
+  {
+    id: "sr-a-d1-10",
+    customerId: "cust-ledger-09",
+    castId: "cast-a",
+    visitDate: d1,
+    tableNumber: "11",
+    serviceStartTime: "22:55",
+    serviceEndTime: "23:35",
+  },
+  {
+    id: "sr-a-d1-11",
+    customerId: "cust-ledger-10",
+    castId: "cast-a",
+    visitDate: d1,
+    tableNumber: "12",
+    serviceStartTime: "23:40",
+    serviceEndTime: "00:20",
+  },
 ];
 
 /** cast-a 前々日 — 8卓 */
@@ -242,6 +332,24 @@ const castAD2Slots: Slot[] = [
     tableNumber: "4",
     serviceStartTime: "21:30",
     serviceEndTime: "22:30",
+  },
+  {
+    id: "sr-a-d2-9",
+    customerId: "cust-ledger-11",
+    castId: "cast-a",
+    visitDate: d2,
+    tableNumber: "10",
+    serviceStartTime: "22:35",
+    serviceEndTime: "23:15",
+  },
+  {
+    id: "sr-a-d2-10",
+    customerId: "cust-ledger-12",
+    castId: "cast-a",
+    visitDate: d2,
+    tableNumber: "11",
+    serviceStartTime: "23:20",
+    serviceEndTime: "00:00",
   },
 ];
 

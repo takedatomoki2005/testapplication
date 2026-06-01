@@ -25,7 +25,7 @@ export function ThankYouCastModeSwitcher({
 
   return (
     <section
-      className={`${styles.section} ${onPrimary ? styles.sectionOnPrimary : ""}`}
+      className={`${styles.section} ${onPrimary ? styles.sectionOnPrimary : ""} ${onPrimary ? styles[`surface_${mode}`] : ""}`}
       aria-label="お礼LINEの頑張りモード"
     >
       <p className={styles.heading}>今日の頑張りモード</p>

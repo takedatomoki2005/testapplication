@@ -1,6 +1,7 @@
 import type { Customer } from "../types";
 import { config } from "./config";
 import { buildDiscoverSeed } from "./discoverSeed";
+import { ledgerCustomers } from "./ledgerCustomers";
 
 const discoverSeed = buildDiscoverSeed("cast-a", config.businessDate);
 
@@ -340,4 +341,8 @@ const coreCustomers: Customer[] = [
   },
 ];
 
-export const customers: Customer[] = [...coreCustomers, ...discoverSeed.customers];
+export const customers: Customer[] = [
+  ...coreCustomers,
+  ...ledgerCustomers,
+  ...discoverSeed.customers,
+];

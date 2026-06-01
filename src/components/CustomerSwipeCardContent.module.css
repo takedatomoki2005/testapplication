@@ -102,6 +102,12 @@
   color: #f57f17;
 }
 
+.ledgerTag {
+  background: var(--color-bg);
+  color: var(--color-text-sub);
+  border: 1px solid var(--color-border);
+}
+
 .meta {
   font-size: 12px;
   color: var(--color-text-sub);

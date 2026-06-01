@@ -5,6 +5,8 @@ import {
   formatBirthday,
   formatListCustomerName,
   getRankLabel,
+  isLedgerOnlyCustomer,
+  LEDGER_ONLY_LABEL,
   resolveCustomerRank,
 } from "@/lib/customerDisplay";
 import { formatDateOfBirth } from "@/data/customerProfileOptions";
@@ -54,7 +56,8 @@ export function CustomerSwipeCardContent({
   }, [page, entry.id]);
   const displayPhoto = tablePhotoUrl;
   const hint = getPersonalizedHint(entry);
-  const memberRank = resolveCustomerRank(customer, hot);
+  const ledgerOnly = isLedgerOnlyCustomer(customer);
+  const memberRank = ledgerOnly ? null : resolveCustomerRank(customer, hot);
   const flames = flameCount ?? getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const birthLabel = customer.dateOfBirth
@@ -67,6 +70,9 @@ export function CustomerSwipeCardContent({
         <div className={styles.headBody}>
           <div className={styles.tagRow}>
             <span className={styles.tag}>{getVisitCategoryLabel(entry)}</span>
+            {ledgerOnly && (
+              <span className={`${styles.tag} ${styles.ledgerTag}`}>{LEDGER_ONLY_LABEL}</span>
+            )}
             {memberRank && (
               <span className={`${styles.tag} ${styles.memberTag}`}>{getRankLabel(memberRank)}</span>
             )}

@@ -22,6 +22,106 @@
   margin-bottom: 0;
 }
 
+/* ── 本気で頑張る: 黒ベース＋スポットライト ── */
+.pageModeFull {
+  background: #0a0a0a;
+  color: #f5f5f5;
+}
+
+.pageModeFull .hero {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 255, 255, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(240, 39, 107, 0.35) 0%, transparent 60%),
+    linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+}
+
+.pageModeFull .content {
+  background: transparent;
+}
+
+.pageModeFull .listTitle {
+  color: #fff;
+}
+
+.pageModeFull .listHint {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pageModeFull .listDate {
+  color: var(--color-primary-light);
+}
+
+.pageModeFull .dateNavBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.pageModeFull .dateNavBtn:active {
+  background: rgba(240, 39, 107, 0.35);
+}
+
+.pageModeFull .empty {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── ほどほど: 既存ピンク ── */
+.pageModeModerate {
+  background: var(--color-bg);
+}
+
+.pageModeModerate .hero {
+  background: linear-gradient(
+    165deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+}
+
+/* ── 最低限: グリーンテーマ ── */
+.pageModeMinimum {
+  background: #e8f5e9;
+}
+
+.pageModeMinimum .hero {
+  background: linear-gradient(
+    165deg,
+    #43a047 0%,
+    #2e7d32 100%
+  );
+}
+
+.pageModeMinimum .content {
+  background: transparent;
+}
+
+.pageModeMinimum .listTitle {
+  color: #1b5e20;
+}
+
+.pageModeMinimum .listHint {
+  color: #558b2f;
+}
+
+.pageModeMinimum .listDate {
+  color: #2e7d32;
+}
+
+.pageModeMinimum .dateNavBtn {
+  color: #2e7d32;
+  border-color: rgba(46, 125, 50, 0.25);
+}
+
+.pageModeMinimum .dateNavBtn:active {
+  background: rgba(46, 125, 50, 0.12);
+}
+
+.pageModeMinimum .empty {
+  border-color: rgba(46, 125, 50, 0.2);
+}
+
 .pastGreeting {
   margin-bottom: 0;
 }

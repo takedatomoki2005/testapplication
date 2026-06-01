@@ -2,6 +2,8 @@ import type { ThankYouEntry, CustomerRank } from "@/data/types";
 import {
   formatListCustomerName,
   getRankLabel,
+  isLedgerOnlyCustomer,
+  LEDGER_ONLY_LABEL,
   resolveCustomerRank,
 } from "@/lib/customerDisplay";
 import { getVisitCategoryLabel } from "@/lib/personalizedHint";
@@ -50,7 +52,8 @@ export function CustomerCard({ entry, flameCount, onOpen }: CustomerCardProps) {
   const { customer, sendStatus, hot } = entry;
   const isPending = isPendingSendStatus(sendStatus);
   const visitCategory = getVisitCategory(entry);
-  const memberRank = resolveCustomerRank(customer, hot);
+  const ledgerOnly = isLedgerOnlyCustomer(customer);
+  const memberRank = ledgerOnly ? null : resolveCustomerRank(customer, hot);
   const flames = flameCount ?? getMatchFlamesForEntry(entry);
   const { primary, alias } = formatListCustomerName(customer);
   const serviceTime = formatServiceTimeRange(
@@ -69,6 +72,9 @@ export function CustomerCard({ entry, flameCount, onOpen }: CustomerCardProps) {
           <span className={`${styles.categoryTag} ${visitCategoryClass(visitCategory)}`}>
             {getVisitCategoryLabel(entry)}
           </span>
+          {ledgerOnly && (
+            <span className={`${styles.memberTag} ${styles.ledgerTag}`}>{LEDGER_ONLY_LABEL}</span>
+          )}
           {memberRank && (
             <span className={`${styles.memberTag} ${memberRankClass(memberRank)}`}>
               {getRankLabel(memberRank)}
