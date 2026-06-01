@@ -131,6 +131,8 @@ const coreCustomers: Customer[] = [
     lineUrl: "https://line.me/R/ti/p/@mock-sato",
     visitHistory: [
       { id: "vh-s-1", date: "2026-05-31", type: "in-store", partySize: 2, subtotal: 45_000 },
+      { id: "vh-s-d1", date: "2026-05-30", type: "in-store", partySize: 2, subtotal: 38_000 },
+      { id: "vh-s-d2", date: "2026-05-29", type: "in-store", partySize: 3, subtotal: 42_000 },
     ],
   },
   {
@@ -150,6 +152,8 @@ const coreCustomers: Customer[] = [
     weeklyVisits: [0, 0, 0, 0, 1, 1, 1],
     visitHistory: [
       { id: "vh-n-1", date: "2026-05-31", type: "in-store", partySize: 2, subtotal: 28_000 },
+      { id: "vh-n-d1", date: "2026-05-30", type: "in-store", partySize: 2, subtotal: 26_000 },
+      { id: "vh-n-0", date: "2026-05-29", type: "in-store", partySize: 2, subtotal: 24_000 },
     ],
   },
   {
@@ -170,6 +174,8 @@ const coreCustomers: Customer[] = [
     weeklyVisits: [0, 0, 0, 0, 0, 1, 0],
     visitHistory: [
       { id: "vh-t-1", date: "2026-05-31", type: "in-store", partySize: 1, subtotal: 35_000 },
+      { id: "vh-t-d1", date: "2026-05-30", type: "in-store", partySize: 2, subtotal: 32_000 },
+      { id: "vh-t-0", date: "2026-05-29", type: "in-store", partySize: 1, subtotal: 30_000 },
     ],
   },
   {
@@ -189,6 +195,8 @@ const coreCustomers: Customer[] = [
     weeklyVisits: [0, 0, 0, 0, 0, 1, 1],
     visitHistory: [
       { id: "vh-in-1", date: "2026-05-31", type: "in-store", partySize: 3, subtotal: 32_000 },
+      { id: "vh-in-0", date: "2026-05-30", type: "in-store", partySize: 2, subtotal: 28_000 },
+      { id: "vh-in-d2", date: "2026-05-29", type: "in-store", partySize: 2, subtotal: 30_000 },
     ],
   },
   {
@@ -208,6 +216,8 @@ const coreCustomers: Customer[] = [
     weeklyVisits: [1, 0, 0, 0, 0, 0, 0],
     visitHistory: [
       { id: "vh-kb-1", date: "2026-05-31", type: "in-store", partySize: 1, subtotal: 18_000 },
+      { id: "vh-kb-0", date: "2026-05-30", type: "in-store", partySize: 2, subtotal: 22_000 },
+      { id: "vh-kb-d2", date: "2026-05-29", type: "in-store", partySize: 1, subtotal: 20_000 },
     ],
   },
   {
@@ -234,6 +244,7 @@ const coreCustomers: Customer[] = [
     lineUrl: "https://line.me/R/ti/p/@mock-yamada",
     visitHistory: [
       { id: "vh-y-4", date: "2026-05-31", type: "accompany", partySize: 2, subtotal: 85_000 },
+      { id: "vh-y-d1", date: "2026-05-30", type: "accompany", partySize: 2, subtotal: 78_000 },
       { id: "vh-y-2", date: "2026-05-24", type: "accompany", partySize: 3, subtotal: 120_000 },
     ],
     schedules: [{ id: "sch-y-1", kind: "anniversary", label: "誕生日", date: "2026-07-15" }],
@@ -257,6 +268,8 @@ const coreCustomers: Customer[] = [
     lineUrl: "https://line.me/R/ti/p/@mock-kato",
     visitHistory: [
       { id: "vh-ka-1", date: "2026-05-31", type: "accompany", partySize: 2, subtotal: 38_000 },
+      { id: "vh-ka-d1", date: "2026-05-30", type: "accompany", partySize: 2, subtotal: 40_000 },
+      { id: "vh-ka-0", date: "2026-05-29", type: "accompany", partySize: 2, subtotal: 42_000 },
     ],
   },
   {
@@ -279,6 +292,8 @@ const coreCustomers: Customer[] = [
     lineUrl: "https://line.me/R/ti/p/@mock-yoshida",
     visitHistory: [
       { id: "vh-yo-1", date: "2026-05-31", type: "accompany", partySize: 4, subtotal: 120_000 },
+      { id: "vh-yo-0", date: "2026-05-30", type: "accompany", partySize: 3, subtotal: 95_000 },
+      { id: "vh-yo-d2", date: "2026-05-29", type: "accompany", partySize: 3, subtotal: 88_000 },
     ],
   },
   {
@@ -298,6 +313,7 @@ const coreCustomers: Customer[] = [
     weeklyVisits: [1, 0, 0, 0, 0, 0, 0],
     visitHistory: [
       { id: "vh-ki-1", date: "2026-05-31", type: "accompany", partySize: 2, subtotal: 24_000 },
+      { id: "vh-ki-d2", date: "2026-05-29", type: "accompany", partySize: 2, subtotal: 26_000 },
     ],
   },
   {

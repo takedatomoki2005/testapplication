@@ -29,6 +29,15 @@ export function formatBusinessDate(date: string): string {
   return `${year}年${month}月${day}日`;
 }
 
+export function offsetBusinessDate(date: string, deltaDays: number): string {
+  const [year, month, day] = date.split("-").map(Number);
+  const shifted = new Date(Date.UTC(year, month - 1, day + deltaDays));
+  const y = shifted.getUTCFullYear();
+  const m = String(shifted.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(shifted.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function getCustomer(customers: Customer[], customerId: string): Customer | undefined {
   return customers.find((c) => c.id === customerId);
 }

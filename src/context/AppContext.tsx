@@ -109,6 +109,7 @@ interface AppContextValue {
   markNoContact: (entryId: string, notes?: EntryNotes) => void;
   undoSent: (entryId: string) => void;
   getEntryById: (entryId: string) => ThankYouEntry | undefined;
+  getEntriesForVisitDate: (visitDate: string) => ThankYouEntry[];
   upsertShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
   completeShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
   reopenShiftMemo: (serviceRecordId: string) => void;
@@ -436,6 +437,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [myEntries],
   );
 
+  const getEntriesForVisitDate = useCallback(
+    (visitDate: string) =>
+      getEntriesForCast(initialAppData, castId, visitDate, sendStatuses, hotCriteria),
+    [castId, sendStatuses, hotCriteria],
+  );
+
   return (
     <AppContext.Provider
       value={{
@@ -454,6 +461,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         markNoContact,
         undoSent,
         getEntryById,
+        getEntriesForVisitDate,
         upsertShiftMemo,
         completeShiftMemo,
         reopenShiftMemo,
