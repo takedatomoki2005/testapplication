@@ -5,9 +5,6 @@ import { HomePage } from "./pages/HomePage";
 import { ThankYouListPage } from "./pages/ThankYouListPage";
 import { MemoPage } from "./pages/MemoPage";
 import { DiscoverPage } from "./pages/DiscoverPage";
-import { AdminStatusPage } from "./pages/AdminStatusPage";
-import { AdminSettingsPage } from "./pages/AdminSettingsPage";
-
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || undefined;
 
 export function App() {
@@ -20,8 +17,6 @@ export function App() {
             <Route path="thank-you" element={<ThankYouListPage />} />
             <Route path="memo" element={<MemoPage />} />
             <Route path="discover" element={<DiscoverPage />} />
-            <Route path="admin" element={<AdminStatusPage />} />
-            <Route path="admin/settings" element={<AdminSettingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

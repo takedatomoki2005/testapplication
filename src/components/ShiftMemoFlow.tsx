@@ -31,7 +31,7 @@ function MemoRow({
     entry.serviceStartTime,
     entry.serviceEndTime,
   );
-  const preview = memo?.body?.trim() || "タップしてメモを残す";
+  const preview = memo?.body?.trim() || "タップしてお客様メモを残す";
 
   return (
     <li className={styles.row}>
@@ -104,7 +104,7 @@ export function ShiftMemoFlow({ doneRows, currentRows, onSelect }: Props) {
                 今
               </span>
             </div>
-            <p className={styles.eraHint}>現在対応中 — タップしてメモ</p>
+            <p className={styles.eraHint}>現在対応中 — タップしてお客様メモ</p>
           </li>
         )}
 

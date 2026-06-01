@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { useApp } from "@/context/AppContext";
 import styles from "./AppFooter.module.css";
 
 const active = "#F0276B";
 const inactive = "#888";
 
-const castTabs = [
+const tabs = [
   {
     to: "/",
     label: "ホーム",
@@ -39,7 +38,7 @@ const castTabs = [
   },
   {
     to: "/memo",
-    label: "メモ",
+    label: "お客様メモ",
     end: false,
     icon: (a: boolean) => (
       <svg viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -83,29 +82,7 @@ const castTabs = [
   },
 ];
 
-const adminTab = {
-  to: "/admin",
-  label: "管理",
-  end: false,
-  icon: (a: boolean) => (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="3" width="7" height="7" rx="1.5" fill={a ? active : inactive} />
-      <rect x="14" y="3" width="7" height="7" rx="1.5" fill={a ? active : inactive} />
-      <rect x="3" y="14" width="7" height="7" rx="1.5" fill={a ? active : inactive} />
-      <rect x="14" y="14" width="7" height="7" rx="1.5" fill={a ? active : inactive} />
-    </svg>
-  ),
-};
-
 export function AppFooter() {
-  const { canManage, session } = useApp();
-  const tabs =
-    session.role === "cast"
-      ? castTabs
-      : canManage
-        ? [castTabs[0], adminTab]
-        : castTabs;
-
   return (
     <footer className={styles["app-footer"]}>
       {tabs.map((tab) => (

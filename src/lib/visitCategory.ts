@@ -27,6 +27,11 @@ export function getVisitCategory(entry: ThankYouEntry): VisitCategory {
   return "free";
 }
 
+/** お礼LINE対象 — 場内指名・フリーのみ（本指名は除外） */
+export function isThankYouEligible(entry: ThankYouEntry): boolean {
+  return getVisitCategory(entry) !== "hon-shimei";
+}
+
 export function getVisitCategoryLabel(entry: ThankYouEntry): string {
   return VISIT_CATEGORY_LABEL[getVisitCategory(entry)];
 }

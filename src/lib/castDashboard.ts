@@ -1,7 +1,8 @@
+import { CAST_DISPLAY_NAME } from "@/data/mock/casts";
 import { castDashboardByCastId, type CastDashboardProfile } from "@/data/mock/castDashboard";
 
 const fallback: CastDashboardProfile = {
-  displayName: "キャスト",
+  displayName: CAST_DISPLAY_NAME,
   currentBp: 0,
   rankName: "ブロンズ",
   pointsToNextRank: 500,

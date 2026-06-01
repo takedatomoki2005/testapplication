@@ -4,12 +4,10 @@ import { formatBusinessDate } from "@/lib/thankYou";
 import { buildMemoMap, splitEntriesForMemoTimeline, type EntryMemoRow } from "@/lib/shiftMemo";
 import { ShiftMemoFlow } from "@/components/ShiftMemoFlow";
 import { ShiftMemoEditModal } from "@/components/ShiftMemoEditModal";
-import { RoleSwitcher } from "@/components/RoleSwitcher";
 import styles from "./MemoPage.module.css";
 
 export function MemoPage() {
   const {
-    session,
     businessDate,
     myMemoEntries,
     myShiftMemos,
@@ -26,22 +24,13 @@ export function MemoPage() {
     [myMemoEntries, memoMap],
   );
 
-  if (session.role !== "cast") {
-    return (
-      <div className="page">
-        <p>キャストロールに切り替えてください</p>
-        <RoleSwitcher />
-      </div>
-    );
-  }
-
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <p className={styles.date}>{formatBusinessDate(businessDate)}</p>
         <h1 className={styles.title}>退勤前メモ</h1>
         <p className={styles.sub}>
-          上から順に対応したお客様 — タップしてLINE名とメモを残せます
+          上から順に対応したお客様 — タップしてLINE名とお客様メモを残せます
         </p>
       </header>
 
@@ -50,8 +39,6 @@ export function MemoPage() {
         currentRows={currentRows}
         onSelect={setSelectedRow}
       />
-
-      <RoleSwitcher />
 
       {selectedRow && (
         <ShiftMemoEditModal

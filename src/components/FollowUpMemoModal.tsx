@@ -158,7 +158,9 @@ export function FollowUpMemoModal({ contact, onClose, onSave }: Props) {
           )}
         </div>
 
-        <p className={swipeStyles.hint}>左右をタップで画面切替 · メモは「メモ」タブで編集</p>
+        <p className={swipeStyles.hint}>
+          左右をタップで画面切替 · お客様メモは「お客様メモ」タブで編集
+        </p>
         </div>
       </div>
     </div>,

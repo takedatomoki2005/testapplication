@@ -5,7 +5,6 @@ import { FollowUpCard } from "@/components/FollowUpCard";
 import { FollowUpMemoModal } from "@/components/FollowUpMemoModal";
 import { DiscoverLaunchPopupModal } from "@/components/DiscoverLaunchPopupModal";
 import { DiscoverFollowUpCompleteModal } from "@/components/DiscoverFollowUpCompleteModal";
-import { RoleSwitcher } from "@/components/RoleSwitcher";
 import { initialAppData, type DiscoverAdvancedFilters, type FollowUpContact, type FollowUpFilter } from "@/data";
 import { getRecommendReasonScore } from "@/lib/discoverRecommendReasons";
 import {
@@ -102,15 +101,6 @@ export function DiscoverPage() {
       total: activeQueue.length,
     });
   };
-
-  if (session.role !== "cast") {
-    return (
-      <div className="page">
-        <p>キャストロールに切り替えてください</p>
-        <RoleSwitcher />
-      </div>
-    );
-  }
 
   return (
     <div className={styles.page}>
@@ -215,7 +205,6 @@ export function DiscoverPage() {
         />
       )}
 
-      <RoleSwitcher />
     </div>
   );
 }

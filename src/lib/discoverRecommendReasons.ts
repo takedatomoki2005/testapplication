@@ -153,6 +153,31 @@ export function getRecommendReasonScore(
   return score;
 }
 
+export interface DiscoverHighlightCounts {
+  birthdayNearCount: number;
+  oneMonthSinceVisitCount: number;
+}
+
+/** Count follow-up contacts with upcoming birthdays or ~1 month since last visit. */
+export function getDiscoverHighlightCounts(
+  contacts: FollowUpContact[],
+  referenceDate: string,
+): DiscoverHighlightCounts {
+  let birthdayNearCount = 0;
+  let oneMonthSinceVisitCount = 0;
+
+  for (const contact of contacts) {
+    if (getBirthdayRecommendReason(contact.customer, referenceDate)) {
+      birthdayNearCount += 1;
+    }
+    if (contact.daysSinceVisit >= 28 && contact.daysSinceVisit <= 35) {
+      oneMonthSinceVisitCount += 1;
+    }
+  }
+
+  return { birthdayNearCount, oneMonthSinceVisitCount };
+}
+
 export function compareFollowUpByRecommendReason(
   a: FollowUpContact,
   b: FollowUpContact,

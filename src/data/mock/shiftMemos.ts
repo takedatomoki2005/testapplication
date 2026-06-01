@@ -4,7 +4,7 @@ import { config } from "./config";
 const d = config.businessDate;
 const base = "2026-05-31T";
 
-/** 4人が昔（対応済み）、みーちゃんのみが今（対応中） */
+/** 4人が昔（対応済み）、たっくんのみが今（対応中） */
 export const shiftMemos: ShiftMemo[] = [
   {
     serviceRecordId: "sr-a-3",
@@ -37,7 +37,7 @@ export const shiftMemos: ShiftMemo[] = [
     serviceRecordId: "sr-a-1",
     castId: "cast-a",
     businessDate: d,
-    body: "誕生日が来月 — プレゼント候補をリスト化",
+    body: "同伴で来店。次回は席の希望を確認",
     status: "done",
     createdAt: `${base}22:35:00.000Z`,
     completedAt: `${base}22:40:00.000Z`,

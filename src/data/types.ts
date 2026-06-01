@@ -1,4 +1,4 @@
-export type UserRole = "cast" | "manager" | "admin";
+export type UserRole = "cast";
 export type SendStatus = "unsent" | "sent" | "no_line_exchange" | "no_contact";
 export type HotReasonType = "spending" | "visits" | "nominations";
 export type CustomerRank = "diamond" | "platinum" | "gold" | "silver";
@@ -112,16 +112,6 @@ export interface ThankYouEntry extends EntryNotes {
   sendStatus: SendStatus;
   markedAt?: string;
   markedByCastId?: string;
-}
-
-export interface CastSendSummary {
-  cast: Cast;
-  totalCount: number;
-  hotCount: number;
-  sentCount: number;
-  unsentCount: number;
-  sendRate: number;
-  unsentEntries: ThankYouEntry[];
 }
 
 export interface SessionUser {

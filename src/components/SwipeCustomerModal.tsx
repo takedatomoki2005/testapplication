@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { ThankYouEntry } from "@/data/types";
 import { initialAppData } from "@/data";
 import { useApp } from "@/context/AppContext";
-import { getRecommendReasonScore } from "@/lib/discoverRecommendReasons";
+import { getDiscoverHighlightCounts, getRecommendReasonScore } from "@/lib/discoverRecommendReasons";
 import {
   getFollowUpContacts,
   mergeFollowUpRecords,
@@ -53,7 +53,7 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
     useApp();
   const categorySummary = computeVisitCategoryProgress(myEntries);
 
-  const discoverCount = useMemo(() => {
+  const { discoverCount, discoverHighlights } = useMemo(() => {
     const castId = session.castId ?? "cast-a";
     const records = mergeFollowUpRecords(initialAppData.followUpRecords, followUpOverrides);
     const contacts = getFollowUpContacts(
@@ -63,11 +63,13 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
       hotCriteria,
       businessDate,
     );
-    return contacts.filter(
-      (c) =>
-        getRecommendReasonScore(c, businessDate) > 0 &&
-        !followUpOverrides[c.id]?.followUpSentAt,
-    ).length;
+    const pending = contacts.filter((c) => !followUpOverrides[c.id]?.followUpSentAt);
+    return {
+      discoverCount: pending.filter(
+        (c) => getRecommendReasonScore(c, businessDate) > 0,
+      ).length,
+      discoverHighlights: getDiscoverHighlightCounts(pending, businessDate),
+    };
   }, [session.castId, hotCriteria, businessDate, followUpOverrides]);
   const [index, setIndex] = useState(startIndex);
   const [pageIndex, setPageIndex] = useState<CardPageIndex>(0);
@@ -253,6 +255,8 @@ export function SwipeCustomerModal({ entries, startIndex, onClose }: SwipeCustom
         variant={completePopup ?? "all"}
         categorySummary={categorySummary}
         discoverCount={discoverCount}
+        birthdayNearCount={discoverHighlights.birthdayNearCount}
+        oneMonthSinceVisitCount={discoverHighlights.oneMonthSinceVisitCount}
         onClose={dismissComplete}
         onDiscover={goDiscover}
       />

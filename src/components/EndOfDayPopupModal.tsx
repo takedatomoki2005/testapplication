@@ -7,8 +7,6 @@ type Props = {
   allSent: boolean;
   castName: string;
   todayCustomerCount: number;
-  discoverCount: number;
-  onDiscover: () => void;
   onStartReflection: () => void;
   onDismiss: () => void;
 };
@@ -18,8 +16,6 @@ export function EndOfDayPopupModal({
   allSent,
   castName,
   todayCustomerCount,
-  discoverCount,
-  onDiscover,
   onStartReflection,
   onDismiss,
 }: Props) {
@@ -48,65 +44,36 @@ export function EndOfDayPopupModal({
       >
         <div className={styles.hero}>
           <span className={styles.emoji} aria-hidden>
-            🔍
+            💌
           </span>
         </div>
 
         <p id="end-of-day-title" className={styles.title}>
           {castName}さん、
           <br />
-          <span className={styles.titleAccent}>さらに見つけよう！</span>
+          <span className={styles.titleAccent}>お疲れ様でした！</span>
         </p>
 
-        <p className={styles.thanksSub}>今日もお疲れ様 — LINE友達からフォローアップ先を</p>
-
-        {discoverCount > 0 ? (
+        {todayCustomerCount > 0 ? (
           <div className={styles.customerCount}>
-            <p className={styles.customerCountLead}>いま連絡すべき</p>
-            <p className={styles.customerCountHighlight} aria-label={`${discoverCount}人`}>
-              {discoverCount}
+            <p className={styles.customerCountHighlight} aria-label={`${todayCustomerCount}人`}>
+              {todayCustomerCount}
               <span className={styles.customerCountUnit}>人</span>
             </p>
-            <p className={styles.customerCountTail}>のおすすめフォローアップ候補</p>
-          </div>
-        ) : todayCustomerCount > 0 ? (
-          <div className={styles.customerCount}>
-            <p className={styles.customerCountLead}>今日は</p>
-            <p className={styles.customerCountHighlight} aria-label={`${todayCustomerCount}件`}>
-              {todayCustomerCount}
-              <span className={styles.customerCountUnit}>件</span>
-            </p>
-            <p className={styles.customerCountTail}>接客 — LINE友達もチェックしよう</p>
+            <p className={styles.customerCountTail}>との接客</p>
           </div>
         ) : null}
 
         <p className={styles.retentionMessage}>
-          誕生日や場内指名のタイミングで
+          指名率を上げるために
           <br />
-          <span className={styles.retentionHighlight}>フォローアップすべき人</span>が見つかります
+          <span className={styles.retentionHighlight}>今日接客した人</span>を伝えよう
         </p>
 
         <p className={styles.sub}>{statusText}</p>
 
-        <div className={styles.steps}>
-          <div className={styles.step}>
-            <span className={styles.stepNum}>1</span>
-            <span className={styles.stepText}>お礼LINE</span>
-          </div>
-          <span className={styles.stepArrow} aria-hidden>
-            →
-          </span>
-          <div className={styles.step}>
-            <span className={styles.stepNum}>2</span>
-            <span className={styles.stepText}>さらに見つけよう</span>
-          </div>
-        </div>
-
         <div className={styles.actions}>
-          <button type="button" className={styles.primaryBtn} onClick={onDiscover}>
-            さらに見つけよう
-          </button>
-          <button type="button" className={styles.outlineBtn} onClick={onStartReflection}>
+          <button type="button" className={styles.primaryBtn} onClick={onStartReflection}>
             {ctaLabel}
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={onDismiss}>

@@ -141,6 +141,51 @@
   margin-bottom: 4px;
 }
 
+.highlightStats {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 12px;
+  background: var(--color-primary-tint);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.highlightStat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.highlightStatLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  text-align: left;
+  line-height: 1.4;
+}
+
+.highlightStatValue {
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.highlightStatUnit {
+  font-size: 14px;
+  font-weight: 800;
+  margin-left: 1px;
+}
+
+.discoverTotal {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
 .discoverCount {
   margin-bottom: 14px;
   padding: 14px 12px 12px;

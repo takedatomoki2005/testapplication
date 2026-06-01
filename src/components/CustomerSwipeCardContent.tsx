@@ -16,7 +16,7 @@ import { MatchRateFlames } from "./MatchRateFlames";
 import { TableServiceInfo } from "./TableServiceInfo";
 import styles from "./CustomerSwipeCardContent.module.css";
 
-export const CARD_PAGE_LABELS = ["基本情報", "お金情報", "趣味情報", "メモ"] as const;
+export const CARD_PAGE_LABELS = ["基本情報", "お金情報", "趣味情報", "お客様メモ"] as const;
 export type CardPageIndex = 0 | 1 | 2 | 3;
 
 interface CustomerSwipeCardContentProps {
@@ -137,6 +137,7 @@ export function CustomerSwipeCardContent({
           onLineNameChange={onLineNameChange}
           onMemoChange={onMemoChange}
           memoRows={4}
+          memoLabel="お客様メモ"
         />
       ) : (
         <CustomerEntryNotesForm
@@ -144,6 +145,7 @@ export function CustomerSwipeCardContent({
           variant="embedded"
           lineName={lineName}
           memo={memo}
+          memoLabel="お客様メモ"
         />
       )}
     </>

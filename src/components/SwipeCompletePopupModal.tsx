@@ -12,6 +12,8 @@ type Props = {
   variant: SwipeCompleteVariant;
   categorySummary: VisitCategorySummary;
   discoverCount?: number;
+  birthdayNearCount?: number;
+  oneMonthSinceVisitCount?: number;
   onClose: () => void;
   onDiscover?: () => void;
 };
@@ -66,6 +68,8 @@ export function SwipeCompletePopupModal({
   variant,
   categorySummary,
   discoverCount = 0,
+  birthdayNearCount = 0,
+  oneMonthSinceVisitCount = 0,
   onClose,
   onDiscover,
 }: Props) {
@@ -132,21 +136,31 @@ export function SwipeCompletePopupModal({
                   <br />
                   フォローアップ先を探そう
                 </p>
+                <ul className={styles.highlightStats}>
+                  <li className={styles.highlightStat}>
+                    <span className={styles.highlightStatLabel}>誕生日が近い人</span>
+                    <span className={styles.highlightStatValue}>
+                      {birthdayNearCount}
+                      <span className={styles.highlightStatUnit}>人</span>
+                    </span>
+                  </li>
+                  <li className={styles.highlightStat}>
+                    <span className={styles.highlightStatLabel}>前回来店日から1ヶ月</span>
+                    <span className={styles.highlightStatValue}>
+                      {oneMonthSinceVisitCount}
+                      <span className={styles.highlightStatUnit}>人</span>
+                    </span>
+                  </li>
+                </ul>
                 {discoverCount > 0 ? (
-                  <div className={styles.discoverCount}>
-                    <p className={styles.discoverCountLead}>いま連絡すべき</p>
-                    <p
-                      className={styles.discoverCountHighlight}
-                      aria-label={`${discoverCount}人`}
-                    >
-                      {discoverCount}
-                      <span className={styles.discoverCountUnit}>人</span>
-                    </p>
-                    <p className={styles.discoverCountTail}>のおすすめ候補</p>
-                  </div>
+                  <p className={styles.sub}>
+                    いま連絡すべきおすすめ候補が
+                    <strong className={styles.discoverTotal}> {discoverCount}人</strong>
+                    います
+                  </p>
                 ) : (
                   <p className={styles.sub}>
-                    誕生日や場内指名のタイミングで
+                    誕生日や来店タイミングから
                     <br />
                     フォローアップすべき人が見つかります
                   </p>

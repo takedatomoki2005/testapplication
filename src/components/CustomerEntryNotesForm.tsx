@@ -11,6 +11,7 @@ type EditableProps = {
   fields?: NoteField[];
   variant?: "default" | "embedded";
   memoRows?: number;
+  memoLabel?: string;
 };
 
 type ReadOnlyProps = {
@@ -20,6 +21,7 @@ type ReadOnlyProps = {
   fields?: NoteField[];
   variant?: "default" | "embedded";
   memoRows?: number;
+  memoLabel?: string;
 };
 
 type Props = EditableProps | ReadOnlyProps;
@@ -36,6 +38,7 @@ export function CustomerEntryNotesForm(props: Props) {
   const fields = props.fields ?? DEFAULT_FIELDS;
   const variant = props.variant ?? "default";
   const memoRows = props.memoRows ?? 2;
+  const memoLabel = props.memoLabel ?? "お客様メモ";
   const showLineName = fields.includes("lineName");
   const showMemo = fields.includes("memo");
 
@@ -60,7 +63,7 @@ export function CustomerEntryNotesForm(props: Props) {
         )}
         {showMemo && (
           <div className={styles.field}>
-            <span className={styles.label}>メモ</span>
+            <span className={styles.label}>{memoLabel}</span>
             {memo ? (
               <span className={styles.readOnlyValue}>{memo}</span>
             ) : (
@@ -95,7 +98,7 @@ export function CustomerEntryNotesForm(props: Props) {
       {showMemo && (
         <div className={styles.field}>
           <label className={styles.label} htmlFor="entry-memo">
-            メモ
+            {memoLabel}
           </label>
           <textarea
             id="entry-memo"

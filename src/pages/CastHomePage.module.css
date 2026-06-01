@@ -48,8 +48,3 @@
 .goalBtn:active {
   background: var(--color-primary-dark);
 }
-
-.devSwitcher {
-  margin-top: 28px;
-  opacity: 0.85;
-}

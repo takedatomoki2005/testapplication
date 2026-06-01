@@ -23,11 +23,11 @@ function slot(
   };
 }
 
-/** cast-a 振り返りデモ — 5卓・接客時間は重ならない */
+/** cast-a 振り返りデモ — 5卓・本指名以外（場内指名・フリー） */
 const castASlots: Slot[] = [
   {
     id: "sr-a-3",
-    customerId: "cust-matsumoto",
+    customerId: "cust-nakamura",
     castId: "cast-a",
     visitDate: d,
     tableNumber: "2",
@@ -36,7 +36,7 @@ const castASlots: Slot[] = [
   },
   {
     id: "sr-a-2",
-    customerId: "cust-watanabe",
+    customerId: "cust-takahashi",
     castId: "cast-a",
     visitDate: d,
     tableNumber: "1",
@@ -54,7 +54,7 @@ const castASlots: Slot[] = [
   },
   {
     id: "sr-a-1",
-    customerId: "cust-tanaka",
+    customerId: "cust-kato",
     castId: "cast-a",
     visitDate: d,
     tableNumber: "7",
@@ -63,7 +63,7 @@ const castASlots: Slot[] = [
   },
   {
     id: "sr-a-4",
-    customerId: "cust-itou",
+    customerId: "cust-kimura",
     castId: "cast-a",
     visitDate: d,
     tableNumber: "4",
@@ -72,37 +72,6 @@ const castASlots: Slot[] = [
   },
 ];
 
-const castBSlots: Slot[] = [
-  {
-    id: "sr-b-1",
-    customerId: "cust-yamada",
-    castId: "cast-b",
-    visitDate: d,
-    tableNumber: "12",
-    serviceStartTime: "19:00",
-    serviceEndTime: "19:55",
-  },
-  {
-    id: "sr-b-3",
-    customerId: "cust-watanabe",
-    castId: "cast-b",
-    visitDate: d,
-    tableNumber: "1",
-    serviceStartTime: "20:55",
-    serviceEndTime: "21:45",
-  },
-  {
-    id: "sr-b-4",
-    customerId: "cust-sato",
-    castId: "cast-b",
-    visitDate: d,
-    tableNumber: "5",
-    serviceStartTime: "21:50",
-    serviceEndTime: "22:40",
-  },
-];
-
-export const serviceRecords: ServiceRecord[] = [
-  ...castASlots.map((s) => slot(s, s.serviceStartTime, s.serviceEndTime)),
-  ...castBSlots.map((s) => slot(s, s.serviceStartTime, s.serviceEndTime)),
-];
+export const serviceRecords: ServiceRecord[] = castASlots.map((s) =>
+  slot(s, s.serviceStartTime, s.serviceEndTime),
+);

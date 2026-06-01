@@ -7,7 +7,6 @@ import { Greeting } from "@/components/Greeting";
 import { SwipeCustomerModal } from "@/components/SwipeCustomerModal";
 import { ProcessedCustomerModal } from "@/components/ProcessedCustomerModal";
 import { UndoStatusModal } from "@/components/UndoStatusModal";
-import { RoleSwitcher } from "@/components/RoleSwitcher";
 import { computeVisitCategoryProgress } from "@/lib/visitCategory";
 import type { ThankYouEntry } from "@/data/types";
 import styles from "./ThankYouListPage.module.css";
@@ -56,15 +55,6 @@ export function ThankYouListPage() {
     setDetailEntry(null);
   };
 
-  if (session.role !== "cast") {
-    return (
-      <div className="page">
-        <p>キャストロールに切り替えてください</p>
-        <RoleSwitcher />
-      </div>
-    );
-  }
-
   return (
     <div className={styles.page}>
       <Greeting name={session.name} allSent={allSent} unsent={unsentCount} />
@@ -85,8 +75,6 @@ export function ThankYouListPage() {
           />
         ))
       )}
-
-      <RoleSwitcher />
 
       {swipeOpen && (
         <SwipeCustomerModal

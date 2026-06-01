@@ -6,24 +6,24 @@ const d = config.businessDate;
 
 /** LINE表示名（振り返り・退勤前メモで共通） */
 export const sendStatuses: Record<string, SendStatusRecord> = {
-  [entryId("cust-matsumoto", "cast-a", d)]: {
+  [entryId("cust-nakamura", "cast-a", d)]: {
     status: "unsent",
-    lineName: "あやちゃん🍾",
+    lineName: "しゅんくん",
   },
-  [entryId("cust-watanabe", "cast-a", d)]: {
+  [entryId("cust-takahashi", "cast-a", d)]: {
     status: "unsent",
-    lineName: "わたべ",
+    lineName: "マッキー",
   },
   [entryId("cust-sato", "cast-a", d)]: {
     status: "unsent",
     lineName: "けんくん",
   },
-  [entryId("cust-tanaka", "cast-a", d)]: {
+  [entryId("cust-kato", "cast-a", d)]: {
     status: "unsent",
-    lineName: "ゆうこ🌸",
+    lineName: "かとりん",
   },
-  [entryId("cust-itou", "cast-a", d)]: {
+  [entryId("cust-kimura", "cast-a", d)]: {
     status: "unsent",
-    lineName: "みーちゃん",
+    lineName: "たっくん",
   },
 };

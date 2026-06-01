@@ -9,7 +9,6 @@ import {
 import {
   initialAppData,
   type AppData,
-  type CastSendSummary,
   type EntryNotes,
   type HotCriteria,
   type SendStatusRecord,
@@ -21,7 +20,6 @@ import {
 } from "@/data";
 import {
   entryId,
-  getCastSummaries,
   getEntriesForCast,
   getMemoEntriesForCast,
 } from "@/lib/thankYou";
@@ -102,7 +100,6 @@ interface AppContextValue {
   myEntries: ThankYouEntry[];
   myMemoEntries: ThankYouEntry[];
   myShiftMemos: ShiftMemo[];
-  castSummaries: CastSendSummary[];
   unsentCount: number;
   allSent: boolean;
   hasAnyTarget: boolean;
@@ -111,8 +108,6 @@ interface AppContextValue {
   markNoLineExchange: (entryId: string, notes?: EntryNotes) => void;
   markNoContact: (entryId: string, notes?: EntryNotes) => void;
   undoSent: (entryId: string) => void;
-  updateHotCriteria: (criteria: HotCriteria) => void;
-  switchSession: (session: SessionUser) => void;
   getEntryById: (entryId: string) => ThankYouEntry | undefined;
   upsertShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
   completeShiftMemo: (serviceRecordId: string, payload: ShiftMemoEntryPayload) => void;
@@ -120,8 +115,6 @@ interface AppContextValue {
   followUpOverrides: Record<string, FollowUpRecordOverride>;
   updateFollowUpMemo: (recordId: string, payload: FollowUpRecordOverride) => void;
   markDiscoverFollowUpSent: (recordId: string) => void;
-  canManage: boolean;
-  isAdmin: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -137,12 +130,12 @@ function resolveThankYouEntryId(serviceRecordId: string): string | null {
   return entryId(record.customerId, record.castId, record.visitDate);
 }
 
-export const demoSessions: SessionUser[] = [
-  { id: "user-cast-a", name: "キャストA", role: "cast", castId: "cast-a" },
-  { id: "user-cast-b", name: "キャストB", role: "cast", castId: "cast-b" },
-  { id: "user-manager", name: "黒服", role: "manager" },
-  { id: "user-admin", name: "管理者", role: "admin" },
-];
+function normalizeSession(session: SessionUser | undefined): SessionUser {
+  if (session?.role === "cast" && session.castId === "cast-a") {
+    return session;
+  }
+  return initialAppData.session;
+}
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const persisted = loadPersistedState();
@@ -150,14 +143,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     ...initialAppData.sendStatuses,
     ...persisted.sendStatuses,
   });
-  const [hotCriteria, setHotCriteria] = useState({
+  const [hotCriteria] = useState({
     ...initialAppData.hotCriteria,
     ...persisted.hotCriteria,
   });
-  const [session, setSession] = useState({
-    ...initialAppData.session,
-    ...persisted.session,
-  });
+  const [session] = useState(() =>
+    normalizeSession(persisted.session ?? initialAppData.session),
+  );
   const [shiftMemos, setShiftMemos] = useState<ShiftMemo[]>(
     () => persisted.shiftMemos ?? initialAppData.shiftMemos,
   );
@@ -180,35 +172,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [sendStatuses, hotCriteria, session, shiftMemos, followUpOverrides],
   );
 
-  const myEntries = useMemo(() => {
-    if (session.role === "cast" && session.castId) {
-      return getEntriesForCast(
+  const castId = session.castId ?? "cast-a";
+
+  const myEntries = useMemo(
+    () =>
+      getEntriesForCast(
         initialAppData,
-        session.castId,
+        castId,
         businessDate,
         sendStatuses,
         hotCriteria,
-      );
-    }
-    return [];
-  }, [session, businessDate, sendStatuses, hotCriteria]);
+      ),
+    [castId, businessDate, sendStatuses, hotCriteria],
+  );
 
-  const myMemoEntries = useMemo(() => {
-    if (session.role === "cast" && session.castId) {
-      return getMemoEntriesForCast(
+  const myMemoEntries = useMemo(
+    () =>
+      getMemoEntriesForCast(
         initialAppData,
-        session.castId,
+        castId,
         businessDate,
         sendStatuses,
         hotCriteria,
-      );
-    }
-    return [];
-  }, [session, businessDate, sendStatuses, hotCriteria]);
-
-  const castSummaries = useMemo(
-    () => getCastSummaries(initialAppData, businessDate, sendStatuses, hotCriteria),
-    [businessDate, sendStatuses, hotCriteria],
+      ),
+    [castId, businessDate, sendStatuses, hotCriteria],
   );
 
   const unsentCount = myEntries.filter((e) => e.sendStatus === "unsent").length;
@@ -291,22 +278,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         persist({ sendStatuses: next });
         return next;
       });
-    },
-    [persist],
-  );
-
-  const updateHotCriteria = useCallback(
-    (criteria: HotCriteria) => {
-      setHotCriteria(criteria);
-      persist({ hotCriteria: criteria });
-    },
-    [persist],
-  );
-
-  const switchSession = useCallback(
-    (next: SessionUser) => {
-      setSession(next);
-      persist({ session: next });
     },
     [persist],
   );
@@ -461,23 +432,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const getEntryById = useCallback(
-    (entryId: string) => {
-      if (session.role === "cast" && session.castId) {
-        return myEntries.find((e) => e.id === entryId);
-      }
-      for (const s of castSummaries) {
-        const found = getEntriesForCast(
-          initialAppData,
-          s.cast.id,
-          businessDate,
-          sendStatuses,
-          hotCriteria,
-        ).find((e) => e.id === entryId);
-        if (found) return found;
-      }
-      return undefined;
-    },
-    [session, myEntries, castSummaries, businessDate, sendStatuses, hotCriteria],
+    (id: string) => myEntries.find((e) => e.id === id),
+    [myEntries],
   );
 
   return (
@@ -489,7 +445,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         myEntries,
         myMemoEntries,
         myShiftMemos,
-        castSummaries,
         unsentCount,
         allSent,
         hasAnyTarget,
@@ -498,8 +453,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         markNoLineExchange,
         markNoContact,
         undoSent,
-        updateHotCriteria,
-        switchSession,
         getEntryById,
         upsertShiftMemo,
         completeShiftMemo,
@@ -507,8 +460,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         followUpOverrides,
         updateFollowUpMemo,
         markDiscoverFollowUpSent,
-        canManage: session.role === "manager" || session.role === "admin",
-        isAdmin: session.role === "admin",
       }}
     >
       {children}

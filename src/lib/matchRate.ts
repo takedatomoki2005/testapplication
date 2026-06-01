@@ -10,6 +10,7 @@ function scoreFromCustomer(customer: Customer, hot?: HotEvaluation): number {
   if (rank === "diamond") score += 30;
   else if (rank === "platinum") score += 20;
   else if (rank === "gold") score += 10;
+  else if (rank === "silver") score += 10;
   if (hot?.isHot) score += 15;
   return score;
 }
@@ -29,8 +30,9 @@ export function getMatchFlamesForCustomer(
   return scoreToFlames(scoreFromCustomer(customer, hot));
 }
 
+/** Tuned for 場内指名・フリー lists (no 本指名 +40); targets an even 3 / 2 / 1 mix. */
 function scoreToFlames(score: number): FlameCount {
-  if (score >= 55) return 3;
-  if (score >= 35) return 2;
+  if (score >= 35) return 3;
+  if (score >= 25) return 2;
   return 1;
 }

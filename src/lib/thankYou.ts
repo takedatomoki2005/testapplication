@@ -1,6 +1,5 @@
 import type {
   AppData,
-  CastSendSummary,
   Customer,
   FollowUpContact,
   HotCriteria,
@@ -10,7 +9,7 @@ import type {
 } from "@/data/types";
 import { evaluateHotCustomer } from "./hotCustomer";
 import { customerSortKey, rankSortKey } from "./customerDisplay";
-import { visitCategorySortKey } from "./visitCategory";
+import { isThankYouEligible, visitCategorySortKey } from "./visitCategory";
 import { sortEntriesByServiceTime } from "./entryOrder";
 
 export function entryId(customerId: string, castId: string, visitDate: string): string {
@@ -126,7 +125,8 @@ export function getEntriesForCast(
         if (!customer) return null;
         return buildThankYouEntry(record, customer, criteria, sendStatuses);
       })
-      .filter((e): e is ThankYouEntry => e !== null),
+      .filter((e): e is ThankYouEntry => e !== null)
+      .filter(isThankYouEligible),
   );
 }
 
@@ -144,28 +144,5 @@ export function sortThankYouEntries(entries: ThankYouEntry[]): ThankYouEntry[] {
     const diff = sendPriority(a) - sendPriority(b);
     if (diff !== 0) return diff;
     return customerSortKey(a.customer).localeCompare(customerSortKey(b.customer), "ja");
-  });
-}
-
-export function getCastSummaries(
-  data: AppData,
-  visitDate: string,
-  sendStatuses: Record<string, SendStatusRecord>,
-  criteria: HotCriteria,
-): CastSendSummary[] {
-  return data.casts.map((cast) => {
-    const entries = getEntriesForCast(data, cast.id, visitDate, sendStatuses, criteria);
-    const sentCount = entries.filter((e) => e.sendStatus === "sent").length;
-    const unsentEntries = entries.filter((e) => e.sendStatus === "unsent");
-    const totalCount = entries.length;
-    return {
-      cast,
-      totalCount,
-      hotCount: entries.filter((e) => e.hot.isHot).length,
-      sentCount,
-      unsentCount: unsentEntries.length,
-      sendRate: totalCount === 0 ? 0 : Math.round((sentCount / totalCount) * 100),
-      unsentEntries,
-    };
   });
 }

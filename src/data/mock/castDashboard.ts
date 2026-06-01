@@ -1,3 +1,5 @@
+import { CAST_DISPLAY_NAME } from "./casts";
+
 export type BadgeKind = "rainbow" | "gold" | "silver" | "map" | "gift";
 
 export interface CastBadgeStat {
@@ -18,7 +20,7 @@ export interface CastDashboardProfile {
 
 export const castDashboardByCastId: Record<string, CastDashboardProfile> = {
   "cast-a": {
-    displayName: "フィリア 門松ゆい子",
+    displayName: CAST_DISPLAY_NAME,
     currentBp: 400,
     rankName: "ルビー",
     pointsToNextRank: 100,
@@ -29,19 +31,6 @@ export const castDashboardByCastId: Record<string, CastDashboardProfile> = {
       { id: "b3", kind: "silver", count: 6 },
       { id: "b4", kind: "map", count: 20 },
       { id: "b5", kind: "gift", count: 120 },
-    ],
-  },
-  "cast-b": {
-    displayName: "フィリア キャストB",
-    currentBp: 280,
-    rankName: "サファイア",
-    pointsToNextRank: 220,
-    rankProgress: 0.56,
-    badges: [
-      { id: "b1", kind: "gold", count: 3 },
-      { id: "b2", kind: "silver", count: 4 },
-      { id: "b3", kind: "map", count: 8 },
-      { id: "b4", kind: "gift", count: 45 },
     ],
   },
 };
