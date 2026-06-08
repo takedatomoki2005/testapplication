@@ -1,0 +1,109 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #f0276b;
+  --color-primary-dark: #e0156b;
+  --color-surface: #ffffff;
+  --color-bg: #f5f5f7;
+  --color-text: #1a1a1a;
+  --color-text-sub: #888888;
+  --color-border: #f0f0f0;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.app__header {
+  margin-bottom: 24px;
+}
+
+.logo {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: 0.08em;
+}
+
+.logo-o {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  margin: 0 1px;
+  position: relative;
+  top: -1px;
+}
+
+.app__subhead {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 24px 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.card__text {
+  margin: 0 0 20px;
+  line-height: 1.6;
+  font-size: 14px;
+  color: var(--color-text-sub);
+}
+
+.btn {
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.status {
+  margin: 16px 0 0;
+  min-height: 1.4em;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+}

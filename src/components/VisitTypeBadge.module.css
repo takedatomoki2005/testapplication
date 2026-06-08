@@ -1,7 +1,0 @@
-.badge { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 8px; }
-.nomination { background: #e8f5e9; color: #2e7d32; }
-.accompany { background: var(--color-primary-tint); color: var(--color-primary); }
-.inStore { background: #f1f8e9; color: #558b2f; }
-.solid.nomination { background: #4caf50; color: #fff; }
-.solid.accompany { background: var(--color-primary); color: #fff; }
-.solid.inStore { background: #cddc39; color: #fff; }
