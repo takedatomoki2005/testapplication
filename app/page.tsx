@@ -1,55 +1,37 @@
-import { getVisitedCountries } from '@/app/actions/countries'
-import { createServerClient } from '@/utils/supabase/server'
-import CountryForm from '@/components/CountryForm'
-import CountryList from '@/components/CountryList'
-import AuthTabs from '@/components/AuthTabs'
-import TravelLevelCard from '@/components/TravelLevelCard'
-import { calculateTravelLevel } from '@/utils/travelLevel'
-import { redirect } from 'next/navigation'
+"use client";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams?: { code?: string }
-}) {
-  // If there's a verification code, redirect to auth callback
-  if (searchParams?.code) {
-    redirect(`/auth/callback?code=${searchParams.code}`)
+import { WizardProvider, useWizard } from "@/components/WizardProvider";
+import { WizardShell } from "@/components/WizardShell";
+import { RouteRegistration } from "@/components/steps/RouteRegistration";
+import { InterestRegistration } from "@/components/steps/InterestRegistration";
+import { TodayRecommendations } from "@/components/steps/TodayRecommendations";
+import { DetourDetail } from "@/components/steps/DetourDetail";
+import { ReturnRoute } from "@/components/steps/ReturnRoute";
+
+function CurrentStep() {
+  const { step } = useWizard();
+  switch (step) {
+    case 0:
+      return <RouteRegistration />;
+    case 1:
+      return <InterestRegistration />;
+    case 2:
+      return <TodayRecommendations />;
+    case 3:
+      return <DetourDetail />;
+    case 4:
+      return <ReturnRoute />;
+    default:
+      return <RouteRegistration />;
   }
+}
 
-  const supabase = createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  const countries = user ? await getVisitedCountries() : []
-
+export default function Page() {
   return (
-    <main className="min-h-screen bg-[#f5f5f5] py-12 px-4 pb-24">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Visited Countries
-          </h1>
-          <p className="text-gray-600">
-            Track the countries you&apos;ve visited
-          </p>
-        </div>
-
-        {user ? (
-          <div className="mt-8 space-y-6">
-            <TravelLevelCard travelLevel={calculateTravelLevel(countries.length)} />
-            <CountryForm existingCountries={countries} />
-            <CountryList countries={countries} />
-          </div>
-        ) : (
-          <div className="mt-8">
-            <div className="text-center mb-6">
-              <p className="text-gray-700 mb-2">
-                Please sign in or create an account to track your visited countries.
-              </p>
-            </div>
-            <AuthTabs />
-          </div>
-        )}
-      </div>
-    </main>
-  )
+    <WizardProvider>
+      <WizardShell>
+        <CurrentStep />
+      </WizardShell>
+    </WizardProvider>
+  );
 }

@@ -1,31 +1,31 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-
-const inter = Inter({ subsets: ['latin'] })
+import type { Metadata, Viewport } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Travel Record',
-  description: 'Track the countries you\'ve visited',
-}
+  title: "YORIMICHI",
+  description: "いつもの帰り道に、今日だけの寄り道を。"
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1
+};
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header />
-        <div className="flex-1">
-          {children}
+    <html lang="ja">
+      <body>
+        <div className="min-h-screen flex justify-center bg-bg">
+          <div className="w-full max-w-[420px] min-h-screen bg-surface shadow-shell flex flex-col">
+            {children}
+          </div>
         </div>
-        <Footer />
       </body>
     </html>
-  )
+  );
 }
-
